@@ -223,7 +223,7 @@ Repeat for staging. Note both paths.
 On github.com → **New repository**:
 
 - Name: `oomph-site`
-- Visibility: **Private**
+- Visibility: **Public** *(originally specced as private; flipped to public — no pre-launch secrets live in the repo, and public unlocks free GitHub Actions minutes and easier sharing)*
 - Initialize: leave **everything unchecked** (no README, no .gitignore, no license — we have ours)
 
 After creation, GitHub shows a "quick setup" page with a remote URL. Copy the SSH URL: `git@github.com:YOUR-USERNAME/oomph-site.git`.
@@ -304,7 +304,7 @@ Repo → **Settings → Secrets and variables → Actions → New repository sec
 Repo → **Settings → Branches → Add branch protection rule** for `main`:
 
 - [x] Require a pull request before merging
-- [x] Require approvals (1 — even if you're the only reviewer; the pause is the point)
+- [x] Required approvals: **0** *(solo dev — a self-approval gate adds friction without catching anything; the real pause is the production environment approval in §2.10, which can't be self-approved-away mid-deploy)*
 - [x] Require status checks to pass before merging
 - [x] Require linear history
 - [x] Do not allow bypassing the above settings
