@@ -68,10 +68,11 @@ jobs:
             ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:${{ steps.target.outputs.path }}/
 
       - name: Purge SiteGround cache (WP-CLI via SSH)
+        continue-on-error: true
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }} \
             ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }} \
-            "cd ${{ steps.target.outputs.path }}/../../.. && wp sg purge && wp cache flush"
+            "cd ${{ steps.target.outputs.path }}/../../.. && ( wp sg purge || echo 'SG Optimizer not active — skipping wp sg purge' ) && ( wp cache flush || echo 'wp cache flush failed — skipping' )"
 
       - name: Clean up SSH key
         if: always()
