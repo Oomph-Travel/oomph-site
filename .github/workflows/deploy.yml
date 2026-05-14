@@ -1,0 +1,111 @@
+name: Deploy to SiteGround
+
+# Triggers:
+#   - push to `develop` → deploys to STAGING
+#   - push to `main`    → deploys to PRODUCTION (gated by branch protection + PR review)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:    # allow manual trigger from Actions tab
+
+concurrency:
+  # Cancel any in-progress deploy for the same branch when a new push lands.
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: rsync child theme → SiteGround
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Determine target environment
+        id: target
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "host=${{ secrets.SG_PROD_HOST }}"     >> $GITHUB_OUTPUT
+            echo "user=${{ secrets.SG_PROD_USER }}"     >> $GITHUB_OUTPUT
+            echo "port=${{ secrets.SG_PROD_PORT }}"     >> $GITHUB_OUTPUT
+            echo "path=${{ secrets.SG_PROD_THEME_PATH }}" >> $GITHUB_OUTPUT
+            echo "env=production" >> $GITHUB_OUTPUT
+          else
+            echo "host=${{ secrets.SG_STAGE_HOST }}"     >> $GITHUB_OUTPUT
+            echo "user=${{ secrets.SG_STAGE_USER }}"     >> $GITHUB_OUTPUT
+            echo "port=${{ secrets.SG_STAGE_PORT }}"     >> $GITHUB_OUTPUT
+            echo "path=${{ secrets.SG_STAGE_THEME_PATH }}" >> $GITHUB_OUTPUT
+            echo "env=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ steps.target.outputs.port }} -H ${{ steps.target.outputs.host }} >> ~/.ssh/known_hosts
+
+      - name: Deploy child theme via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='node_modules' \
+            --exclude='*.md' \
+            --exclude='docs' \
+            --exclude='.DS_Store' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }}" \
+            wp-content/themes/oomph-child/ \
+            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:${{ steps.target.outputs.path }}/
+
+      - name: Purge SiteGround cache (WP-CLI via SSH)
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }} \
+            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }} \
+            "cd ${{ steps.target.outputs.path }}/../../.. && wp sg purge && wp cache flush"
+
+      - name: Clean up SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
+
+      - name: Summary
+        run: |
+          echo "### Deployed to ${{ steps.target.outputs.env }} :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Host:   \`${{ steps.target.outputs.host }}\`" >> $GITHUB_STEP_SUMMARY
+
+# ─────────────────────────────────────────────────────────────────────────
+# Required GitHub repository secrets (Settings → Secrets and variables → Actions):
+#
+#   SG_SSH_PRIVATE_KEY     The private half of the deploy keypair.
+#                          Add the public half to SiteGround Site Tools →
+#                          Devs → SSH Keys Manager.
+#
+#   SG_PROD_HOST           Production SSH host (e.g., us31.siteground.us)
+#   SG_PROD_USER           Production SSH username
+#   SG_PROD_PORT           Production SSH port (usually 18765)
+#   SG_PROD_THEME_PATH     Absolute path to child theme on prod
+#                          (e.g., /home/customer/www/oomphtravel.com/public_html/wp-content/themes/oomph-child)
+#
+#   SG_STAGE_HOST          Staging SSH host
+#   SG_STAGE_USER          Staging SSH username
+#   SG_STAGE_PORT          Staging SSH port
+#   SG_STAGE_THEME_PATH    Absolute path to child theme on staging
+#
+# Branch protection rule (Settings → Branches → main):
+#   - Require pull request before merging
+#   - Require status checks to pass before merging
+#   - Require linear history
+#   - Restrict who can push to matching branches
+# ─────────────────────────────────────────────────────────────────────────

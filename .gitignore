@@ -1,0 +1,74 @@
+# ─── OS ───────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# ─── Editor / IDE ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Node / build tooling (if added later) ────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+dist/
+.cache/
+
+# ─── Environment ──────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── WordPress — never commit these ───────────────────────────────
+# WP core lives on the host. We track only the child theme.
+/wp-admin/
+/wp-includes/
+wp-config.php
+wp-config-sample.php
+.htaccess
+xmlrpc.php
+
+# WP runtime / generated content
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/uploads/
+/wp-content/backup-db/
+/wp-content/backups/
+/wp-content/blogs.dir/
+/wp-content/advanced-cache.php
+/wp-content/wp-cache-config.php
+/wp-content/object-cache.php
+/wp-content/sitemap*.xml
+/wp-content/db.php
+
+# Other themes and all plugins — managed via WP admin, not git
+/wp-content/themes/*
+!/wp-content/themes/oomph-child/
+/wp-content/plugins/
+/wp-content/mu-plugins/
+
+# Logs and SQL dumps
+*.log
+*.sql
+*.sql.gz
+
+# Local dev tooling
+.local-by-flywheel/
+*.lock
+
+# Secrets / SSH
+*.pem
+deploy_key
+deploy_key.pub
+
+# Claude Code local memory (committed CLAUDE.md is the project file;
+# CLAUDE.local.md is personal notes and should not be tracked)
+CLAUDE.local.md
+.claude/projects/
