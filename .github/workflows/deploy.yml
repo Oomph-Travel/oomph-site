@@ -64,7 +64,7 @@ jobs:
             --exclude='docs' \
             --exclude='.DS_Store' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }}" \
-            wp-content/themes/oomph-child/ \
+            wp-content/themes/kadence-oomph-child/ \
             ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:${{ steps.target.outputs.path }}/
 
       - name: Purge SiteGround cache (WP-CLI via SSH)
@@ -97,7 +97,7 @@ jobs:
 #   SG_PROD_USER           Production SSH username
 #   SG_PROD_PORT           Production SSH port (usually 18765)
 #   SG_PROD_THEME_PATH     Absolute path to child theme on prod
-#                          (e.g., /home/customer/www/oomphtravel.com/public_html/wp-content/themes/oomph-child)
+#                          (e.g., /home/customer/www/oomphtravel.com/public_html/wp-content/themes/kadence-oomph-child)
 #
 #   SG_STAGE_HOST          Staging SSH host
 #   SG_STAGE_USER          Staging SSH username

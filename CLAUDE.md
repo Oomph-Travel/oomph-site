@@ -13,7 +13,8 @@ The advisor is Eric Hempel, based in Port Angeles, WA. Read like a trusted conci
 - **Hosting:** SiteGround GrowBig (SSH enabled, WP-CLI, staging environment)
 - **CMS:** WordPress 6.x with block editor (Gutenberg). NO page builders.
 - **Parent theme:** Kadence (free) + Kadence Pro bundle
-- **Child theme:** `oomph-child` — all custom work lives here
+- **Child theme:** `kadence-oomph-child` — presentation only (CSS, patterns, parts, templates)
+- **Custom plugin:** `oomph-travel-core` — data layer (CPTs, taxonomies, schema injection, env guards)
 - **SEO:** Rank Math (free tier; Pro added at month 6 if needed)
 - **Speed:** SG Optimizer (free, SiteGround-native; outperforms WP Rocket on this stack)
 - **Forms:** Fluent Forms (free) for Discovery Call inquiry; Flodesk embeds for newsletter
@@ -35,7 +36,9 @@ oomph-site/
 ├── .github/workflows/deploy.yml   ← CI/CD pipeline
 ├── wp-content/
 │   └── themes/
-│       └── oomph-child/           ← the only directory we touch
+│       └── kadence-oomph-child/   ← child theme (presentation)
+├── plugins/
+│   └── oomph-travel-core/         ← custom plugin (CPTs, schema, env guards)
 │           ├── style.css
 │           ├── functions.php
 │           ├── theme.json
@@ -50,7 +53,7 @@ oomph-site/
 └── .gitignore
 ```
 
-**You only edit files inside `wp-content/themes/oomph-child/`.** Never modify Kadence parent theme files; if you need to change parent behavior, override in the child.
+**You only edit files inside `wp-content/themes/kadence-oomph-child/` and `plugins/oomph-travel-core/`.** Never modify Kadence parent theme files; if you need to change parent behavior, override in the child. Presentation belongs in the theme; CPTs, schema, and environment-aware code belong in the plugin (so the data layer survives a theme switch).
 
 ## Imported docs (load on demand)
 
@@ -63,7 +66,8 @@ oomph-site/
 
 ```bash
 # Local dev (assumes Local by Flywheel or wp-env)
-wp theme activate oomph-child
+wp theme activate kadence-oomph-child
+wp plugin activate oomph-travel-core
 wp cache flush
 
 # Deploy to staging (on push to develop branch — automatic via GitHub Actions)
