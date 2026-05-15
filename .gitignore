@@ -50,7 +50,7 @@ xmlrpc.php
 
 # Other themes and all plugins — managed via WP admin, not git
 /wp-content/themes/*
-!/wp-content/themes/oomph-child/
+!/wp-content/themes/kadence-oomph-child/
 /wp-content/plugins/
 /wp-content/mu-plugins/
 
@@ -72,3 +72,10 @@ deploy_key.pub
 # CLAUDE.local.md is personal notes and should not be tracked)
 CLAUDE.local.md
 .claude/projects/
+
+# ─── Source documents (binary originals) ──────────────────────────
+# Markdown derivatives in docs/source/ ARE committed; the original
+# PDFs/docx live locally only because the repo is public and the
+# binaries are large.
+docs/source/*.pdf
+docs/source/*.docx
