@@ -1,0 +1,209 @@
+/* ============================================================================
+ * Oomph Travel — Design Tokens
+ * ----------------------------------------------------------------------------
+ * Source of truth: docs/brand-tokens.md (Brand Book Vol. I, MMXXVI)
+ * Companion: theme.json (mirrors palette + sizes for the block editor)
+ *
+ * Two layers:
+ *   1. Raw tokens — colors, spacing, radii, shadows, type scale, fonts
+ *   2. Semantic tokens — name combinations, not just colors
+ *      (surface / text / signal / hairline) so component CSS reads
+ *      intent, not implementation.
+ *
+ * Pure white (#FFFFFF) and pure black (#000000) never appear.
+ * ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+ * Self-hosted fonts (variable)
+ *
+ * Drop these .woff2 files in assets/fonts/. Get them from
+ * https://gwfh.mranftl.com/fonts or fontsource.org. Until they're present,
+ * the @font-face rules are inert and the browser falls back to the family
+ * stack on font-family declarations elsewhere.
+ *
+ * TODO files needed:
+ *   inter-variable-latin.woff2          (wght 100-900)
+ *   inter-variable-latin-italic.woff2   (wght 100-900, italic)
+ *   fraunces-variable-latin.woff2       (opsz 9-144, wght 100-900)
+ *   fraunces-variable-latin-italic.woff2 (opsz 9-144, wght 100-900, italic)
+ * --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-variable-latin.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-variable-latin-italic.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-variable-latin.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-variable-latin-italic.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* =========================================================================
+   * Colors — raw
+   * Primary, neutrals, secondary accents, semantic. Match docs/brand-tokens.md.
+   * ========================================================================= */
+
+  /* Primary — three colors do most of the work */
+  --color-peacock-ink:    #1F4E5F;  /* H1s, links, primary nav, footer ground */
+  --color-terracotta-warm:#B8543A;  /* CTAs, hover, the one warm note */
+  --color-true-ink:       #14171A;  /* body type, masking, inverse hero ground */
+
+  /* Neutrals — the canvas */
+  --color-paper:    #FEFCF8;  /* off-white */
+  --color-bone:     #FBF6EC;  /* default background */
+  --color-mist:     #F1EADC;  /* alt background */
+  --color-stone:    #C5BBA8;  /* hairlines */
+  --color-slate:    #7C786C;  /* meta type */
+  --color-charcoal: #2C2A26;  /* body alt */
+
+  /* Secondary — one per section, never two */
+  --color-deep-peacock: #0F3640;  /* footer, premium blocks, confirmations */
+  --color-muted-brick:  #8C3A2E;  /* press / Puglia editorial */
+  --color-warm-ochre:   #C2873E;  /* highlight */
+  --color-soft-sage:    #8A9A85;  /* Provence, European itinerary */
+  --color-champagne:    #D9C5A6;  /* cabin notes, evening, premium documents */
+  --color-dusty-rose:   #C9A09A;  /* considered solo use */
+
+  /* Semantic — forms and feedback only */
+  --color-success: #4A6B4F;  /* forest sage */
+  --color-warning: #B8893A;  /* burnished amber */
+  --color-error:   #9A2A26;  /* garnet */
+  --color-info:    #1A4555;  /* inkwell teal */
+
+  /* =========================================================================
+   * Colors — semantic (name combinations, not just colors)
+   * ========================================================================= */
+
+  --surface-default: var(--color-bone);          /* most pages, hero canvas */
+  --surface-alt:     var(--color-mist);          /* alternating bands */
+  --surface-paper:   var(--color-paper);         /* quieter than Bone */
+  --surface-inverse: var(--color-true-ink);      /* Cabin Notes / inverted blocks */
+  --surface-deep:    var(--color-deep-peacock);  /* footer, premium */
+
+  --text-default: var(--color-true-ink);
+  --text-soft:    var(--color-charcoal);
+  --text-muted:   var(--color-slate);
+  --text-inverse: var(--color-bone);
+
+  --signal-primary: var(--color-peacock-ink);   /* links, hairline accents, primary brand */
+  --signal-accent:  var(--color-terracotta-warm); /* CTAs, hover, pull rules */
+
+  --hairline: var(--color-stone);
+
+  /* =========================================================================
+   * Typography — fluid scale via clamp(min, fluid, max)
+   * Mobile values match docs/brand-tokens.md mobile column.
+   * Desktop max values match the desktop column.
+   * ========================================================================= */
+
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-text:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --text-eyebrow:  clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);   /* 12 → 13px */
+  --text-body-sm:  clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem); /* 14 → 15px */
+  --text-body:     clamp(1rem,    0.96rem + 0.2vw, 1.0625rem);   /* 16 → 17px */
+  --text-lead:     clamp(1.125rem, 1.08rem + 0.3vw, 1.25rem);    /* 18 → 20px */
+  --text-h3:       clamp(1.375rem, 1.25rem + 0.65vw, 1.625rem);  /* 22 → 26px */
+  --text-h2:       clamp(1.75rem,  1.5rem + 1.25vw, 2.25rem);    /* 28 → 36px */
+  --text-h1:       clamp(2.25rem,  1.6rem + 3.2vw, 3.5rem);      /* 36 → 56px */
+  --text-display:  clamp(3rem,     1.5rem + 7.5vw, 5.5rem);      /* 48 → 88px */
+
+  --line-eyebrow:  1.4;
+  --line-body-sm:  1.55;
+  --line-body:     1.625;   /* 17 / 28 */
+  --line-lead:     1.6;
+  --line-h3:       1.3;
+  --line-h2:       1.22;
+  --line-h1:       1.1;
+  --line-display:  1.05;
+
+  --tracking-eyebrow: 0.08em;  /* all-caps Inter eyebrows */
+
+  /* =========================================================================
+   * Spacing — 8-point baseline (4px starting unit)
+   * ========================================================================= */
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  40px;
+  --space-8:  56px;
+  --space-9:  72px;
+  --space-10: 96px;
+  --space-11: 128px;
+
+  /* =========================================================================
+   * Layout
+   * ========================================================================= */
+
+  --container-max: 1280px;
+  --container-prose: 72ch;
+  --container-gutter: var(--space-7);  /* 40px on desktop */
+
+  /* =========================================================================
+   * Radii — squared geometry; never pill except dense filter chips
+   * ========================================================================= */
+
+  --radius-xs: 2px;   /* hairline accents */
+  --radius-sm: 4px;   /* buttons — never larger */
+  --radius-md: 8px;   /* cards */
+  --radius-lg: 12px;  /* modals */
+
+  /* =========================================================================
+   * Elevation — prefer hairlines over shadow
+   * ========================================================================= */
+
+  --shadow-hairline: 0 0 0 1px var(--color-stone);
+  --shadow-sm: 0 1px 2px rgba(20, 23, 26, 0.04), 0 1px 1px rgba(20, 23, 26, 0.06);
+  --shadow-md: 0 4px 12px rgba(20, 23, 26, 0.08);
+  --shadow-lg: 0 12px 32px rgba(20, 23, 26, 0.12);
+
+  /* =========================================================================
+   * Hero scrim — for photography overlays
+   * Never glassmorphism. Never blur.
+   * ========================================================================= */
+
+  --scrim-hero: linear-gradient(180deg, rgba(20, 23, 26, 0.05), rgba(20, 23, 26, 0.55));
+
+  /* =========================================================================
+   * Motion
+   * ========================================================================= */
+
+  --duration-quick: 0.15s;
+  --duration-base:  0.2s;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-quick: 0s;
+    --duration-base:  0s;
+  }
+}
