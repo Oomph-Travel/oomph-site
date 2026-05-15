@@ -32,7 +32,7 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
   "image": { "@id": "https://oomphtravel.com/#logo" },
   "description": "Premium and luxury cruises, and custom European journeys, planned by one named advisor.",
   "slogan": "Life is short — travel with Oomph.",
-  "founder": { "@id": "https://oomphtravel.com/about/#person" },
+  "founder": { "@id": "https://oomphtravel.com/about/#advisor" },
   "areaServed": {
     "@type": "Country",
     "name": "United States"
@@ -75,7 +75,7 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
 {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://oomphtravel.com/about/#person",
+  "@id": "https://oomphtravel.com/about/#advisor",
   "name": "Eric Hempel",
   "jobTitle": "Travel Advisor",
   "url": "https://oomphtravel.com/about/",
@@ -226,7 +226,7 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
     "width": 1600,
     "height": 900
   },
-  "author": { "@id": "https://oomphtravel.com/about/#person" },
+  "author": { "@id": "https://oomphtravel.com/about/#advisor" },
   "publisher": { "@id": "https://oomphtravel.com/#organization" },
   "datePublished": "2026-03-12",
   "dateModified": "2026-05-10",
