@@ -2,10 +2,12 @@
 /**
  * Home page template.
  *
- * Per docx §10.3 — eleven sections from hero to final CTA. Primary CTA
- * "Book a Discovery Call →" appears in hero, after the founder bio, in
- * the lead magnet, and in the final CTA block (four placements + the
- * sticky mobile bar = five surfaces total).
+ * Per docx §10.3 — eleven sections from hero to final CTA. The FEES
+ * TEASER (section 9) is currently deferred — see placeholder comment
+ * where it lived. Primary CTA "Book a Discovery Call →" appears in
+ * hero, after the founder bio, in the lead magnet, and in the final
+ * CTA block (four placements + the sticky mobile bar = five surfaces
+ * total).
  *
  * Schema (Organization + Person + BreadcrumbList) is injected by the
  * oomph-travel-core plugin via wp_head, so we don't output it here.
@@ -21,6 +23,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+/*
+ * Hero — read from ACF Page Hero with fallbacks to the original
+ * hardcoded copy. Fallbacks ensure the page never renders blank
+ * if ACF is absent or the post hasn't been populated in admin yet.
+ */
+$hero_eyebrow   = oomph_acf_field( 'hero_eyebrow', 'Premium Cruises · Custom Europe · Multi-Gen' );
+$hero_headline  = oomph_acf_field( 'hero_headline', "Travel that's worth the trip." );
+$hero_subhead   = oomph_acf_field(
+	'hero_subhead',
+	'Premium and luxury cruises, and custom European journeys — planned by one named advisor who stays on your trip from the first call to the last flight home.'
+);
+$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Book a Discovery Call →' );
+$hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
+
+// Strip a trailing arrow from the label so we can re-append it inside
+// an aria-hidden span, keeping the arrow out of the accessible name.
+$hero_cta_text = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
+
+// Hero image: ACF returns array(url, alt, width, height, sizes, …) or
+// false when no image is selected. Fall back to the bundled theme asset.
+$hero_image_acf = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
+if ( is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] ) ) {
+	$hero_image_url    = $hero_image_acf['url'];
+	$hero_image_alt    = $hero_image_acf['alt'] ?? '';
+	$hero_image_width  = $hero_image_acf['width'] ?? 1000;
+	$hero_image_height = $hero_image_acf['height'] ?? 667;
+} else {
+	$hero_image_url    = get_stylesheet_directory_uri() . '/assets/images/hero-background.webp';
+	$hero_image_alt    = '';
+	$hero_image_width  = 1000;
+	$hero_image_height = 667;
+}
+
+// Trust strip defaults to on; explicit false from ACF hides it.
+$show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 ?>
 
 <main id="primary" class="oomph-home" role="main">
@@ -32,25 +70,21 @@ get_header();
 	<section class="oomph-hero oomph-hero--imaged" aria-label="Welcome">
 		<picture class="oomph-hero__media">
 			<img
-				src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-background.webp' ); ?>"
-				alt=""
-				width="1000"
-				height="667"
+				src="<?php echo esc_url( $hero_image_url ); ?>"
+				alt="<?php echo esc_attr( $hero_image_alt ); ?>"
+				width="<?php echo esc_attr( $hero_image_width ); ?>"
+				height="<?php echo esc_attr( $hero_image_height ); ?>"
 				fetchpriority="high"
 				decoding="async"
 			>
 		</picture>
 		<div class="oomph-container oomph-hero__inner">
-			<p class="oomph-eyebrow">Premium Cruises · Custom Europe · Multi-Gen</p>
-			<h1 class="oomph-hero__headline">Travel that's worth the trip.</h1>
-			<p class="oomph-hero__subhead">
-				Premium and luxury cruises, and custom European journeys —
-				planned by one named advisor who stays on your trip from
-				the first call to the last flight home.
-			</p>
+			<p class="oomph-eyebrow"><?php echo esc_html( $hero_eyebrow ); ?></p>
+			<h1 class="oomph-hero__headline"><?php echo esc_html( $hero_headline ); ?></h1>
+			<p class="oomph-hero__subhead"><?php echo esc_html( $hero_subhead ); ?></p>
 			<p class="oomph-hero__cta">
-				<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
+					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
 				<span class="oomph-btn-microcopy">Free 20-minute call. No pressure, no obligation.</span>
 			</p>
@@ -58,6 +92,7 @@ get_header();
 	</section>
 
 	<?php /* 2. TRUST STRIP --------------------------------------------- */ ?>
+	<?php if ( $show_trust_strip ) : ?>
 	<aside class="oomph-trust-strip" aria-label="Credentials">
 		<span class="oomph-trust-strip__item">CLIA Member</span>
 		<span class="oomph-trust-strip__item">Silversea Ultra-Luxury Specialist</span>
@@ -65,6 +100,7 @@ get_header();
 		<span class="oomph-trust-strip__item">BritAgent Pro</span>
 		<span class="oomph-trust-strip__item">Port Angeles · WA</span>
 	</aside>
+	<?php endif; ?>
 
 	<?php /* 3. WHO I HELP --------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="who-i-help-title">
@@ -169,7 +205,7 @@ get_header();
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Two · Design</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Planning that earns the fee.</h3>
+					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">One proposal, not five.</h3>
 					<p>Cabin selection, itinerary, transfers, dinner reservations, the small details that make a trip feel choreographed. You see one proposal, not five — because I do the narrowing for you.</p>
 				</div>
 				<div>
@@ -238,21 +274,10 @@ get_header();
 		</div>
 	</section>
 
-	<?php /* 9. FEES TEASER -------------------------------------------- */ ?>
-	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="fees-title">
-		<div class="oomph-container">
-			<div class="oomph-section__intro">
-				<p class="oomph-eyebrow">How I work</p>
-				<h2 id="fees-title" style="color: var(--color-deep-peacock);">Planning fees fund my undivided attention.</h2>
-				<p>Cruise planning starts at $300; custom Italy at $500. The fee filters out the people who want a quote, not a planner. Cruise lines and tour operators pay commissions on the booked fare — those commissions don't change your price.</p>
-				<p>
-					<a class="oomph-btn oomph-btn--ghost" href="/how-i-work/">
-						How I work <span aria-hidden="true">→</span>
-					</a>
-				</p>
-			</div>
-		</div>
-	</section>
+	<?php /* 9. FEES TEASER — deferred. Will return per docx §10.3 when
+	         the fees system is implemented; restore from git history
+	         (commit 96869b0 or earlier) or rebuild against the same
+	         section anatomy used by the other quiet-premium blocks. */ ?>
 
 	<?php /* 10. FEATURED JOURNAL --------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="journal-title">
