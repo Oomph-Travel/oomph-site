@@ -1,0 +1,379 @@
+/* ============================================================================
+ * Oomph Travel — Components
+ * ----------------------------------------------------------------------------
+ * Buttons, cards, eyebrows, sticky CTA, trust strip, form fields, scrim.
+ *
+ * Class prefix: .oomph-* so we never collide with Kadence or core block
+ * classes. Component CSS reads semantic tokens (--surface-*, --signal-*)
+ * from tokens.css, never raw color names.
+ *
+ * WCAG AA contrast (4.5:1 body, 3:1 large text) verified for every
+ * background/foreground pair below.
+ * ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+ * Eyebrows — small all-caps Inter labels above headlines / on cards
+ * --------------------------------------------------------------------------- */
+
+.oomph-eyebrow {
+  font-family: var(--font-text);
+  font-weight: 500;
+  font-size: var(--text-eyebrow);
+  line-height: var(--line-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.oomph-meta {
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+.oomph-italic-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------------------
+ * Buttons — .oomph-btn + variants
+ *
+ * Squared 4px radius. Never pill (except dense filter chips, separate class).
+ * Min height 44px for tap target (R27). Inter 500. WCAG AA verified.
+ * --------------------------------------------------------------------------- */
+
+.oomph-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 24px;
+  font-family: var(--font-text);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-quick) var(--easing-standard),
+    color            var(--duration-quick) var(--easing-standard),
+    border-color     var(--duration-quick) var(--easing-standard);
+}
+
+/* Primary — Terracotta on Paper. Contrast: 5.1:1. */
+.oomph-btn--primary {
+  background-color: var(--signal-accent);
+  color: var(--color-paper);
+}
+.oomph-btn--primary:hover,
+.oomph-btn--primary:focus-visible {
+  background-color: var(--color-muted-brick); /* darker Terracotta */
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
+/* Ghost — Peacock outline on Bone. Hover fills. Contrast: 8.4:1 border. */
+.oomph-btn--ghost {
+  background-color: transparent;
+  color: var(--signal-primary);
+  border-color: var(--signal-primary);
+}
+.oomph-btn--ghost:hover,
+.oomph-btn--ghost:focus-visible {
+  background-color: var(--signal-primary);
+  color: var(--color-paper);
+}
+
+/* Inverse — Warm Ochre on True Ink (Cabin Notes blocks). Contrast: 4.8:1. */
+.oomph-btn--inverse {
+  background-color: var(--color-warm-ochre);
+  color: var(--surface-inverse);
+}
+.oomph-btn--inverse:hover,
+.oomph-btn--inverse:focus-visible {
+  background-color: var(--color-champagne);
+  color: var(--surface-inverse);
+}
+
+/* Microcopy slot — sits directly below a CTA */
+.oomph-btn-microcopy {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Cards — .oomph-card + surface variants + clickable
+ *
+ * Hairline border at rest. Lifts to --shadow-sm on hover IF clickable.
+ * Non-clickable cards never lift.
+ * --------------------------------------------------------------------------- */
+
+.oomph-card {
+  position: relative;
+  padding: var(--space-6);
+  background: var(--surface-default);
+  color: var(--text-default);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  transition: box-shadow var(--duration-base) var(--easing-standard),
+              transform  var(--duration-base) var(--easing-standard);
+}
+
+.oomph-card--mist     { background: var(--surface-alt); }
+.oomph-card--paper    { background: var(--surface-paper); }
+.oomph-card--inverse  { background: var(--surface-inverse); color: var(--text-inverse); border-color: transparent; }
+.oomph-card--peacock  { background: var(--signal-primary); color: var(--text-inverse); border-color: transparent; }
+.oomph-card--brick    { background: var(--color-muted-brick); color: var(--text-inverse); border-color: transparent; }
+.oomph-card--champagne{ background: var(--color-champagne); color: var(--text-default); border-color: transparent; }
+
+.oomph-card--clickable {
+  cursor: pointer;
+}
+.oomph-card--clickable:hover,
+.oomph-card--clickable:focus-within {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+/* Full-bleed link wrapper — every card is one anchor; the wrapper expands
+ * to fill the card so the entire surface is clickable. No "Read More" button. */
+.oomph-card--clickable .oomph-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.oomph-card__eyebrow  { /* uses .oomph-eyebrow; this is just for margin tuning */
+  margin-bottom: var(--space-3);
+}
+.oomph-card__headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-h3);
+  line-height: var(--line-h3);
+  margin: 0 0 var(--space-3) 0;
+}
+.oomph-card__meta {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--hairline);
+}
+
+/* ---------------------------------------------------------------------------
+ * Trust strip — credential lockup row below hero (R28, R29)
+ * --------------------------------------------------------------------------- */
+
+.oomph-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4) var(--space-6);
+  padding: var(--space-5) var(--space-4);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface-alt);
+}
+
+.oomph-trust-strip__item {
+  font-family: var(--font-text);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.oomph-trust-strip__item + .oomph-trust-strip__item::before {
+  content: "·";
+  margin-right: var(--space-4);
+  color: var(--hairline);
+}
+
+/* ---------------------------------------------------------------------------
+ * Sticky mobile CTA — R2 (visible at every scroll depth, mobile only)
+ * --------------------------------------------------------------------------- */
+
+.oomph-sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: max(var(--space-3), env(safe-area-inset-bottom));
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  z-index: 100;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.oomph-sticky-cta .oomph-btn {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .oomph-sticky-cta { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+ * Form fields — single-column, 44px tap target, Stone border, Peacock focus
+ * (R39, R40, R41, R27, R26)
+ * --------------------------------------------------------------------------- */
+
+.oomph-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.oomph-field__label {
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  color: var(--text-default);
+}
+
+.oomph-field__label--optional::after {
+  content: " (optional)";
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.oomph-field__input,
+.oomph-field__textarea,
+.oomph-field__select {
+  min-height: 44px;
+  padding: 10px 14px;
+  font-family: var(--font-text);
+  font-size: var(--text-body);
+  color: var(--text-default);
+  background: var(--surface-paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--duration-quick) var(--easing-standard),
+              box-shadow   var(--duration-quick) var(--easing-standard);
+}
+
+.oomph-field__textarea {
+  min-height: 96px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+.oomph-field__input:focus,
+.oomph-field__textarea:focus,
+.oomph-field__select:focus {
+  outline: none;
+  border-color: var(--signal-primary);
+  box-shadow: 0 0 0 2px var(--signal-primary);
+}
+
+.oomph-field__input[aria-invalid="true"],
+.oomph-field__textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.oomph-field__error {
+  color: var(--color-error);
+  font-size: var(--text-body-sm);
+}
+
+.oomph-field__success {
+  color: var(--color-success);
+  font-size: var(--text-body-sm);
+}
+
+.oomph-form__privacy {
+  margin-top: var(--space-4);
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Scrim — photography overlay for hero images. Never glassmorphism.
+ * --------------------------------------------------------------------------- */
+
+.oomph-scrim {
+  position: absolute;
+  inset: 0;
+  background-image: var(--scrim-hero);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Block-style hooks — these match register_block_style() registrations
+ * in inc/kadence-overrides.php so Gutenberg renders authored content
+ * with the right look.
+ * --------------------------------------------------------------------------- */
+
+/* core/paragraph style "lede" — opening paragraph of long-form posts */
+.is-style-oomph-lede {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-lead);
+  line-height: var(--line-lead);
+  color: var(--text-soft);
+}
+
+/* core/paragraph style "meta" — date, byline, reading time */
+.is-style-oomph-meta {
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+/* core/heading style "pull-quote" */
+.is-style-oomph-pullquote {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--text-h1);
+  line-height: 1.2;
+  color: var(--signal-primary);
+  border-left: 4px solid var(--signal-accent);
+  padding-left: var(--space-5);
+  margin-block: var(--space-7);
+}
+
+/* core/group style variants — surface palettes from the Brand Book */
+.is-style-oomph-cabin-notes {
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  padding: var(--space-9) var(--space-6);
+}
+
+.is-style-oomph-quiet-premium {
+  background: var(--surface-paper);
+  color: var(--text-default);
+  padding: var(--space-9) var(--space-6);
+}
+
+.is-style-oomph-quiet-premium h2,
+.is-style-oomph-quiet-premium h3 {
+  color: var(--color-deep-peacock);
+}
+
+.is-style-oomph-european-itinerary {
+  background: var(--surface-default);
+  color: var(--text-default);
+  padding: var(--space-9) var(--space-6);
+  border-top: 1px solid var(--color-soft-sage);
+  border-bottom: 1px solid var(--color-soft-sage);
+}

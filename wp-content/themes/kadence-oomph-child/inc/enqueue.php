@@ -39,11 +39,33 @@ function oomph_child_enqueue_styles(): void {
 		);
 	}
 
-	// Child theme style.css — depends on tokens so cascade order is right.
+	// Base — reset, focus, prose, selection, skip link.
+	$base_path = $theme_dir . '/assets/css/base.css';
+	if ( file_exists( $base_path ) ) {
+		wp_enqueue_style(
+			'oomph-base',
+			$theme_uri . '/assets/css/base.css',
+			array( 'oomph-tokens' ),
+			(string) filemtime( $base_path )
+		);
+	}
+
+	// Components — buttons, cards, eyebrows, trust strip, sticky CTA, fields.
+	$components_path = $theme_dir . '/assets/css/components.css';
+	if ( file_exists( $components_path ) ) {
+		wp_enqueue_style(
+			'oomph-components',
+			$theme_uri . '/assets/css/components.css',
+			array( 'oomph-base' ),
+			(string) filemtime( $components_path )
+		);
+	}
+
+	// Child theme style.css — load last so any page-specific overrides win.
 	wp_enqueue_style(
 		'oomph-travel-child',
 		get_stylesheet_uri(),
-		array( 'oomph-tokens' ),
+		array( 'oomph-components' ),
 		(string) filemtime( $theme_dir . '/style.css' )
 	);
 }
@@ -60,6 +82,8 @@ add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_styles', 20 );
  */
 function oomph_child_enqueue_editor_styles(): void {
 	add_editor_style( 'assets/css/tokens.css' );
+	add_editor_style( 'assets/css/base.css' );
+	add_editor_style( 'assets/css/components.css' );
 }
 add_action( 'after_setup_theme', 'oomph_child_enqueue_editor_styles' );
 
