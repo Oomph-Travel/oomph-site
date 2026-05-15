@@ -21,6 +21,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+/*
+ * Hero — read from ACF Page Hero with fallbacks to the original
+ * hardcoded copy. Fallbacks ensure the page never renders blank
+ * if ACF is absent or the post hasn't been populated in admin yet.
+ */
+$hero_eyebrow   = oomph_acf_field( 'hero_eyebrow', 'Premium Cruises · Custom Europe · Multi-Gen' );
+$hero_headline  = oomph_acf_field( 'hero_headline', "Travel that's worth the trip." );
+$hero_subhead   = oomph_acf_field(
+	'hero_subhead',
+	'Premium and luxury cruises, and custom European journeys — planned by one named advisor who stays on your trip from the first call to the last flight home.'
+);
+$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Book a Discovery Call →' );
+$hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
+
+// Strip a trailing arrow from the label so we can re-append it inside
+// an aria-hidden span, keeping the arrow out of the accessible name.
+$hero_cta_text = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
+
+// Hero image: ACF returns array(url, alt, width, height, sizes, …) or
+// false when no image is selected. Fall back to the bundled theme asset.
+$hero_image_acf = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
+if ( is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] ) ) {
+	$hero_image_url    = $hero_image_acf['url'];
+	$hero_image_alt    = $hero_image_acf['alt'] ?? '';
+	$hero_image_width  = $hero_image_acf['width'] ?? 1000;
+	$hero_image_height = $hero_image_acf['height'] ?? 667;
+} else {
+	$hero_image_url    = get_stylesheet_directory_uri() . '/assets/images/hero-background.webp';
+	$hero_image_alt    = '';
+	$hero_image_width  = 1000;
+	$hero_image_height = 667;
+}
+
+// Trust strip defaults to on; explicit false from ACF hides it.
+$show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 ?>
 
 <main id="primary" class="oomph-home" role="main">
@@ -32,25 +68,21 @@ get_header();
 	<section class="oomph-hero oomph-hero--imaged" aria-label="Welcome">
 		<picture class="oomph-hero__media">
 			<img
-				src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-background.webp' ); ?>"
-				alt=""
-				width="1000"
-				height="667"
+				src="<?php echo esc_url( $hero_image_url ); ?>"
+				alt="<?php echo esc_attr( $hero_image_alt ); ?>"
+				width="<?php echo esc_attr( $hero_image_width ); ?>"
+				height="<?php echo esc_attr( $hero_image_height ); ?>"
 				fetchpriority="high"
 				decoding="async"
 			>
 		</picture>
 		<div class="oomph-container oomph-hero__inner">
-			<p class="oomph-eyebrow">Premium Cruises · Custom Europe · Multi-Gen</p>
-			<h1 class="oomph-hero__headline">Travel that's worth the trip.</h1>
-			<p class="oomph-hero__subhead">
-				Premium and luxury cruises, and custom European journeys —
-				planned by one named advisor who stays on your trip from
-				the first call to the last flight home.
-			</p>
+			<p class="oomph-eyebrow"><?php echo esc_html( $hero_eyebrow ); ?></p>
+			<h1 class="oomph-hero__headline"><?php echo esc_html( $hero_headline ); ?></h1>
+			<p class="oomph-hero__subhead"><?php echo esc_html( $hero_subhead ); ?></p>
 			<p class="oomph-hero__cta">
-				<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
+					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
 				<span class="oomph-btn-microcopy">Free 20-minute call. No pressure, no obligation.</span>
 			</p>
@@ -58,6 +90,7 @@ get_header();
 	</section>
 
 	<?php /* 2. TRUST STRIP --------------------------------------------- */ ?>
+	<?php if ( $show_trust_strip ) : ?>
 	<aside class="oomph-trust-strip" aria-label="Credentials">
 		<span class="oomph-trust-strip__item">CLIA Member</span>
 		<span class="oomph-trust-strip__item">Silversea Ultra-Luxury Specialist</span>
@@ -65,6 +98,7 @@ get_header();
 		<span class="oomph-trust-strip__item">BritAgent Pro</span>
 		<span class="oomph-trust-strip__item">Port Angeles · WA</span>
 	</aside>
+	<?php endif; ?>
 
 	<?php /* 3. WHO I HELP --------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="who-i-help-title">
