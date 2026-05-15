@@ -12,6 +12,47 @@
  * ========================================================================== */
 
 /* ---------------------------------------------------------------------------
+ * Layout — container + section + grid utilities
+ * --------------------------------------------------------------------------- */
+
+.oomph-container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .oomph-container { padding-inline: var(--container-gutter); }
+}
+
+.oomph-section {
+  padding-block: var(--space-10);
+}
+
+@media (max-width: 767px) {
+  .oomph-section { padding-block: var(--space-9); }
+}
+
+.oomph-section__intro {
+  max-width: 56ch;
+  margin: 0 auto var(--space-8);
+  text-align: center;
+}
+
+.oomph-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.oomph-grid--2 { grid-template-columns: 1fr; }
+.oomph-grid--3 { grid-template-columns: 1fr; }
+
+@media (min-width: 768px) {
+  .oomph-grid--2 { grid-template-columns: repeat(2, 1fr); gap: var(--space-7); }
+  .oomph-grid--3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+}
+
+/* ---------------------------------------------------------------------------
  * Eyebrows — small all-caps Inter labels above headlines / on cards
  * --------------------------------------------------------------------------- */
 
@@ -303,6 +344,124 @@
   margin-top: var(--space-4);
   font-size: var(--text-body-sm);
   color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Hero — The Hero combination (Bone + Peacock + Terracotta)
+ *
+ * Default no background image (the brand mark + tagline carry the surface).
+ * When a background image is added later, .oomph-hero gets a --bg-image
+ * custom property and .oomph-scrim layers on top.
+ * --------------------------------------------------------------------------- */
+
+.oomph-hero {
+  background: var(--surface-default);
+  padding-block: var(--space-10) var(--space-9);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .oomph-hero { padding-block: var(--space-11) var(--space-10); }
+}
+
+.oomph-hero__inner {
+  max-width: 56ch;
+}
+
+.oomph-hero__headline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--text-display);
+  line-height: var(--line-display);
+  text-wrap: balance;
+  margin: var(--space-4) 0 var(--space-5);
+}
+
+.oomph-hero__subhead {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-lead);
+  line-height: var(--line-lead);
+  color: var(--text-soft);
+  text-wrap: balance;
+  margin-bottom: var(--space-7);
+}
+
+.oomph-hero__cta {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Founder mini-bio + lead magnet — 2-col with the asset on the left
+ * --------------------------------------------------------------------------- */
+
+.oomph-founder {
+  align-items: center;
+}
+
+.oomph-founder__portrait,
+.oomph-leadmagnet__cover {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .oomph-leadmagnet { align-items: center; }
+}
+
+/* ---------------------------------------------------------------------------
+ * Placeholder boxes — clearly mark where Eric's photography goes
+ * --------------------------------------------------------------------------- */
+
+.oomph-placeholder-square {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  background: var(--color-mist);
+  color: var(--text-muted);
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  font-style: italic;
+  border: 1px dashed var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.is-placeholder {
+  position: relative;
+}
+.is-placeholder::after {
+  content: "Placeholder";
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  padding: 2px 8px;
+  background: var(--color-warning);
+  color: var(--color-paper);
+  font-family: var(--font-text);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  border-radius: var(--radius-xs);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Skip link — focus visible helper
+ * --------------------------------------------------------------------------- */
+
+.sr-only-focusable:focus,
+.sr-only-focusable:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  overflow: visible;
+  white-space: normal;
 }
 
 /* ---------------------------------------------------------------------------
