@@ -56,8 +56,7 @@
 ## Open questions
 
 - Adopt the docx's `pull-db.sh` / `pull-uploads.sh` content-down pipeline now or wait until first production-to-local mirror is needed?
-<!-- ACF Pro decision resolved 2026-05-14 — adopted. -->
-- License procurement: confirm ACF Pro license obtained and installed on Local + staging + production.
+<!-- ACF Pro decision resolved 2026-05-14 — adopted. License confirmed installed on Local + staging + production 2026-05-15. -->
 - Cloudflare Free in front of production at launch (docx §15.3) — yes or no?
 - Brand Book / SEO+CRO PDFs: leave as binary-only references in `docs/source/`, or extract to markdown for in-repo grepability? (Condensed SEO/CRO is already markdown; Brand Book is not.)
 
