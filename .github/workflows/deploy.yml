@@ -67,6 +67,26 @@ jobs:
             wp-content/themes/kadence-oomph-child/ \
             ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:${{ steps.target.outputs.path }}/
 
+      - name: Deploy oomph-travel-core plugin via rsync
+        run: |
+          # Derive plugin path from theme path — same hosting layout, swap
+          # /themes/kadence-oomph-child → /plugins/oomph-travel-core.
+          # Avoids needing a separate secret for the plugin destination.
+          PLUGIN_PATH="${{ steps.target.outputs.path }}"
+          PLUGIN_PATH="${PLUGIN_PATH/themes\/kadence-oomph-child/plugins\/oomph-travel-core}"
+          echo "Deploying plugin to: $PLUGIN_PATH"
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='node_modules' \
+            --exclude='*.md' \
+            --exclude='docs' \
+            --exclude='.DS_Store' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }}" \
+            wp-content/plugins/oomph-travel-core/ \
+            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:$PLUGIN_PATH/
+
       - name: Purge SiteGround cache (WP-CLI via SSH)
         continue-on-error: true
         run: |
