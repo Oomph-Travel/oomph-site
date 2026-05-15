@@ -25,8 +25,8 @@
             "name": "hero_headline",
             "aria-label": "",
             "type": "text",
-            "instructions": "The H1. Fraunces 300 italic in the rendered output. Max 80 chars.",
-            "required": 1,
+            "instructions": "The H1. Fraunces 300 italic in the rendered output. Max 80 chars. Leave empty to use the page template's built-in fallback.",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
@@ -97,14 +97,17 @@
             "label": "Hero CTA URL",
             "name": "hero_cta_url",
             "aria-label": "",
-            "type": "url",
-            "instructions": "Where the CTA links. Default is the Discovery Call page.",
+            "type": "text",
+            "instructions": "Where the CTA links. Accepts relative paths (e.g. /discovery-call/) or fully-qualified URLs. Default is the Discovery Call page.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "/discovery-call/",
+            "maxlength": "",
             "allow_in_bindings": 0,
-            "placeholder": ""
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_oomph_hero_trust_strip",
@@ -145,5 +148,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1747276800
+    "modified": 1778883530
 }
