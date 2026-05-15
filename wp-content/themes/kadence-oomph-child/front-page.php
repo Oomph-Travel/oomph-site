@@ -2,10 +2,12 @@
 /**
  * Home page template.
  *
- * Per docx §10.3 — eleven sections from hero to final CTA. Primary CTA
- * "Book a Discovery Call →" appears in hero, after the founder bio, in
- * the lead magnet, and in the final CTA block (four placements + the
- * sticky mobile bar = five surfaces total).
+ * Per docx §10.3 — eleven sections from hero to final CTA. The FEES
+ * TEASER (section 9) is currently deferred — see placeholder comment
+ * where it lived. Primary CTA "Book a Discovery Call →" appears in
+ * hero, after the founder bio, in the lead magnet, and in the final
+ * CTA block (four placements + the sticky mobile bar = five surfaces
+ * total).
  *
  * Schema (Organization + Person + BreadcrumbList) is injected by the
  * oomph-travel-core plugin via wp_head, so we don't output it here.
@@ -203,7 +205,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Two · Design</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Planning that earns the fee.</h3>
+					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">One proposal, not five.</h3>
 					<p>Cabin selection, itinerary, transfers, dinner reservations, the small details that make a trip feel choreographed. You see one proposal, not five — because I do the narrowing for you.</p>
 				</div>
 				<div>
@@ -272,21 +274,10 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 		</div>
 	</section>
 
-	<?php /* 9. FEES TEASER -------------------------------------------- */ ?>
-	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="fees-title">
-		<div class="oomph-container">
-			<div class="oomph-section__intro">
-				<p class="oomph-eyebrow">How I work</p>
-				<h2 id="fees-title" style="color: var(--color-deep-peacock);">Planning fees fund my undivided attention.</h2>
-				<p>Cruise planning starts at $300; custom Italy at $500. The fee filters out the people who want a quote, not a planner. Cruise lines and tour operators pay commissions on the booked fare — those commissions don't change your price.</p>
-				<p>
-					<a class="oomph-btn oomph-btn--ghost" href="/how-i-work/">
-						How I work <span aria-hidden="true">→</span>
-					</a>
-				</p>
-			</div>
-		</div>
-	</section>
+	<?php /* 9. FEES TEASER — deferred. Will return per docx §10.3 when
+	         the fees system is implemented; restore from git history
+	         (commit 96869b0 or earlier) or rebuild against the same
+	         section anatomy used by the other quiet-premium blocks. */ ?>
 
 	<?php /* 10. FEATURED JOURNAL --------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="journal-title">
