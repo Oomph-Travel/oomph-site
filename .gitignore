@@ -51,7 +51,8 @@ xmlrpc.php
 # Other themes and all plugins — managed via WP admin, not git
 /wp-content/themes/*
 !/wp-content/themes/kadence-oomph-child/
-/wp-content/plugins/
+/wp-content/plugins/*
+!/wp-content/plugins/oomph-travel-core/
 /wp-content/mu-plugins/
 
 # Logs and SQL dumps
