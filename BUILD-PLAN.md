@@ -12,7 +12,7 @@
 |---|---|---|---|
 | Child theme directory | `kadence-oomph-child` | 2026-05-14 | Renamed from `oomph-child` to match docx §6.3. Migration tracked under "Theme rename" below. |
 | Theme/plugin split | Adopted | 2026-05-14 | Custom plugin `plugins/oomph-travel-core` for CPTs, taxonomies, schema injection, environment guards. Theme = presentation only. (docx §6.1, §7) |
-| ACF Pro | Deferred | 2026-05-14 | Revisit at Phase 10.12 (Group Cruise template). Until then, structured fields via core block bindings + post meta where needed. |
+| ACF Pro | **Adopted** | 2026-05-14 | JSON sync redirected to `plugins/oomph-travel-core/acf-json/` so field groups live with the CPTs they describe. Three field groups specified in [`docs/acf-field-groups.md`](docs/acf-field-groups.md): Page Hero, Service Page, Group Cruise. Create via UI; JSON commits via the plugin rsync. |
 | Local environment | WP Local (Local by Flywheel) | (pre-existing) | Keeping; docx §1 specs DDEV but Local is set up and symlinked. No migration unless something breaks. WP-CLI runs via Local's site shell, not `ddev wp`. |
 | IDE / AI tooling | Claude Code only | 2026-05-14 | Not using Antigravity IDE or Cursor. **No `AGENTS.md`** — that file exists only to feed Cursor/Antigravity the same instructions as CLAUDE.md, and we don't need it. |
 | Deploy pipeline | GitHub Actions → rsync (in place) | (pre-existing) | Keeping; docx §8 specs a local `scripts/deploy.sh`. CI deploy is strictly better for audit, branch protection, and machine independence. May still adopt docx's `pull-db.sh` / `pull-uploads.sh` for the content-down direction. |
@@ -49,14 +49,15 @@
 1. **Local by Flywheel, not DDEV.** Working setup. No reason to migrate. Implication: WP-CLI commands run via Local's site shell, not `ddev wp`. The `pull-*` scripts in docx Appendix D need adjustment to the Local path (`~/Local Sites/oomph-local/app/public/`) when adopted.
 2. **GitHub Actions CI deploy, not local `scripts/deploy.sh`.** CI is strictly better for audit and machine-independence. The current pipeline rsyncs the child theme on push to `develop` → staging or `main` → production with a manual approval gate on prod.
 3. **Child theme name `kadence-oomph-child`** (matches docx) but the GitHub Actions `SG_*_THEME_PATH` secrets will need updating during the rename — see "Theme rename" section below.
-4. **ACF Pro deferred.** Field group design tracked in `docs/source/build-plan-v2.docx` §7.3 for future reference.
+4. ~~**ACF Pro deferred.**~~ ACF Pro adopted 2026-05-14. JSON sync target redirected to the plugin; field group specs in `docs/acf-field-groups.md`.
 
 ---
 
 ## Open questions
 
 - Adopt the docx's `pull-db.sh` / `pull-uploads.sh` content-down pipeline now or wait until first production-to-local mirror is needed?
-- ACF Pro decision deadline: Phase 10.12 (Group Cruise template) — needs repeater fields for itinerary days.
+<!-- ACF Pro decision resolved 2026-05-14 — adopted. -->
+- License procurement: confirm ACF Pro license obtained and installed on Local + staging + production.
 - Cloudflare Free in front of production at launch (docx §15.3) — yes or no?
 - Brand Book / SEO+CRO PDFs: leave as binary-only references in `docs/source/`, or extract to markdown for in-repo grepability? (Condensed SEO/CRO is already markdown; Brand Book is not.)
 
