@@ -355,9 +355,11 @@
  * --------------------------------------------------------------------------- */
 
 .oomph-hero {
+  position: relative;
   background: var(--surface-default);
   padding-block: var(--space-10) var(--space-9);
   text-align: center;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -365,6 +367,8 @@
 }
 
 .oomph-hero__inner {
+  position: relative;
+  z-index: 2;
   max-width: 56ch;
 }
 
@@ -391,6 +395,90 @@
 
 .oomph-hero__cta {
   margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Hero — imaged variant
+ *
+ * Full-bleed photograph behind the content. The <img> is the LCP candidate
+ * (NOT a CSS background) so Lighthouse can credit it and fetchpriority
+ * applies. Scrim is tuned darker than the default --scrim-hero to keep
+ * light text readable across the full image height.
+ * --------------------------------------------------------------------------- */
+
+.oomph-hero--imaged {
+  background: var(--color-true-ink);
+  min-height: 70vh;
+  padding-block: var(--space-11);
+  display: grid;
+  place-items: center;
+  color: var(--text-inverse);
+}
+
+@media (min-width: 768px) {
+  .oomph-hero--imaged { min-height: 80vh; }
+}
+
+.oomph-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+
+.oomph-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oomph-hero--imaged::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: linear-gradient(180deg, rgba(20, 23, 26, 0.35), rgba(20, 23, 26, 0.7));
+  pointer-events: none;
+}
+
+.oomph-hero--imaged .oomph-hero__headline { color: var(--color-paper); }
+.oomph-hero--imaged .oomph-hero__subhead  { color: var(--color-bone); }
+.oomph-hero--imaged .oomph-eyebrow        { color: var(--color-champagne); }
+.oomph-hero--imaged .oomph-btn-microcopy  { color: var(--color-champagne); }
+
+/* ---------------------------------------------------------------------------
+ * Portrait / cover — square + 3:4 containers with object-fit cover
+ * --------------------------------------------------------------------------- */
+
+.oomph-portrait {
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-charcoal);
+}
+
+.oomph-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oomph-cover {
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  max-width: 320px;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  background: var(--color-mist);
+}
+
+.oomph-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ---------------------------------------------------------------------------

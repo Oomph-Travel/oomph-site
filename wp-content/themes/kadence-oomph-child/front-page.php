@@ -29,7 +29,17 @@ get_header();
 	<div id="oomph-content"></div>
 
 	<?php /* 1. HERO ---------------------------------------------------- */ ?>
-	<section class="oomph-hero" aria-label="Welcome">
+	<section class="oomph-hero oomph-hero--imaged" aria-label="Welcome">
+		<picture class="oomph-hero__media">
+			<img
+				src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-background.webp' ); ?>"
+				alt=""
+				width="1000"
+				height="667"
+				fetchpriority="high"
+				decoding="async"
+			>
+		</picture>
 		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow">Premium Cruises · Custom Europe · Multi-Gen</p>
 			<h1 class="oomph-hero__headline">Travel that's worth the trip.</h1>
@@ -120,9 +130,15 @@ get_header();
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="founder-title">
 		<div class="oomph-container">
 			<div class="oomph-grid oomph-grid--2 oomph-founder">
-				<figure class="oomph-founder__portrait is-placeholder" aria-hidden="true">
-					<!-- TODO: replace with eric-hempel-portrait.webp (1:1, 800×800, &lt;120KB) -->
-					<div class="oomph-placeholder-square">Portrait — Eric Hempel</div>
+				<figure class="oomph-portrait oomph-founder__portrait">
+					<img
+						src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/eric-hempel-portrait.webp' ); ?>"
+						alt="Eric Hempel, travel advisor at Oomph Travel"
+						width="735"
+						height="564"
+						loading="lazy"
+						decoding="async"
+					>
 				</figure>
 				<div class="oomph-founder__copy">
 					<p class="oomph-eyebrow" style="color: var(--color-champagne);">One Advisor</p>
@@ -169,9 +185,15 @@ get_header();
 	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="lead-magnet-title">
 		<div class="oomph-container">
 			<div class="oomph-grid oomph-grid--2 oomph-leadmagnet">
-				<figure class="oomph-leadmagnet__cover is-placeholder" aria-hidden="true">
-					<!-- TODO: replace with 3D mockup of cabin guide PDF cover -->
-					<div class="oomph-placeholder-square" style="aspect-ratio: 3/4; max-width: 320px; margin-inline: auto;">Cabin Guide cover</div>
+				<figure class="oomph-cover oomph-leadmagnet__cover">
+					<img
+						src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cabin-guide-cover.webp' ); ?>"
+						alt="Cover of the Silversea cabin selection guide"
+						width="900"
+						height="1443"
+						loading="lazy"
+						decoding="async"
+					>
 				</figure>
 				<div class="oomph-leadmagnet__copy">
 					<p class="oomph-eyebrow">Silversea · Cabin Note</p>
