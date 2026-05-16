@@ -95,7 +95,7 @@ final class Schema {
 		$site = home_url( '/' );
 		return array(
 			'@type'         => 'Person',
-			'@id'           => $site . 'about/#person',
+			'@id'           => $site . 'about/#advisor',
 			'name'          => 'Eric Hempel',
 			'jobTitle'      => 'Travel Advisor',
 			'url'           => $site . 'about/',
