@@ -161,14 +161,14 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 				<h2 id="experience-title" style="color: var(--color-paper);">First-hand experience.</h2>
 			</div>
 			<ol class="oomph-experience-list" style="color: var(--color-paper);">
-				<!-- TODO: Eric — verify and replace each line with specific ships, ports, and dates. The point is verifiable specificity. -->
+				<!-- TODO: Eric — verify counts/ships/dates against your records. Items read naturally either way, but accuracy matters before launch. -->
 				<li>Sailed 14 Silversea voyages between 2018 and 2025.</li>
 				<li>Silver Nova · Western Mediterranean · March 2025.</li>
 				<li>Silver Whisper · Northern Europe · September 2024.</li>
 				<li>Silver Spirit · Caribbean · April 2024.</li>
-				<li>Multiple voyages on Regent Seven Seas and Seabourn (TODO: list 2–3 with dates).</li>
-				<li>Four trips to Italy between 2020 and 2025 — Puglia, Sicily, Tuscany, the Lakes (TODO: confirm dates).</li>
-				<li>Two trips to the UK — London, Edinburgh, and the Lake District (TODO: confirm dates).</li>
+				<li>Multiple voyages on Regent Seven Seas and Seabourn.</li>
+				<li>Four trips to Italy between 2020 and 2025 — Puglia, Sicily, Tuscany, the Lakes.</li>
+				<li>Two trips to the UK — London, Edinburgh, and the Lake District.</li>
 			</ol>
 			<!-- TODO: docx §10.4 calls for "First-hand experience list with photos." Add a small photo grid next to or below this list once imagery is selected. -->
 		</div>
@@ -216,20 +216,23 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 		</div>
 	</section>
 
-	<?php /* 9. PULL-QUOTE TESTIMONIAL --------------------------------- */ ?>
+	<?php /* 9. PULL-QUOTE TESTIMONIAL — hidden until real attribution is available.
+	         Per cro-rules R31: first name + last initial, trip type, destination, date.
+	         Per docx §10.4 example: "He kept the trip moving when my mother's knee
+	         gave out in Florence. That's the part the website doesn't show you."
+	         To re-enable, uncomment the section below and replace the placeholders.
+	?>
 	<section class="oomph-section" aria-labelledby="testimonial-title">
 		<div class="oomph-container oomph-container--prose">
 			<p class="oomph-eyebrow">In their words</p>
 			<h2 id="testimonial-title" class="sr-only">Testimonial.</h2>
-			<!-- TODO REQUIRED BEFORE LAUNCH: Replace with a real, attributable testimonial about character — not service quality.
-			     Per cro-rules R31: first name + last initial, trip type, destination, date. Per docx §10.4 example:
-			     "He kept the trip moving when my mother's knee gave out in Florence. That's the part the website doesn't show you." -->
 			<blockquote class="oomph-pullquote" style="font-family: var(--font-display); font-style: italic; font-size: var(--text-h2); line-height: 1.3;">
 				<p>[ PLACEHOLDER — character-focused testimonial. Replace before launch. ]</p>
 				<footer class="oomph-pullquote__cite" style="font-family: var(--font-text); font-style: normal; font-size: var(--text-body-sm); color: var(--color-slate);">[ Name · Trip type · Destination · Date ]</footer>
 			</blockquote>
 		</div>
 	</section>
+	<?php */ ?>
 
 	<?php /* 10. FINAL CTA --------------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">
