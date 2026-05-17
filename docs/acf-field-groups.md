@@ -46,19 +46,19 @@ After sync, editing fields in the admin UI on any environment regenerates the JS
 
 **Purpose:** structured content for the three service hub pages (Luxury Cruise Planning, Custom Italy Travel, Multi-Generational Travel). Drives the consistent section anatomy without per-page template duplication.
 
-**Location rules:** `Post Type` is equal to `Page` AND `Page Template` is equal to `service-page.php`. (Create the template stub when we build the first service page in Phase 10.5.)
+**Location rules:** `Post Type` is equal to `Page` AND `Page Template` is equal to `service-page.php` (template lives at `wp-content/themes/kadence-oomph-child/service-page.php` — added in Phase 10.5).
 
 **Position:** Normal.
 
 | Field name | Type | Required | Notes |
 |---|---|---|---|
-| `service_keyword` | Text | Yes | Primary SEO keyword. Used in title placeholder + meta. |
-| `service_negative_qualifiers` | Repeater | No | 1–4 rows. Each row: `bullet` (Text). Renders as "Who this is NOT for" — pre-qualifies. |
-| `service_what_you_do` | Repeater | No | 4–8 rows. Each row: `headline` (Text), `body` (Textarea). The deliverables grid. |
+| `service_keyword` | Text | No | Primary SEO keyword. Template falls back to page title when empty. |
+| `service_negative_qualifiers` | Repeater | No | 1–4 rows. Each row: `bullet` (Text). Renders as "Who this is NOT for" — pre-qualifies. Template has voice-aligned fallback bullets. |
+| `service_what_you_do` | Repeater | No | 0–8 rows. Each row: `headline` (Text), `body` (Textarea). The deliverables grid. Template has voice-aligned fallback that renders when empty. |
 | `service_credentials_to_show` | Checkbox | No | Choices: `clia` · `silversea` · `nexion` · `britagent` · `ds_italy`. Contextual credential display per R29. |
-| `service_faqs` | Repeater | Yes (5–8 rows) | Each row: `question` (Text), `answer` (Textarea). Feeds FAQPage schema. |
+| `service_faqs` | Repeater | No (5–8 rows when populated) | Each row: `question` (Text), `answer` (Textarea). Template has fallback FAQs that render visually; FAQPage schema only emits when ACF has real rows. |
 
-**Min/max on `service_faqs`:** 5 minimum, 8 maximum. Below 5 is too thin for FAQPage schema to matter; above 8 reads padded.
+**Min/max on `service_faqs`:** ACF min is 0, max is 8. Editorial guidance: when populating, aim for 5–8 rows (below 5 is too thin for FAQPage schema to matter; above 8 reads padded). Empty repeater is allowed (template uses fallback FAQs; schema is suppressed).
 
 ---
 
