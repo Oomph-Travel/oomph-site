@@ -542,12 +542,15 @@
  * --------------------------------------------------------------------------- */
 
 .sr-only-focusable:focus,
-.sr-only-focusable:focus-within {
+.sr-only-focusable:focus-within,
+.skip-link.screen-reader-text:focus,
+.skip-link.screen-reader-text:focus-within {
   position: static;
   width: auto;
   height: auto;
   margin: 0;
   clip: auto;
+  clip-path: none;
   overflow: visible;
   white-space: normal;
 }
