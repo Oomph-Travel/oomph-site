@@ -69,7 +69,7 @@
             "wrapper": { "width": "", "class": "", "id": "" },
             "layout": "block",
             "pagination": 0,
-            "min": 4,
+            "min": 0,
             "max": 8,
             "collapsed": "field_oomph_service_what_headline",
             "button_label": "Add deliverable",
@@ -151,7 +151,7 @@
             "wrapper": { "width": "", "class": "", "id": "" },
             "layout": "block",
             "pagination": 0,
-            "min": 5,
+            "min": 0,
             "max": 8,
             "collapsed": "field_oomph_service_faq_question",
             "button_label": "Add FAQ",
@@ -222,5 +222,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778997842
+    "modified": 1778998914
 }

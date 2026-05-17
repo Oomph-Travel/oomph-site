@@ -54,11 +54,11 @@ After sync, editing fields in the admin UI on any environment regenerates the JS
 |---|---|---|---|
 | `service_keyword` | Text | No | Primary SEO keyword. Template falls back to page title when empty. |
 | `service_negative_qualifiers` | Repeater | No | 1–4 rows. Each row: `bullet` (Text). Renders as "Who this is NOT for" — pre-qualifies. Template has voice-aligned fallback bullets. |
-| `service_what_you_do` | Repeater | No | 4–8 rows. Each row: `headline` (Text), `body` (Textarea). The deliverables grid. Template has voice-aligned fallback. |
+| `service_what_you_do` | Repeater | No | 0–8 rows. Each row: `headline` (Text), `body` (Textarea). The deliverables grid. Template has voice-aligned fallback that renders when empty. |
 | `service_credentials_to_show` | Checkbox | No | Choices: `clia` · `silversea` · `nexion` · `britagent` · `ds_italy`. Contextual credential display per R29. |
 | `service_faqs` | Repeater | No (5–8 rows when populated) | Each row: `question` (Text), `answer` (Textarea). Template has fallback FAQs that render visually; FAQPage schema only emits when ACF has real rows. |
 
-**Min/max on `service_faqs`:** 5 minimum, 8 maximum when rows are added. Empty repeater is allowed (template uses fallback FAQs; schema is suppressed).
+**Min/max on `service_faqs`:** ACF min is 0, max is 8. Editorial guidance: when populating, aim for 5–8 rows (below 5 is too thin for FAQPage schema to matter; above 8 reads padded). Empty repeater is allowed (template uses fallback FAQs; schema is suppressed).
 
 ---
 
