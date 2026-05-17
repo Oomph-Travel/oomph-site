@@ -23,10 +23,10 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
   "logo": {
     "@type": "ImageObject",
     "@id": "https://oomphtravel.com/#logo",
-    "url": "https://oomphtravel.com/wp-content/uploads/oomph-logo-full.svg",
-    "contentUrl": "https://oomphtravel.com/wp-content/uploads/oomph-logo-full.svg",
-    "width": 600,
-    "height": 200,
+    "url": "https://oomphtravel.com/wp-content/uploads/2026/05/Original-Logo-Symbol.png",
+    "contentUrl": "https://oomphtravel.com/wp-content/uploads/2026/05/Original-Logo-Symbol.png",
+    "width": 1604,
+    "height": 1671,
     "caption": "Oomph Travel"
   },
   "image": { "@id": "https://oomphtravel.com/#logo" },
@@ -48,7 +48,7 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
     "@type": "ContactPoint",
     "contactType": "Customer Service",
     "email": "hello@oomphtravel.com",
-    "telephone": "+1-360-555-0184",
+    "telephone": "+1-360-775-4644",
     "areaServed": "US",
     "availableLanguage": "English"
   },
