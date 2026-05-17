@@ -8,8 +8,8 @@
             "name": "service_keyword",
             "aria-label": "",
             "type": "text",
-            "instructions": "Primary SEO keyword for this service page (e.g., 'luxury cruise planning').",
-            "required": 1,
+            "instructions": "Primary SEO keyword for this service page (e.g., 'luxury cruise planning'). Leave empty to fall back to the page title.",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
@@ -145,8 +145,8 @@
             "name": "service_faqs",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Feeds FAQPage schema. 5–8 rows required.",
-            "required": 1,
+            "instructions": "Feeds FAQPage schema. 5–8 rows when populated. Leave empty to use the page template's built-in fallback FAQs (template defaults render visually but do not emit FAQPage schema).",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
             "layout": "block",
@@ -222,5 +222,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1747276800
+    "modified": 1778997842
 }

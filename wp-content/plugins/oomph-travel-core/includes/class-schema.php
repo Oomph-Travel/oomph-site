@@ -45,6 +45,14 @@ final class Schema {
 			}
 		}
 
+		if ( self::is_service_page() ) {
+			$graph[] = self::service_for_current_page();
+			$faqpage = self::faqpage_for_current_page();
+			if ( $faqpage ) {
+				$graph[] = $faqpage;
+			}
+		}
+
 		$payload = array(
 			'@context' => 'https://schema.org',
 			'@graph'   => array_values( array_filter( $graph ) ),
@@ -148,6 +156,74 @@ final class Schema {
 		return array(
 			'@type'           => 'BreadcrumbList',
 			'itemListElement' => $items,
+		);
+	}
+
+	private static function is_service_page(): bool {
+		if ( ! is_page() ) {
+			return false;
+		}
+		return get_page_template_slug() === 'service-page.php';
+	}
+
+	private static function service_for_current_page(): array {
+		$page    = get_post();
+		$url     = (string) get_permalink( $page );
+		$keyword = function_exists( 'get_field' ) ? (string) get_field( 'service_keyword' ) : '';
+
+		// Fall back to page title if ACF service_keyword is empty.
+		if ( $keyword === '' && $page ) {
+			$keyword = (string) get_the_title( $page );
+		}
+
+		return array(
+			'@type'       => 'Service',
+			'@id'         => $url . '#service',
+			'name'        => $keyword !== '' ? $keyword : 'Travel planning',
+			'serviceType' => $keyword !== '' ? $keyword : 'Travel planning',
+			'provider'    => array( '@id' => home_url( '/' ) . '#organization' ),
+			'areaServed'  => array( '@type' => 'Country', 'name' => 'United States' ),
+			'audience'    => array(
+				'@type'        => 'Audience',
+				'audienceType' => 'High-net-worth individuals',
+			),
+			'url'         => $url,
+		);
+	}
+
+	private static function faqpage_for_current_page(): ?array {
+		// Only emit FAQPage when ACF has real Q&A pairs. Template fallbacks
+		// are presentational only — never claimed in structured data.
+		$faqs = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
+		if ( ! is_array( $faqs ) || empty( $faqs ) ) {
+			return null;
+		}
+
+		$main_entity = array();
+		foreach ( $faqs as $row ) {
+			$q = is_array( $row ) ? (string) ( $row['question'] ?? '' ) : '';
+			$a = is_array( $row ) ? (string) ( $row['answer'] ?? '' ) : '';
+			if ( $q === '' || $a === '' ) {
+				continue;
+			}
+			$main_entity[] = array(
+				'@type'          => 'Question',
+				'name'           => $q,
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => wp_strip_all_tags( $a ),
+				),
+			);
+		}
+
+		if ( empty( $main_entity ) ) {
+			return null;
+		}
+
+		return array(
+			'@type'      => 'FAQPage',
+			'@id'        => (string) get_permalink( get_post() ) . '#faq',
+			'mainEntity' => $main_entity,
 		);
 	}
 
