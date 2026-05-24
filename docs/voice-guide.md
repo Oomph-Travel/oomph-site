@@ -88,7 +88,7 @@ If a draft contains any of these, rewrite.
 The Discovery Call CTA is always **"Book a Discovery Call →"** — that exact phrasing, with the arrow. Never "Schedule a Consultation," never "Book Now."
 
 Microcopy directly under it:
-> Free 20-minute call. No pressure, no obligation.
+> Free 30-minute call. No pressure, no obligation.
 
 ---
 

@@ -18,3 +18,11 @@ require_once OOMPH_CHILD_PATH . '/inc/schema.php';
 require_once OOMPH_CHILD_PATH . '/inc/kadence-overrides.php';
 require_once OOMPH_CHILD_PATH . '/inc/block-patterns.php';
 require_once OOMPH_CHILD_PATH . '/inc/helpers.php';
+
+// Calendly booking link for the Discovery Call page inline embed.
+add_filter(
+	'oomph_calendly_url',
+	static function () {
+		return 'https://calendly.com/eric-oomphtravel/30min';
+	}
+);

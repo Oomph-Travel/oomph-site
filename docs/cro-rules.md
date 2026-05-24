@@ -74,7 +74,7 @@ The unified rule set. These are the rules Claude Code MUST follow on every page.
 
 **R24** · Use first-person CTAs: "Book My Discovery Call," "Send Me the Cabin Guide," "Plan My Italy Trip."
 
-**R25** · Every CTA includes microcopy below it (e.g., "Free 20-minute call. No pressure, no obligation.").
+**R25** · Every CTA includes microcopy below it (e.g., "Free 30-minute call. No pressure, no obligation.").
 
 **R26** · WCAG AA contrast: 4.5:1 minimum on every button.
 

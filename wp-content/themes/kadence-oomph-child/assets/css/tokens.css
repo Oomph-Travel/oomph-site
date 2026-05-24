@@ -66,32 +66,45 @@
    * Primary, neutrals, secondary accents, semantic. Match docs/brand-tokens.md.
    * ========================================================================= */
 
-  /* Primary — three colors do most of the work */
-  --color-peacock-ink:    #1F4E5F;  /* H1s, links, primary nav, footer ground */
-  --color-terracotta-warm:#B8543A;  /* CTAs, hover, the one warm note */
+  /* Primary — three colors do most of the work (Palette A: Deep Marine) */
+  --color-marine-navy:    #0E3B5E;  /* H1s, links, primary nav, footer ground */
+  --color-old-brass:      #B58A4A;  /* CTAs, hover, the one warm note */
   --color-true-ink:       #14171A;  /* body type, masking, inverse hero ground */
+
+  /* Legacy aliases — keep peacock/terracotta names working across the codebase */
+  --color-peacock-ink:    var(--color-marine-navy);
+  --color-terracotta-warm:var(--color-old-brass);
 
   /* Neutrals — the canvas */
   --color-paper:    #FEFCF8;  /* off-white */
-  --color-bone:     #FBF6EC;  /* default background */
+  --color-bone:     #FDFAF2;  /* default background — warm cream (lifted) */
   --color-mist:     #F1EADC;  /* alt background */
   --color-stone:    #C5BBA8;  /* hairlines */
   --color-slate:    #7C786C;  /* meta type */
   --color-charcoal: #2C2A26;  /* body alt */
 
   /* Secondary — one per section, never two */
-  --color-deep-peacock: #0F3640;  /* footer, premium blocks, confirmations */
-  --color-muted-brick:  #8C3A2E;  /* press / Puglia editorial */
-  --color-warm-ochre:   #C2873E;  /* highlight */
-  --color-soft-sage:    #8A9A85;  /* Provence, European itinerary */
-  --color-champagne:    #D9C5A6;  /* cabin notes, evening, premium documents */
-  --color-dusty-rose:   #C9A09A;  /* considered solo use */
+  --color-midnight-deep: #082939;  /* footer, premium blocks, confirmations */
+  --color-bronze:        #8C6A36;  /* Old Brass hover / burnished accent */
+  --color-warm-ochre:    #C2873E;  /* highlight */
+  --color-soft-sage:     #8A9A85;  /* Provence, European itinerary */
+  --color-champagne:     #D4B98C;  /* cabin notes, evening, premium documents */
+  --color-dusty-rose:    #C9A09A;  /* considered solo use */
+
+  /* Legacy aliases */
+  --color-deep-peacock: var(--color-midnight-deep);
+  --color-muted-brick:  var(--color-bronze);
+
+  /* Logo mark only — do not use as palette colors */
+  --logo-teal:  #46BCC7;
+  --logo-coral: #E84144;
+  --logo-black: #010103;
 
   /* Semantic — forms and feedback only */
   --color-success: #4A6B4F;  /* forest sage */
   --color-warning: #B8893A;  /* burnished amber */
   --color-error:   #9A2A26;  /* garnet */
-  --color-info:    #1A4555;  /* inkwell teal */
+  --color-info:    #1A4565;  /* marine info — cousins with navy */
 
   /* =========================================================================
    * Colors — semantic (name combinations, not just colors)
@@ -140,7 +153,7 @@
   --line-h1:       1.1;
   --line-display:  1.05;
 
-  --tracking-eyebrow: 0.08em;  /* all-caps Inter eyebrows */
+  --tracking-eyebrow: 0.14em;  /* all-caps Inter eyebrows — wide editorial tracking (design system: 0.14–0.18em) */
 
   /* =========================================================================
    * Spacing — 8-point baseline (4px starting unit)

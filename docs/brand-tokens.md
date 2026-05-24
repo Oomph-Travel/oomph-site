@@ -8,10 +8,12 @@ Single source of truth for colors, typography, spacing, radii, and shadows. Pull
 
 ### Primary palette — three colors do most of the work
 
+> **Palette evolution (2026-05):** the brand moved from Peacock Ink + Terracotta to **Palette A "Deep Marine"** — Marine Navy + Old Brass + Warm Bone — for a stronger premium-cruise register (chosen via the Claude Design exploration). The legacy CSS var / theme.json slug names (`--color-peacock-ink`, `--color-terracotta-warm`, `peacock-ink`, etc.) are retained as aliases so existing references keep working; only the values changed.
+
 | Token | Hex | Role | CSS var |
 |---|---|---|---|
-| Peacock Ink | `#1F4E5F` | H1s, links, primary nav, footer ground | `--color-peacock-ink` |
-| Terracotta Warm | `#B8543A` | CTAs, hover, pull rules, the one warm note | `--color-terracotta-warm` |
+| Marine Navy | `#0E3B5E` | H1s, links, primary nav, footer ground | `--color-marine-navy` (alias `--color-peacock-ink`) |
+| Old Brass | `#B58A4A` | CTAs, hover, pull rules, the one warm note | `--color-old-brass` (alias `--color-terracotta-warm`) |
 | True Ink | `#14171A` | Body type, masking, inverse hero ground | `--color-true-ink` |
 
 **Pure white never appears. Pure black never appears.**
@@ -21,7 +23,7 @@ Single source of truth for colors, typography, spacing, radii, and shadows. Pull
 | Token | Hex | Role | CSS var |
 |---|---|---|---|
 | Paper | `#FEFCF8` | Off-white | `--color-paper` |
-| Bone | `#FBF6EC` | Default background | `--color-bone` |
+| Bone | `#FDFAF2` | Default background — warm cream | `--color-bone` |
 | Mist | `#F1EADC` | Alt background | `--color-mist` |
 | Stone | `#C5BBA8` | Hairlines | `--color-stone` |
 | Slate | `#7C786C` | Meta type | `--color-slate` |
@@ -31,11 +33,11 @@ Single source of truth for colors, typography, spacing, radii, and shadows. Pull
 
 | Token | Hex | Use case | CSS var |
 |---|---|---|---|
-| Deep Peacock | `#0F3640` | Footer, premium blocks, confirmations | `--color-deep-peacock` |
-| Muted Brick | `#8C3A2E` | Press / Puglia editorial | `--color-muted-brick` |
+| Midnight Deep | `#082939` | Footer, premium blocks, confirmations | `--color-midnight-deep` (alias `--color-deep-peacock`) |
+| Bronze | `#8C6A36` | Old Brass hover, press / Puglia editorial | `--color-bronze` (alias `--color-muted-brick`) |
 | Warm Ochre | `#C2873E` | Highlight | `--color-warm-ochre` |
 | Soft Sage | `#8A9A85` | Provence, European itinerary | `--color-soft-sage` |
-| Champagne | `#D9C5A6` | Cabin notes, evening, premium documents | `--color-champagne` |
+| Champagne | `#D4B98C` | Cabin notes, evening, premium documents | `--color-champagne` |
 | Dusty Rose | `#C9A09A` | Considered solo use | `--color-dusty-rose` |
 
 ### Semantic — forms and feedback only
@@ -45,7 +47,7 @@ Single source of truth for colors, typography, spacing, radii, and shadows. Pull
 | Success — Forest Sage | `#4A6B4F` | Form success | `--color-success` |
 | Warning — Burnished Amber | `#B8893A` | Form warning | `--color-warning` |
 | Error — Garnet | `#9A2A26` | Form error | `--color-error` |
-| Info — Inkwell Teal | `#1A4555` | Form info | `--color-info` |
+| Info — Marine Info | `#1A4565` | Form info | `--color-info` |
 
 ### Color recipe — 60 · 20 · 10 · 6 · 4
 

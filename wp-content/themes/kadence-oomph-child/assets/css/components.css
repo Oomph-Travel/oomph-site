@@ -100,7 +100,7 @@
   font-size: var(--text-body);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
   text-decoration: none;
   text-align: center;
   border: 1px solid transparent;
@@ -112,19 +112,21 @@
     border-color     var(--duration-quick) var(--easing-standard);
 }
 
-/* Primary — Terracotta on Paper. Contrast: 5.1:1. */
+/* Primary — Old Brass with True Ink label; lightens to Champagne on hover.
+ * Ink-on-brass clears WCAG AA (rest 5.6:1, hover 9.3:1); cream-on-brass
+ * did not (3.1:1). The brass stays the brand's one warm CTA note. */
 .oomph-btn--primary {
   background-color: var(--signal-accent);
-  color: var(--color-paper);
+  color: var(--color-true-ink);
 }
 .oomph-btn--primary:hover,
 .oomph-btn--primary:focus-visible {
-  background-color: var(--color-muted-brick); /* darker Terracotta */
-  color: var(--color-paper);
+  background-color: var(--color-champagne); /* Old Brass → Champagne */
+  color: var(--color-true-ink);
   text-decoration: none;
 }
 
-/* Ghost — Peacock outline on Bone. Hover fills. Contrast: 8.4:1 border. */
+/* Ghost — Marine Navy outline on Bone. Hover fills. */
 .oomph-btn--ghost {
   background-color: transparent;
   color: var(--signal-primary);

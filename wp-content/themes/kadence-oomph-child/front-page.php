@@ -86,7 +86,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
 					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy">Free 20-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
 			</p>
 		</div>
 	</section>
@@ -200,7 +200,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			<div class="oomph-grid oomph-grid--3">
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 20-minute call.</h3>
+					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 30-minute call.</h3>
 					<p>We talk about the trip you're imagining — who's going, when, where you've already been, what you'd never do again. By the end I know whether I'm the right advisor for you, and you know what comes next.</p>
 				</div>
 				<div>
@@ -338,7 +338,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
 					Book a Discovery Call <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 20-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
 			</p>
 		</div>
 	</section>
