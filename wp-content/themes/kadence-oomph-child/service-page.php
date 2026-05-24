@@ -161,7 +161,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
 					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy">Free 20-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
 			</p>
 			<?php /* TODO: Hero ghost CTA "Send me the cabin guide" — deferred pending
 			        lead-magnet system. Re-enable here once /cabin-guide/ or the inline
@@ -312,7 +312,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			<div class="oomph-grid oomph-grid--3">
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 20-minute call.</h3>
+					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 30-minute call.</h3>
 					<p>We talk about the cruise you're imagining — which itineraries you've sailed, what you'd repeat, what you'd never do again. By the end I know which lines fit and which don't, and you know what comes next.</p>
 				</div>
 				<div>
@@ -427,13 +427,13 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 		<div class="oomph-container" style="text-align: center;">
 			<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
 			<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">
-				Worth a twenty-minute call?
+				Worth a thirty-minute call?
 			</h2>
 			<p style="margin-top: var(--space-6);">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
 					Book a Discovery Call <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 20-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
 			</p>
 			<?php /* TODO: Final dual CTA — secondary ghost "Send me the cabin guide"
 			        deferred pending lead-magnet system. Re-enable beside the primary

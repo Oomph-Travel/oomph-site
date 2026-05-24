@@ -112,15 +112,17 @@
     border-color     var(--duration-quick) var(--easing-standard);
 }
 
-/* Primary — Old Brass on Bone, fills to Bronze on hover. */
+/* Primary — Old Brass with True Ink label; lightens to Champagne on hover.
+ * Ink-on-brass clears WCAG AA (rest 5.6:1, hover 9.3:1); cream-on-brass
+ * did not (3.1:1). The brass stays the brand's one warm CTA note. */
 .oomph-btn--primary {
   background-color: var(--signal-accent);
-  color: var(--color-paper);
+  color: var(--color-true-ink);
 }
 .oomph-btn--primary:hover,
 .oomph-btn--primary:focus-visible {
-  background-color: var(--color-bronze); /* Old Brass → Bronze */
-  color: var(--color-paper);
+  background-color: var(--color-champagne); /* Old Brass → Champagne */
+  color: var(--color-true-ink);
   text-decoration: none;
 }
 
