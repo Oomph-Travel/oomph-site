@@ -41,14 +41,28 @@ if ( get_option( 'blogdescription' ) !== 'Premium cruises & custom European trav
 /* ---------------------------------------------------------------------------
  * 2. Rank Math — homepage SEO (front page = posts, so meta lives in options)
  * ------------------------------------------------------------------------- */
+$home_title = 'Luxury Cruise & Italy Travel Advisor %sep% %sitename%';
+$home_desc  = 'Premium and luxury cruises and custom Italy journeys, planned by one named advisor from first call to last flight home. Book a free discovery call.';
+
+// Case A — front page = latest posts: homepage meta lives in the Rank Math option.
 $titles = get_option( 'rank-math-options-titles' );
 if ( is_array( $titles ) ) {
-	$titles['homepage_title']       = 'Luxury Cruise & Italy Travel Advisor %sep% %sitename%';
-	$titles['homepage_description'] = 'Premium and luxury cruises and custom Italy journeys, planned by one named advisor from first call to last flight home. Book a free discovery call.';
+	$titles['homepage_title']       = $home_title;
+	$titles['homepage_description'] = $home_desc;
 	update_option( 'rank-math-options-titles', $titles );
-	$report[] = 'Rank Math homepage title/description set';
+	$report[] = 'Rank Math homepage option set (used when front page = latest posts)';
 } else {
 	$report[] = 'WARNING: rank-math-options-titles not found — is Rank Math active?';
+}
+
+// Case B — front page = a static page: meta lives on that page (e.g. staging/prod).
+if ( 'page' === get_option( 'show_on_front' ) ) {
+	$fp = (int) get_option( 'page_on_front' );
+	if ( $fp ) {
+		update_post_meta( $fp, 'rank_math_title', $home_title );
+		update_post_meta( $fp, 'rank_math_description', $home_desc );
+		$report[] = "home meta set on static front page (#$fp)";
+	}
 }
 
 /* ---------------------------------------------------------------------------
