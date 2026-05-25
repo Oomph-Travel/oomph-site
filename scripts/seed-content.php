@@ -261,6 +261,28 @@ if ( $dc ) {
 	$report[] = is_wp_error( $dc_id ) ? 'ERROR creating /discovery-call/: ' . $dc_id->get_error_message() : "page /discovery-call/ CREATED (#{$dc_id})";
 }
 
+/* ---------------------------------------------------------------------------
+ * 6. Service hub pages (templates bind by slug via page-{slug}.php)
+ * ------------------------------------------------------------------------- */
+$service_pages = array(
+	'custom-italy-travel'                 => 'Custom Italy Travel',
+	'multi-generational-travel-planning'  => 'Multi-Generational Travel Planning',
+);
+foreach ( $service_pages as $slug => $title ) {
+	if ( get_page_by_path( $slug ) ) {
+		$report[] = "page /$slug/ exists — skip";
+		continue;
+	}
+	$pid = wp_insert_post( array(
+		'post_type'    => 'page',
+		'post_status'  => 'publish',
+		'post_title'   => $title,
+		'post_name'    => $slug,
+		'post_content' => '',
+	) );
+	$report[] = is_wp_error( $pid ) ? "ERROR creating /$slug/: " . $pid->get_error_message() : "page /$slug/ CREATED (#{$pid})";
+}
+
 flush_rewrite_rules( false );
 
 echo "\n=== Oomph content seed ===\n";
