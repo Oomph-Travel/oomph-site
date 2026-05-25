@@ -71,7 +71,7 @@ function oomph_service_page_data( string $slug ): ?array {
 			),
 			'coverage_note' => 'Rome, Florence, and Venice anchor most trips. Working toward a formal Italy Destination Specialist certification.',
 			'faqs' => array(
-				array( 'Do you charge a planning fee, and what does it cover?', 'Yes — the fee funds undivided attention to your trip: itinerary design, the stays and guides worth booking, restaurant strategy, and the logistics that take real time to do right. The structure depends on the trip\'s complexity, and I\'ll walk you through it on the discovery call. Suppliers pay commissions that don\'t change your price.' ),
+				array( 'Do you charge a planning fee?', 'No — I don\'t charge a planning fee. Suppliers pay a commission on what you book, and that commission doesn\'t change your price. You get itinerary design, the stays and guides worth booking, and the logistics handled — at no added cost to you.' ),
 				array( 'Can you take over a trip I\'ve already started planning?', 'Often, yes. The earlier I\'m involved the more I can shape — but if you\'ve already booked a hotel or two, I can build the rest of the trip around them. Bring what you have to the call and I\'ll tell you honestly where I can add value.' ),
 				array( 'How far ahead should I start?', 'For spring and fall in the popular regions, six to nine months is comfortable — the best villas and guides book early. I\'ve turned around shorter timelines, but the runway buys you the good options.' ),
 				array( 'Do you book flights?', 'I advise on routing and timing and coordinate flights with the rest of the trip. International air is often best handled a particular way; I\'ll tell you when it\'s worth using miles and when it isn\'t.' ),
@@ -123,7 +123,7 @@ function oomph_service_page_data( string $slug ): ?array {
 			'coverage_note' => 'Not sure whether a cruise or a land trip fits your group? That\'s exactly what the discovery call is for.',
 			'faqs' => array(
 				array( 'What makes a multi-generational trip different to plan?', 'It\'s a hundred small decisions, not one. Pace for the slowest walker, food for the pickiest eater, room configurations that actually work, and a plan B for the day someone needs to rest. I plan around the constraints first, then the highlights.' ),
-				array( 'Do you charge a planning fee?', 'Yes — the fee funds the time these trips genuinely take. The structure depends on group size and complexity, and I\'ll walk you through it on the call. Supplier commissions don\'t change your price.' ),
+				array( 'Do you charge a planning fee?', 'No — I don\'t charge a planning fee. Suppliers pay a commission on what you book, and that doesn\'t change your price — so you get the planning a multi-generational trip genuinely takes at no added cost to you.' ),
 				array( 'How many people can you plan for?', 'From a trip with the grandparents to a full reunion of fifteen or more across several rooms or cabins. The larger the group, the earlier we should start.' ),
 				array( 'Can you handle mobility and dietary needs?', 'Yes — that\'s central to how I plan, not an afterthought. Step-free routes, accessible rooms, transfers that fit a wheelchair, kitchens briefed on allergies. Tell me what you\'re working with and I\'ll build around it.' ),
 				array( 'Cruise or land for a multi-gen trip?', 'Both work; it depends on the group. A cruise solves the "different interests, one base" problem; a villa solves the "we just want to be together" one. I\'ll talk you through the trade-offs on the call.' ),

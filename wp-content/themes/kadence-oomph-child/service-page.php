@@ -107,8 +107,8 @@ $faqs = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
 if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 	$faqs = array(
 		array(
-			'question' => 'Do you charge a planning fee? What does it cover?',
-			'answer'   => 'Yes — planning fees fund my undivided attention to your trip. Commissions paid by the cruise line do not change your price; the fee filters out price-shoppers and pays for cabin selection, dinner-reservation strategy, and pre/post extensions that take real time to do right. The structure depends on trip complexity; ask on the discovery call and I will walk you through what is involved.',
+			'question' => 'Do you charge a planning fee?',
+			'answer'   => 'No — I do not charge a planning fee. Cruise lines pay travel advisors a commission on the booked fare, and that commission does not change your price. You get cabin selection, dining strategy, and pre- and post-cruise extensions handled by a named advisor at no added cost to you.',
 		),
 		array(
 			'question' => 'I already have an account with Royal Caribbean. Can you still help?',
@@ -116,7 +116,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 		),
 		array(
 			'question' => 'How are commissions disclosed?',
-			'answer'   => 'Cruise lines pay travel advisors a commission on the booked fare. It is part of how the industry works and does not affect your price. I will tell you the commission rate on your specific booking if you ask. Planning fees, when they apply, are separate and disclosed up front.',
+			'answer'   => 'Cruise lines pay travel advisors a commission on the booked fare. It is part of how the industry works and does not affect your price. I will tell you the commission rate on your specific booking if you ask. I do not charge a separate planning fee.',
 		),
 		array(
 			'question' => 'Can you hold cabins before I commit?',

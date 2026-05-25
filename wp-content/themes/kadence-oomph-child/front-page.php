@@ -232,19 +232,15 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 					>
 				</figure>
 				<div class="oomph-leadmagnet__copy">
-					<p class="oomph-eyebrow">Silversea · Cabin Note</p>
+					<p class="oomph-eyebrow">Cruise · Cabin Note</p>
 					<h2 id="lead-magnet-title">The cabin you choose determines the trip you have.</h2>
-					<p>A short guide to the Silversea suite categories that consistently overdeliver — and the two that quietly disappoint. Five minutes to read; saves a thousand dollars and a quiet regret.</p>
-					<form class="oomph-leadmagnet__form" action="#" method="post" data-form-id="cabin-guide" novalidate>
-						<div class="oomph-field">
-							<label class="oomph-field__label sr-only" for="lm-email">Email address</label>
-							<input class="oomph-field__input" type="email" id="lm-email" name="email" placeholder="you@example.com" required>
-						</div>
-						<button class="oomph-btn oomph-btn--primary" type="submit">
-							Send me the cabin guide <span aria-hidden="true">→</span>
-						</button>
-						<p class="oomph-form__privacy">We respect your inbox. Used solely to plan your trip.</p>
-					</form>
+					<p>Same ship, same itinerary — two cabins three decks apart can be a different vacation. Answer seven questions and I'll point you to the cabin category that fits how you actually sail, plus my full Cabin Selection Guide.</p>
+					<p>
+						<a class="oomph-btn oomph-btn--primary" href="/trip-quiz/">
+							Take the cabin quiz <span aria-hidden="true">→</span>
+						</a>
+						<span class="oomph-btn-microcopy">Seven questions, about two minutes.</span>
+					</p>
 				</div>
 			</div>
 		</div>
