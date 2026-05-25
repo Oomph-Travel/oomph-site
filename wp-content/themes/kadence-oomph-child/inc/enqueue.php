@@ -72,6 +72,28 @@ function oomph_child_enqueue_styles(): void {
 add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_styles', 20 );
 
 /**
+ * Cabin quiz script — only on the /trip-quiz/ page.
+ *
+ * @return void
+ */
+function oomph_child_enqueue_quiz(): void {
+	if ( ! is_page( 'trip-quiz' ) ) {
+		return;
+	}
+	$path = get_stylesheet_directory() . '/assets/js/cabin-quiz.js';
+	if ( file_exists( $path ) ) {
+		wp_enqueue_script(
+			'oomph-cabin-quiz',
+			get_stylesheet_directory_uri() . '/assets/js/cabin-quiz.js',
+			array( 'jquery' ),
+			(string) filemtime( $path ),
+			true
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_quiz', 20 );
+
+/**
  * Block editor stylesheets.
  *
  * Mirrors tokens.css into the editor so Gutenberg's preview matches the

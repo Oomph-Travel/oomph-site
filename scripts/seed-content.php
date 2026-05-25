@@ -245,6 +245,70 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 }
 
 /* ---------------------------------------------------------------------------
+ * 4c. Cabin Quiz form (email + hidden quiz_result) — email gate for the quiz.
+ * ------------------------------------------------------------------------- */
+if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
+	$FormModel = 'FluentForm\\App\\Models\\Form';
+	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
+	$cq = $FormModel::where( 'title', 'Cabin Quiz' )->first();
+	if ( $cq ) {
+		$report[] = "form 'Cabin Quiz' exists (#{$cq->id}) — skip";
+	} else {
+		$cq_fields = array(
+			'fields' => array(
+				array(
+					'index' => 0, 'element' => 'input_email',
+					'attributes' => array( 'type' => 'email', 'name' => 'email', 'value' => '', 'class' => '', 'placeholder' => 'you@example.com' ),
+					'settings' => array(
+						'container_class' => '', 'label' => 'Email', 'label_placement' => 'hidden', 'admin_field_label' => '', 'help_message' => '',
+						'validation_rules' => array(
+							'required' => array( 'value' => true, 'message' => 'Email is required', 'global' => false ),
+							'email'    => array( 'value' => true, 'message' => 'Please enter a valid email', 'global' => true ),
+						),
+						'conditional_logics' => array(),
+					),
+					'editor_options' => array( 'title' => 'Email', 'icon_class' => 'dashicon dashicons dashicons-email', 'template' => 'inputText' ),
+					'uniqElKey' => 'el_cq_email_1',
+				),
+				array(
+					'index' => 1, 'element' => 'input_text',
+					'attributes' => array( 'type' => 'text', 'name' => 'quiz_result', 'value' => '', 'class' => '', 'placeholder' => '' ),
+					'settings' => array(
+						'container_class' => 'ff-hidden-field', 'label' => 'Cabin profile', 'label_placement' => 'hidden', 'admin_field_label' => 'Cabin profile', 'help_message' => '',
+						'validation_rules' => array( 'required' => array( 'value' => false, 'message' => '', 'global' => true ) ),
+						'conditional_logics' => array(),
+					),
+					'editor_options' => array( 'title' => 'Simple Text', 'icon_class' => 'icon-text-width', 'template' => 'inputText' ),
+					'uniqElKey' => 'el_cq_result_1',
+				),
+			),
+			'submitButton' => array(
+				'uniqElKey' => 'el_cq_submit_1', 'element' => 'button',
+				'attributes' => array( 'type' => 'submit', 'class' => '' ),
+				'settings' => array( 'container_class' => '', 'align' => 'left', 'button_style' => 'default', 'button_size' => 'md', 'color' => '#14171A', 'button_ui' => array( 'type' => 'default', 'text' => 'Send me my results', 'img_url' => '' ), 'normal_styles' => array(), 'hover_styles' => array() ),
+				'editor_options' => array( 'title' => 'Submit Button' ),
+			),
+		);
+		$cqf = $FormModel::create( array(
+			'title' => 'Cabin Quiz', 'form_fields' => json_encode( $cq_fields ),
+			'status' => 'published', 'appearance_settings' => '', 'type' => 'form',
+			'has_payment' => 0, 'conditions' => '', 'created_by' => 1,
+		) );
+		$Helper::setFormMeta( $cqf->id, 'formSettings', array(
+			'confirmation' => array( 'redirectTo' => 'samePage', 'messageToShow' => '<p>Check your inbox — your results and the Cabin Selection Guide are on the way.</p>', 'samePageFormBehavior' => 'hide_form', 'customPage' => null, 'redirectUrl' => '' ),
+			'restrictions' => array( 'requireLogin' => array( 'enabled' => false ) ),
+			'layout' => array( 'labelPlacement' => 'top', 'errorMessagePlacement' => 'inline' ),
+		) );
+		$Helper::setFormMeta( $cqf->id, 'notifications', array(
+			'name' => 'Cabin quiz lead', 'sendTo' => array( 'type' => 'email', 'email' => apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) ), 'field' => '', 'routing' => array() ),
+			'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
+			'subject' => 'New cabin quiz lead ({inputs.quiz_result})', 'message' => '{all_data}', 'enabled' => true,
+		) );
+		$report[] = "form 'Cabin Quiz' CREATED (#{$cqf->id})";
+	}
+}
+
+/* ---------------------------------------------------------------------------
  * 5. /discovery-call/ page (template binds by slug via page-discovery-call.php)
  * ------------------------------------------------------------------------- */
 $dc = get_page_by_path( 'discovery-call' );
@@ -267,6 +331,7 @@ if ( $dc ) {
 $service_pages = array(
 	'custom-italy-travel'                 => 'Custom Italy Travel',
 	'multi-generational-travel-planning'  => 'Multi-Generational Travel Planning',
+	'trip-quiz'                           => 'Trip Quiz', // cabin quiz (page-trip-quiz.php)
 );
 foreach ( $service_pages as $slug => $title ) {
 	if ( get_page_by_path( $slug ) ) {
