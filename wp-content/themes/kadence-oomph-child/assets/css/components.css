@@ -803,6 +803,7 @@
 .oomph-quiz__opt:focus-visible {
   border-color: var(--color-old-brass);
   background: var(--color-bone);
+  color: var(--text-default); /* hold text color — Kadence's button:hover turns it light */
   transform: translateY(-1px);
 }
 
