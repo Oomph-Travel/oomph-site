@@ -174,7 +174,14 @@ final class Schema {
 		if ( ! is_page() ) {
 			return false;
 		}
-		return get_page_template_slug() === 'service-page.php';
+		if ( get_page_template_slug() === 'service-page.php' ) {
+			return true;
+		}
+		// Code-managed service hubs (dedicated page-{slug}.php templates).
+		$post = get_post();
+		$slug = $post ? $post->post_name : '';
+		$slugs = apply_filters( 'oomph_service_page_slugs', array( 'custom-italy-travel', 'multi-generational-travel-planning' ) );
+		return in_array( $slug, $slugs, true );
 	}
 
 	private static function service_for_current_page(): array {
@@ -203,9 +210,13 @@ final class Schema {
 	}
 
 	private static function faqpage_for_current_page(): ?array {
-		// Only emit FAQPage when ACF has real Q&A pairs. Template fallbacks
-		// are presentational only — never claimed in structured data.
+		// Only emit FAQPage when there are real Q&A pairs. ACF-driven service
+		// pages use get_field; code-managed pages supply theirs via the
+		// oomph_page_faqs filter. Template fallbacks are never claimed here.
 		$faqs = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
+		if ( ! is_array( $faqs ) || empty( $faqs ) ) {
+			$faqs = apply_filters( 'oomph_page_faqs', array(), get_post() );
+		}
 		if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			return null;
 		}
