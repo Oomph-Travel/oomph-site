@@ -26,10 +26,9 @@ function oomph_social_links(): array {
 	return apply_filters(
 		'oomph_social_links',
 		array(
-			// TODO: confirm exact URLs with Eric before production.
-			'facebook'  => 'https://www.facebook.com/oomphtravel',
-			'instagram' => 'https://www.instagram.com/oomphtravel',
-			'linkedin'  => 'https://www.linkedin.com/company/oomph-travel',
+			'facebook'  => 'https://www.facebook.com/profile.php?id=100087673102528',
+			'instagram' => 'https://www.instagram.com/oomph_travel/',
+			'linkedin'  => 'https://www.linkedin.com/in/erichempeloomphtravel/',
 		)
 	);
 }
