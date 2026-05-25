@@ -192,6 +192,59 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 }
 
 /* ---------------------------------------------------------------------------
+ * 4b. Newsletter Signup form (email-only) — embedded in the footer.
+ * ------------------------------------------------------------------------- */
+if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
+	$FormModel = 'FluentForm\\App\\Models\\Form';
+	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
+	$nl = $FormModel::where( 'title', 'Newsletter Signup' )->first();
+	if ( $nl ) {
+		$report[] = "form 'Newsletter Signup' exists (#{$nl->id}) — skip";
+	} else {
+		$nl_fields = array(
+			'fields' => array(
+				array(
+					'index' => 0, 'element' => 'input_email',
+					'attributes' => array( 'type' => 'email', 'name' => 'email', 'value' => '', 'class' => '', 'placeholder' => 'Your email' ),
+					'settings' => array(
+						'container_class' => '', 'label' => 'Email', 'label_placement' => 'hidden', 'admin_field_label' => '', 'help_message' => '',
+						'validation_rules' => array(
+							'required' => array( 'value' => true, 'message' => 'Email is required', 'global' => false ),
+							'email'    => array( 'value' => true, 'message' => 'Please enter a valid email', 'global' => true ),
+						),
+						'conditional_logics' => array(),
+					),
+					'editor_options' => array( 'title' => 'Email', 'icon_class' => 'dashicon dashicons dashicons-email', 'template' => 'inputText' ),
+					'uniqElKey' => 'el_nl_email_1',
+				),
+			),
+			'submitButton' => array(
+				'uniqElKey' => 'el_nl_submit_1', 'element' => 'button',
+				'attributes' => array( 'type' => 'submit', 'class' => '' ),
+				'settings' => array( 'container_class' => '', 'align' => 'left', 'button_style' => 'default', 'button_size' => 'md', 'color' => '#14171A', 'button_ui' => array( 'type' => 'default', 'text' => 'Subscribe', 'img_url' => '' ), 'normal_styles' => array(), 'hover_styles' => array() ),
+				'editor_options' => array( 'title' => 'Submit Button' ),
+			),
+		);
+		$nlf = $FormModel::create( array(
+			'title' => 'Newsletter Signup', 'form_fields' => json_encode( $nl_fields ),
+			'status' => 'published', 'appearance_settings' => '', 'type' => 'form',
+			'has_payment' => 0, 'conditions' => '', 'created_by' => 1,
+		) );
+		$Helper::setFormMeta( $nlf->id, 'formSettings', array(
+			'confirmation' => array( 'redirectTo' => 'samePage', 'messageToShow' => '<p>Thank you — you are on the list.</p>', 'samePageFormBehavior' => 'hide_form', 'customPage' => null, 'redirectUrl' => '' ),
+			'restrictions' => array( 'requireLogin' => array( 'enabled' => false ) ),
+			'layout' => array( 'labelPlacement' => 'top', 'errorMessagePlacement' => 'inline' ),
+		) );
+		$Helper::setFormMeta( $nlf->id, 'notifications', array(
+			'name' => 'Newsletter signup', 'sendTo' => array( 'type' => 'email', 'email' => apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) ), 'field' => '', 'routing' => array() ),
+			'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
+			'subject' => 'New newsletter signup', 'message' => '{all_data}', 'enabled' => true,
+		) );
+		$report[] = "form 'Newsletter Signup' CREATED (#{$nlf->id})";
+	}
+}
+
+/* ---------------------------------------------------------------------------
  * 5. /discovery-call/ page (template binds by slug via page-discovery-call.php)
  * ------------------------------------------------------------------------- */
 $dc = get_page_by_path( 'discovery-call' );
