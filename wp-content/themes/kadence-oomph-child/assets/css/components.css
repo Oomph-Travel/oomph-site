@@ -707,9 +707,27 @@
   list-style: none; margin: 0; padding: 0;
   font-size: var(--text-body-sm); letter-spacing: 0.02em; color: var(--color-stone);
 }
-.oomph-footer__social { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
-.oomph-footer__social a { display: inline-flex; color: var(--color-bone); }
-.oomph-footer__social a:hover { color: var(--color-champagne); }
+.oomph-footer__social { display: flex; gap: var(--space-3); list-style: none; margin: 0; padding: 0; }
+.oomph-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-champagne);
+  border-radius: var(--radius-sm);
+  color: var(--color-champagne);
+  transition: background-color var(--duration-quick) var(--easing-standard),
+              color var(--duration-quick) var(--easing-standard),
+              border-color var(--duration-quick) var(--easing-standard);
+}
+.oomph-footer__social a:hover,
+.oomph-footer__social a:focus-visible {
+  background-color: var(--color-old-brass);
+  border-color: var(--color-old-brass);
+  color: var(--color-true-ink);
+}
+.oomph-social__icon { width: 24px; height: 24px; }
 
 .oomph-footer__bottom { background: var(--color-true-ink); }
 .oomph-footer__bottom-inner {
