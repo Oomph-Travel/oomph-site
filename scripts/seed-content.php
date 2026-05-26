@@ -262,9 +262,15 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 	$FormModel = 'FluentForm\\App\\Models\\Form';
 	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
+	$cabin_guide_url = '';
+	$cga = get_posts( array( 'post_type' => 'attachment', 'title' => 'The Cabin Guide', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $cga ) {
+		$cabin_guide_url = wp_get_attachment_url( $cga[0] );
+	}
 	$cq = $FormModel::where( 'title', 'Cabin Quiz' )->first();
+	$cq_id = $cq ? (int) $cq->id : 0;
 	if ( $cq ) {
-		$report[] = "form 'Cabin Quiz' exists (#{$cq->id}) — skip";
+		$report[] = "form 'Cabin Quiz' exists (#{$cq_id})";
 	} else {
 		$cq_fields = array(
 			'fields' => array(
@@ -311,12 +317,38 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 			'restrictions' => array( 'requireLogin' => array( 'enabled' => false ) ),
 			'layout' => array( 'labelPlacement' => 'top', 'errorMessagePlacement' => 'inline' ),
 		) );
-		$Helper::setFormMeta( $cqf->id, 'notifications', array(
-			'name' => 'Cabin quiz lead', 'sendTo' => array( 'type' => 'email', 'email' => apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) ), 'field' => '', 'routing' => array() ),
-			'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
-			'subject' => 'New cabin quiz lead ({inputs.quiz_result})', 'message' => '{all_data}', 'enabled' => true,
-		) );
-		$report[] = "form 'Cabin Quiz' CREATED (#{$cqf->id})";
+		$cq_id = (int) $cqf->id;
+		$report[] = "form 'Cabin Quiz' CREATED (#{$cq_id})";
+	}
+
+	// Always (re)wire the notification — when the guide PDF is in media, the
+	// quiz-taker is emailed the Cabin Selection Guide (BCC advisor).
+	if ( $cq_id ) {
+		$notify = apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) );
+		if ( $cabin_guide_url ) {
+			$Helper::setFormMeta( $cq_id, 'notifications', array(
+				'name'      => 'Cabin quiz — guide delivery',
+				'sendTo'    => array( 'type' => 'email', 'email' => '{inputs.email}', 'field' => '', 'routing' => array() ),
+				'fromName'  => 'Eric Hempel · Oomph Travel',
+				'fromEmail' => '',
+				'replyTo'   => '',
+				'bcc'       => $notify,
+				'subject'   => 'Your Cabin Selection Guide',
+				'message'   => '<p>Thanks for taking the cabin quiz. Here is the full Cabin Selection Guide — wave zones by ship class, deck-by-deck noise notes, and the booking mistakes I see most often:</p>'
+					. '<p><a href="' . esc_url( $cabin_guide_url ) . '">Download the Cabin Selection Guide</a></p>'
+					. '<p>The quiz gets you to the category. If you are sailing in the next year and want a second set of eyes before you book a specific cabin, a free 30-minute call is the next step.</p>'
+					. '<p>— Eric Hempel, Oomph Travel</p>',
+				'enabled'   => true,
+			) );
+			$report[] = "  cabin quiz delivery wired -> $cabin_guide_url";
+		} else {
+			$Helper::setFormMeta( $cq_id, 'notifications', array(
+				'name' => 'Cabin quiz lead', 'sendTo' => array( 'type' => 'email', 'email' => $notify, 'field' => '', 'routing' => array() ),
+				'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
+				'subject' => 'New cabin quiz lead ({inputs.quiz_result})', 'message' => '{all_data}', 'enabled' => true,
+			) );
+			$report[] = '  cabin quiz: guide PDF not in media — admin-only notification kept';
+		}
 	}
 }
 
