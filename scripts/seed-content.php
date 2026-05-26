@@ -489,34 +489,69 @@ $journal_posts = array(
 		'title'   => 'The Slow Cruise: Why Ships Are Finally Staying Longer in Port',
 		'excerpt' => 'Cruise lines are rebuilding 2026–2027 itineraries around overnight stays and late departures — fewer ports, more time in each. Here is why it matters, and the one question to ask before you book.',
 		'content' => $slow_cruise,
+		'image'   => 'slow-cruise.jpg',
 	),
 	array(
 		'slug'    => 'first-premium-cruise',
 		'title'   => "Your First Premium Cruise: How I'd Plan It",
 		'excerpt' => 'Six rules for a first premium or luxury cruise: pick the destination before the line, length over cabin category, book mid-ship, and why all-inclusive is the easiest way in.',
 		'content' => $first_cruise,
+		'image'   => 'first-premium-cruise.jpg',
 	),
 );
+
+// Media sideload helpers (not loaded in wp-cli eval context by default).
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
+
+$oomph_set_featured = function ( $pid, $img_name ) {
+	if ( ! $pid || has_post_thumbnail( $pid ) ) {
+		return;
+	}
+	$src = get_stylesheet_directory() . '/assets/images/journal/' . $img_name;
+	if ( ! file_exists( $src ) ) {
+		return;
+	}
+	$tmp = wp_tempnam( $img_name );
+	if ( ! $tmp || ! @copy( $src, $tmp ) ) {
+		return;
+	}
+	$att = media_handle_sideload( array( 'name' => $img_name, 'tmp_name' => $tmp ), $pid, get_the_title( $pid ) );
+	if ( is_wp_error( $att ) ) {
+		@unlink( $tmp );
+		return;
+	}
+	set_post_thumbnail( $pid, $att );
+};
 
 foreach ( $journal_posts as $jp ) {
 	$exists = get_posts( array( 'post_type' => 'post', 'name' => $jp['slug'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
 	if ( $exists ) {
-		$report[] = "post /journal/{$jp['slug']}/ exists — skip";
-		continue;
+		$pid = (int) $exists[0];
+		$report[] = "post /journal/{$jp['slug']}/ exists — skip content";
+	} else {
+		$pid = wp_insert_post( array(
+			'post_type'    => 'post',
+			'post_status'  => 'publish',
+			'post_title'   => $jp['title'],
+			'post_name'    => $jp['slug'],
+			'post_excerpt' => $jp['excerpt'],
+			'post_content' => $jp['content'],
+			'post_author'  => 1,
+		) );
+		if ( ! is_wp_error( $pid ) && $cruise_cat_id ) {
+			wp_set_post_categories( $pid, array( $cruise_cat_id ) );
+		}
+		$report[] = is_wp_error( $pid ) ? "ERROR post {$jp['slug']}: " . $pid->get_error_message() : "post /journal/{$jp['slug']}/ CREATED (#{$pid})";
 	}
-	$pid = wp_insert_post( array(
-		'post_type'    => 'post',
-		'post_status'  => 'publish',
-		'post_title'   => $jp['title'],
-		'post_name'    => $jp['slug'],
-		'post_excerpt' => $jp['excerpt'],
-		'post_content' => $jp['content'],
-		'post_author'  => 1,
-	) );
-	if ( ! is_wp_error( $pid ) && $cruise_cat_id ) {
-		wp_set_post_categories( $pid, array( $cruise_cat_id ) );
+	if ( $pid && ! is_wp_error( $pid ) && ! empty( $jp['image'] ) ) {
+		$had = has_post_thumbnail( $pid );
+		$oomph_set_featured( $pid, $jp['image'] );
+		if ( ! $had && has_post_thumbnail( $pid ) ) {
+			$report[] = "  featured image set on {$jp['slug']}";
+		}
 	}
-	$report[] = is_wp_error( $pid ) ? "ERROR post {$jp['slug']}: " . $pid->get_error_message() : "post /journal/{$jp['slug']}/ CREATED (#{$pid})";
 }
 
 flush_rewrite_rules( false );

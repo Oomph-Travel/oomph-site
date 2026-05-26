@@ -44,7 +44,10 @@ $posts_q = new WP_Query( array(
 						$posts_q->the_post();
 						$cats = get_the_category();
 						?>
-						<a class="oomph-card oomph-card--clickable" href="<?php the_permalink(); ?>">
+						<a class="oomph-card oomph-card--clickable oomph-card--media" href="<?php the_permalink(); ?>">
+							<?php if ( has_post_thumbnail() ) : ?>
+								<figure class="oomph-card__media"><?php the_post_thumbnail( 'medium_large', array( 'loading' => 'lazy', 'alt' => '' ) ); ?></figure>
+							<?php endif; ?>
 							<p class="oomph-eyebrow oomph-card__eyebrow"><?php echo esc_html( $cats ? $cats[0]->name : 'Field Note' ); ?></p>
 							<h2 class="oomph-card__headline"><?php the_title(); ?></h2>
 							<p><?php echo esc_html( wp_trim_words( get_the_excerpt(), 28 ) ); ?></p>

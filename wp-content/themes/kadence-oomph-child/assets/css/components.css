@@ -859,6 +859,8 @@
 .oomph-post__feature img {
   width: 100%;
   height: auto;
+  max-height: 560px;
+  object-fit: cover;
   border-radius: var(--radius-md);
   display: block;
 }
@@ -906,3 +908,20 @@
   text-decoration: none; color: var(--color-marine-navy);
 }
 .oomph-pagination .current { background: var(--color-marine-navy); color: var(--color-paper); border-color: var(--color-marine-navy); }
+
+/* Cards with a featured image at the top (journal archive). */
+.oomph-card--media { padding-top: 0; overflow: hidden; }
+.oomph-card__media {
+  margin: 0 calc(-1 * var(--space-6)) var(--space-5);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+.oomph-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-base) var(--easing-standard);
+}
+.oomph-card--media:hover .oomph-card__media img { transform: scale(1.03); }
