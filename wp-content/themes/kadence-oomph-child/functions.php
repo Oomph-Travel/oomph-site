@@ -28,3 +28,11 @@ add_filter(
 		return 'https://calendly.com/eric-oomphtravel/30min';
 	}
 );
+
+// Microsoft Clarity project ID (tracking renders on production only).
+add_filter(
+	'oomph_clarity_id',
+	static function () {
+		return 'wwzo7gmy7q';
+	}
+);

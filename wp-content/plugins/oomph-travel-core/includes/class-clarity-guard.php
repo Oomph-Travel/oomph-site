@@ -21,12 +21,29 @@ final class Clarity_Guard {
 
 	public static function init(): void {
 		if ( Environment::is_production() ) {
+			// Production: emit the Clarity tracking tag (ID via filter).
+			add_action( 'wp_head', array( self::class, 'render' ), 5 );
 			return;
 		}
 
-		// Dequeue Clarity's front-end script and any inline tags it prints.
+		// Non-production: belt-and-suspenders dequeue of any Clarity the
+		// official plugin might register, so staging/local never track.
 		add_action( 'wp_enqueue_scripts', array( self::class, 'dequeue' ), 99 );
 		add_action( 'wp_head',            array( self::class, 'strip_inline' ), 1 );
+	}
+
+	/**
+	 * Output the Microsoft Clarity tag. Project ID via the `oomph_clarity_id`
+	 * filter (set in the child theme). No ID → nothing renders.
+	 */
+	public static function render(): void {
+		$id = (string) apply_filters( 'oomph_clarity_id', '' );
+		if ( '' === $id ) {
+			return;
+		}
+		?>
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "<?php echo esc_js( $id ); ?>");</script>
+		<?php
 	}
 
 	public static function dequeue(): void {
