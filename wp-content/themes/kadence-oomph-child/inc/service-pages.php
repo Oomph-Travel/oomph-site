@@ -63,14 +63,11 @@ function oomph_service_page_data( string $slug ): ?array {
 			'coverage_eyebrow' => 'Coverage',
 			'coverage_title' => 'Regions I plan.',
 			'coverage' => array(
-				array( 'Puglia', 'The heel of Italy — trulli towns, sea-salt air, and the stretch between Lecce and Polignano a Mare.' ),
-				array( 'Sicily', 'Baroque towns, Etna, and the markets. A region that rewards a driver who knows the roads.' ),
-				array( 'Tuscany &amp; the hill towns', 'Florence as an anchor, then the slower country — Siena, the Val d\'Orcia, a villa with a view.' ),
-				array( 'The Lakes', 'Como, Maggiore, Garda. Grand-hotel mornings and boat afternoons.' ),
-				array( 'The Dolomites', 'Mountain air and serious food, for the trip that wants altitude over coastline.' ),
-				array( 'The Amalfi Coast', 'Positano, Ravello, the boat days. Best paced with somewhere quiet to come back to.' ),
+				array( 'Tuscany &amp; the hill towns', 'Florence as an anchor, then the slower country — Siena, the Val d\'Orcia, a villa with a view.', 'cov-tuscany.jpg' ),
+				array( 'The Lakes', 'Como, Maggiore, Garda. Grand-hotel mornings and boat afternoons.', 'cov-lakes.jpg' ),
+				array( 'The Amalfi Coast', 'Positano, Ravello, the boat days. Best paced with somewhere quiet to come back to.', 'cov-amalfi.jpg' ),
 			),
-			'coverage_note' => 'Rome, Florence, and Venice anchor most trips. Working toward a formal Italy Destination Specialist certification.',
+			'coverage_note' => 'I also plan Puglia, Sicily, and the Dolomites, with Rome, Florence, and Venice as the anchors. Working toward a formal Italy Destination Specialist certification.',
 			'faqs' => array(
 				array( 'Do you charge a planning fee?', 'No — I don\'t charge a planning fee. Suppliers pay a commission on what you book, and that commission doesn\'t change your price. You get itinerary design, the stays and guides worth booking, and the logistics handled — at no added cost to you.' ),
 				array( 'Can you take over a trip I\'ve already started planning?', 'Often, yes. The earlier I\'m involved the more I can shape — but if you\'ve already booked a hotel or two, I can build the rest of the trip around them. Bring what you have to the call and I\'ll tell you honestly where I can add value.' ),
@@ -117,10 +114,10 @@ function oomph_service_page_data( string $slug ): ?array {
 			'coverage_eyebrow' => 'Where these trips go',
 			'coverage_title' => 'Cruise or land — whatever fits the group.',
 			'coverage' => array(
-				array( 'Premium &amp; luxury cruises', 'A cruise solves the "different interests, one base" problem — everyone together at dinner, off doing their own thing by day. Connecting cabins held together.' ),
-				array( 'Custom Italy &amp; Europe', 'A villa or a cluster of rooms for the family that just wants to be together, with day trips paced for every age.' ),
-				array( 'Milestone reunions', 'Big anniversaries, landmark birthdays, the gathering that pulls everyone to one place for once.' ),
-				array( 'Special-occasion trips', 'When the trip itself is the gift, and it has to land.' ),
+				array( 'Premium &amp; luxury cruises', 'A cruise solves the "different interests, one base" problem — everyone together at dinner, off doing their own thing by day. Connecting cabins held together.', 'cov-mg-cruise.jpg' ),
+				array( 'Custom Italy &amp; Europe', 'A villa or a cluster of rooms for the family that just wants to be together, with day trips paced for every age.', 'cov-mg-europe.jpg' ),
+				array( 'Milestone reunions', 'Big anniversaries, landmark birthdays, the gathering that pulls everyone to one place for once.', 'cov-mg-reunions.jpg' ),
+				array( 'Special-occasion trips', 'When the trip itself is the gift, and it has to land.', 'cov-mg-occasion.jpg' ),
 			),
 			'coverage_note' => 'Not sure whether a cruise or a land trip fits your group? That\'s exactly what the discovery call is for.',
 			'faqs' => array(
@@ -271,9 +268,13 @@ function oomph_render_service_page( string $slug ): void {
 					<p class="oomph-eyebrow"><?php echo esc_html( $d['coverage_eyebrow'] ); ?></p>
 					<h2 id="coverage-title"><?php echo esc_html( $d['coverage_title'] ); ?></h2>
 				</div>
-				<div class="oomph-grid oomph-grid--2">
+				<div class="oomph-grid oomph-grid--<?php echo count( $d['coverage'] ) % 3 === 0 ? '3' : '2'; ?>">
 					<?php foreach ( $d['coverage'] as $row ) : ?>
-						<article class="oomph-card oomph-card--bordered">
+						<?php $cov_img = ! empty( $row[2] ) ? get_stylesheet_directory_uri() . '/assets/images/cards/' . $row[2] : ''; ?>
+						<article class="oomph-card oomph-card--bordered<?php echo $cov_img ? ' oomph-card--media' : ''; ?>">
+							<?php if ( $cov_img ) : ?>
+								<figure class="oomph-card__media"><img src="<?php echo esc_url( $cov_img ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
+							<?php endif; ?>
 							<h3 class="oomph-card__headline"><?php echo wp_kses_post( $row[0] ); ?></h3>
 							<p><?php echo wp_kses_post( $row[1] ); ?></p>
 						</article>
