@@ -31,6 +31,7 @@ function oomph_service_page_data( string $slug ): ?array {
 			'eyebrow'  => 'Service · Custom Italy',
 			'headline' => 'Italy, planned by someone who keeps going back.',
 			'subhead'  => 'Custom, region-by-region Italian journeys — built around how you travel, not a packaged tour. Private drivers, vetted local guides, and the stays that actually deliver, with one named advisor from the first call to the last flight home.',
+			'hero_img' => 'custom-italy-hero.jpg',
 			'for_title'    => 'Who this is for',
 			'for'      => array(
 				'You want an itinerary built around your pace and your interests — not a fixed group tour.',
@@ -84,6 +85,7 @@ function oomph_service_page_data( string $slug ): ?array {
 			'eyebrow'  => 'Service · Multi-Generational',
 			'headline' => 'The trip that works for everyone — planned around the slowest walker.',
 			'subhead'  => 'Multi-generational travel is a hundred small decisions, not one big one. Pace, mobility, dietary needs, room configurations, and the special-occasion choreography — planned so the trip works for the grandparents, the parents, the teens, and the toddler.',
+			'hero_img' => 'multigen-hero.jpg',
 			'for_title'    => 'Who this is for',
 			'for'      => array(
 				"You're planning a trip across two or three generations and want it to actually land.",
@@ -174,7 +176,13 @@ function oomph_render_service_page( string $slug ): void {
 		<div id="oomph-content"></div>
 
 		<?php /* 1. HERO */ ?>
-		<section class="oomph-section oomph-hero" aria-label="<?php echo esc_attr( wp_strip_all_tags( $d['headline'] ) ); ?>">
+		<?php $hero_img = ! empty( $d['hero_img'] ) ? get_stylesheet_directory_uri() . '/assets/images/heroes/' . $d['hero_img'] : ''; ?>
+		<section class="<?php echo $hero_img ? 'oomph-hero oomph-hero--imaged' : 'oomph-section oomph-hero'; ?>" aria-label="<?php echo esc_attr( wp_strip_all_tags( $d['headline'] ) ); ?>">
+			<?php if ( $hero_img ) : ?>
+				<picture class="oomph-hero__media">
+					<img src="<?php echo esc_url( $hero_img ); ?>" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
+				</picture>
+			<?php endif; ?>
 			<div class="oomph-container oomph-hero__inner">
 				<p class="oomph-eyebrow"><?php echo esc_html( strtoupper( $d['eyebrow'] ) ); ?></p>
 				<h1 class="oomph-hero__headline oomph-italic-display"><?php echo esc_html( $d['headline'] ); ?></h1>
