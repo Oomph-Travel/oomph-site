@@ -57,9 +57,13 @@ function oomph_render_footer(): void {
 	// Explore — only link pages that exist and are published.
 	$explore = array();
 	foreach ( array(
-		'about'                  => 'About',
-		'luxury-cruise-planning' => 'Luxury Cruise Planning',
-		'discovery-call'         => 'Discovery Call',
+		'about'                              => 'About',
+		'luxury-cruise-planning'             => 'Luxury Cruise Planning',
+		'custom-italy-travel'                => 'Custom Italy',
+		'multi-generational-travel-planning' => 'Multi-Generational',
+		'trip-quiz'                          => 'Cabin Quiz',
+		'cruise-travel-trends'               => 'Cruise Trends Guide',
+		'discovery-call'                     => 'Discovery Call',
 	) as $slug => $label ) {
 		$p = get_page_by_path( $slug );
 		if ( $p && 'publish' === get_post_status( $p ) ) {
