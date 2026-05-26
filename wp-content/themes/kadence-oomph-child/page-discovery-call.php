@@ -56,8 +56,11 @@ if ( function_exists( 'wpFluent' ) ) {
 	<div id="oomph-content"></div>
 
 	<?php /* 1. HERO ---------------------------------------------------- */ ?>
-	<section class="oomph-section oomph-hero" aria-label="Book a discovery call">
-		<div class="oomph-container oomph-container--prose">
+	<section class="oomph-hero oomph-hero--imaged" aria-label="Book a discovery call">
+		<picture class="oomph-hero__media">
+			<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/heroes/discovery-hero.jpg' ); ?>" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
+		</picture>
+		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow"><?php echo esc_html( strtoupper( $hero_eyebrow ) ); ?></p>
 			<h1 class="oomph-hero__headline oomph-italic-display"><?php echo esc_html( $hero_headline ); ?></h1>
 			<p class="oomph-hero__subhead"><?php echo esc_html( $hero_subhead ); ?></p>
