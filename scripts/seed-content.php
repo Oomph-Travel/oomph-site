@@ -38,6 +38,18 @@ if ( get_option( 'blogdescription' ) !== 'Premium cruises & custom European trav
 	$report[] = 'tagline already correct (skip)';
 }
 
+// Journal permalink — posts live at /journal/{slug}/.
+if ( get_option( 'permalink_structure' ) !== '/journal/%postname%/' ) {
+	global $wp_rewrite;
+	update_option( 'permalink_structure', '/journal/%postname%/' );
+	if ( isset( $wp_rewrite ) ) {
+		$wp_rewrite->set_permalink_structure( '/journal/%postname%/' );
+	}
+	$report[] = 'permalink structure -> /journal/%postname%/';
+} else {
+	$report[] = 'permalink structure already /journal/ (skip)';
+}
+
 /* ---------------------------------------------------------------------------
  * 2. Rank Math — homepage SEO (front page = posts, so meta lives in options)
  * ------------------------------------------------------------------------- */
@@ -250,9 +262,15 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 	$FormModel = 'FluentForm\\App\\Models\\Form';
 	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
+	$cabin_guide_url = '';
+	$cga = get_posts( array( 'post_type' => 'attachment', 'title' => 'The Cabin Guide', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $cga ) {
+		$cabin_guide_url = wp_get_attachment_url( $cga[0] );
+	}
 	$cq = $FormModel::where( 'title', 'Cabin Quiz' )->first();
+	$cq_id = $cq ? (int) $cq->id : 0;
 	if ( $cq ) {
-		$report[] = "form 'Cabin Quiz' exists (#{$cq->id}) — skip";
+		$report[] = "form 'Cabin Quiz' exists (#{$cq_id})";
 	} else {
 		$cq_fields = array(
 			'fields' => array(
@@ -299,12 +317,38 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 			'restrictions' => array( 'requireLogin' => array( 'enabled' => false ) ),
 			'layout' => array( 'labelPlacement' => 'top', 'errorMessagePlacement' => 'inline' ),
 		) );
-		$Helper::setFormMeta( $cqf->id, 'notifications', array(
-			'name' => 'Cabin quiz lead', 'sendTo' => array( 'type' => 'email', 'email' => apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) ), 'field' => '', 'routing' => array() ),
-			'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
-			'subject' => 'New cabin quiz lead ({inputs.quiz_result})', 'message' => '{all_data}', 'enabled' => true,
-		) );
-		$report[] = "form 'Cabin Quiz' CREATED (#{$cqf->id})";
+		$cq_id = (int) $cqf->id;
+		$report[] = "form 'Cabin Quiz' CREATED (#{$cq_id})";
+	}
+
+	// Always (re)wire the notification — when the guide PDF is in media, the
+	// quiz-taker is emailed the Cabin Selection Guide (BCC advisor).
+	if ( $cq_id ) {
+		$notify = apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) );
+		if ( $cabin_guide_url ) {
+			$Helper::setFormMeta( $cq_id, 'notifications', array(
+				'name'      => 'Cabin quiz — guide delivery',
+				'sendTo'    => array( 'type' => 'email', 'email' => '{inputs.email}', 'field' => '', 'routing' => array() ),
+				'fromName'  => 'Eric Hempel · Oomph Travel',
+				'fromEmail' => '',
+				'replyTo'   => '',
+				'bcc'       => $notify,
+				'subject'   => 'Your Cabin Selection Guide',
+				'message'   => '<p>Thanks for taking the cabin quiz. Here is the full Cabin Selection Guide — wave zones by ship class, deck-by-deck noise notes, and the booking mistakes I see most often:</p>'
+					. '<p><a href="' . esc_url( $cabin_guide_url ) . '">Download the Cabin Selection Guide</a></p>'
+					. '<p>The quiz gets you to the category. If you are sailing in the next year and want a second set of eyes before you book a specific cabin, a free 30-minute call is the next step.</p>'
+					. '<p>— Eric Hempel, Oomph Travel</p>',
+				'enabled'   => true,
+			) );
+			$report[] = "  cabin quiz delivery wired -> $cabin_guide_url";
+		} else {
+			$Helper::setFormMeta( $cq_id, 'notifications', array(
+				'name' => 'Cabin quiz lead', 'sendTo' => array( 'type' => 'email', 'email' => $notify, 'field' => '', 'routing' => array() ),
+				'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
+				'subject' => 'New cabin quiz lead ({inputs.quiz_result})', 'message' => '{all_data}', 'enabled' => true,
+			) );
+			$report[] = '  cabin quiz: guide PDF not in media — admin-only notification kept';
+		}
 	}
 }
 
@@ -413,6 +457,7 @@ $service_pages = array(
 	'multi-generational-travel-planning'  => 'Multi-Generational Travel Planning',
 	'trip-quiz'                           => 'Trip Quiz', // cabin quiz (page-trip-quiz.php)
 	'cruise-travel-trends'                => 'Cruise Travel Trends', // guide landing (page-cruise-travel-trends.php)
+	'journal'                             => 'Journal', // post archive (page-journal.php)
 );
 foreach ( $service_pages as $slug => $title ) {
 	if ( get_page_by_path( $slug ) ) {
@@ -427,6 +472,164 @@ foreach ( $service_pages as $slug => $title ) {
 		'post_content' => '',
 	) );
 	$report[] = is_wp_error( $pid ) ? "ERROR creating /$slug/: " . $pid->get_error_message() : "page /$slug/ CREATED (#{$pid})";
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. First journal posts (adapted from the Cruise Travel Trends guide).
+ *    Create-if-missing by slug — Eric's later edits are preserved.
+ * ------------------------------------------------------------------------- */
+$cruise_cat = term_exists( 'Cruise', 'category' );
+if ( ! $cruise_cat ) {
+	$cruise_cat = wp_insert_term( 'Cruise', 'category' );
+}
+$cruise_cat_id = is_array( $cruise_cat ) ? (int) $cruise_cat['term_id'] : 0;
+
+$slow_cruise = <<<'HTML'
+<p>Fifteen years ago, a Mediterranean cruise meant eight ports in ten days. Embark by noon, sail by six, repeat. You got a passport stamp, a postcard, and a tired group of guests who had eaten lunch in three countries.</p>
+<p>The lines I work with have spent the last two years quietly redesigning that. For 2026 and 2027, the brochures are full of phrases that did not appear a decade ago: <em>overnight in port. Late-evening departure. Two-night stay.</em></p>
+<h2>What is actually changing</h2>
+<p>Azamara's 2026 itineraries now include roughly 28 ports with consecutive overnights. Regent's expanded Concierge Collection added 32 itineraries between late 2026 and late 2027 — including the line's first full winter Mediterranean season, partly because winter avoids the crowds. Cunard added 22 overnight stays and 26 late-evening departures to its 2026–2027 schedule. And Explora Journeys built Explora III's first season around what they call longer stays, overnight immersions, and a more unhurried pace of discovery.</p>
+<blockquote>The ships that overnight in port are the ones whose passengers come back saying they actually saw the place.</blockquote>
+<h2>Why it matters for your trip</h2>
+<p>The math is simple. A ship that overnights in Bordeaux gets you a sun-warmed afternoon in Saint-Émilion and dinner back on board, then dinner the next night at a family-run table in town. A ship that arrives at eight a.m. and leaves at five p.m. gets you a coach tour and a souvenir.</p>
+<p>For repeat cruisers, this is the single most important shift in how to book. Two ten-night sailings with overnights now feel longer and richer than one fourteen-night sailing without.</p>
+<h2>The one question to ask before you book</h2>
+<p>Before you commit to any 2026 or 2027 sailing, ask: <strong>how many ports include an overnight or a late departure?</strong> The answer will tell you more about the trip than the ship's name will.</p>
+<!-- TODO: Eric — add a first-hand line: a specific overnight you have sailed and what it changed about the trip. -->
+HTML;
+
+$first_cruise = <<<'HTML'
+<p>The trends I write about can sound like inside language. They are not meant to. If you have never sailed premium or luxury before, here is the short version of how I would plan a first one.</p>
+<h2>1. Pick the destination first, not the line</h2>
+<p>The right line depends on the trip. Alaska is best served by a small-to-mid-size luxury ship. The Mediterranean by a smaller ship that can call in city ports. Japan by a line with strong port programming. The first question is always where you want to go.</p>
+<h2>2. Length matters more than category</h2>
+<p>A ten-night sailing in a comfortable balcony cabin will give you a richer experience than a seven-night sailing in a suite. Length is the single most important variable in how the trip feels.</p>
+<h2>3. Book mid-ship, low to mid deck</h2>
+<p>First-time cruisers consistently underestimate motion. Mid-ship on a lower deck is the most stable cabin location. Move higher and forward once you know how your body handles the sea. (If you are not sure, my <a href="/trip-quiz/">cabin quiz</a> will point you to the right category.)</p>
+<h2>4. Choose all-inclusive for your first sailing</h2>
+<p>It removes the constant pricing decisions that make a first cruise mentally exhausting. Regent, Silversea's Door-to-Door fares, and Explora Journeys are the cleanest entries.</p>
+<h2>5. Do not book the cheapest sailing</h2>
+<p>A repositioning sailing with five sea days in a row, or shoulder season with unpredictable weather, is the wrong introduction. Pay the modest premium for an established itinerary in a reliable season.</p>
+<h2>6. Use an advisor</h2>
+<p>The things that go wrong on a first cruise — wrong cabin, wrong itinerary, wrong line — are not rare, and they are not always cheap to fix. A good advisor catches them before your deposit.</p>
+<!-- TODO: Eric — open with a first-hand line: a first-timer you planned for and how it landed. -->
+HTML;
+
+$journal_posts = array(
+	array(
+		'slug'    => 'the-slow-cruise',
+		'title'   => 'The Slow Cruise: Why Ships Are Finally Staying Longer in Port',
+		'excerpt' => 'Cruise lines are rebuilding 2026–2027 itineraries around overnight stays and late departures — fewer ports, more time in each. Here is why it matters, and the one question to ask before you book.',
+		'content' => $slow_cruise,
+		'image'   => 'slow-cruise.jpg',
+	),
+	array(
+		'slug'    => 'first-premium-cruise',
+		'title'   => "Your First Premium Cruise: How I'd Plan It",
+		'excerpt' => 'Six rules for a first premium or luxury cruise: pick the destination before the line, length over cabin category, book mid-ship, and why all-inclusive is the easiest way in.',
+		'content' => $first_cruise,
+		'image'   => 'first-premium-cruise.jpg',
+	),
+);
+
+// Media sideload helpers (not loaded in wp-cli eval context by default).
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
+
+$oomph_set_featured = function ( $pid, $img_name ) {
+	if ( ! $pid || has_post_thumbnail( $pid ) ) {
+		return;
+	}
+	$src = get_stylesheet_directory() . '/assets/images/journal/' . $img_name;
+	if ( ! file_exists( $src ) ) {
+		return;
+	}
+	$tmp = wp_tempnam( $img_name );
+	if ( ! $tmp || ! @copy( $src, $tmp ) ) {
+		return;
+	}
+	$att = media_handle_sideload( array( 'name' => $img_name, 'tmp_name' => $tmp ), $pid, get_the_title( $pid ) );
+	if ( is_wp_error( $att ) ) {
+		@unlink( $tmp );
+		return;
+	}
+	set_post_thumbnail( $pid, $att );
+};
+
+foreach ( $journal_posts as $jp ) {
+	$exists = get_posts( array( 'post_type' => 'post', 'name' => $jp['slug'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $exists ) {
+		$pid = (int) $exists[0];
+		$report[] = "post /journal/{$jp['slug']}/ exists — skip content";
+	} else {
+		$pid = wp_insert_post( array(
+			'post_type'    => 'post',
+			'post_status'  => 'publish',
+			'post_title'   => $jp['title'],
+			'post_name'    => $jp['slug'],
+			'post_excerpt' => $jp['excerpt'],
+			'post_content' => $jp['content'],
+			'post_author'  => 1,
+		) );
+		if ( ! is_wp_error( $pid ) && $cruise_cat_id ) {
+			wp_set_post_categories( $pid, array( $cruise_cat_id ) );
+		}
+		$report[] = is_wp_error( $pid ) ? "ERROR post {$jp['slug']}: " . $pid->get_error_message() : "post /journal/{$jp['slug']}/ CREATED (#{$pid})";
+	}
+	if ( $pid && ! is_wp_error( $pid ) && ! empty( $jp['image'] ) ) {
+		$had = has_post_thumbnail( $pid );
+		$oomph_set_featured( $pid, $jp['image'] );
+		if ( ! $had && has_post_thumbnail( $pid ) ) {
+			$report[] = "  featured image set on {$jp['slug']}";
+		}
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * 8. Primary navigation menu (only if the 'primary' location has none).
+ *    Replaces WordPress's auto page-list with a curated menu including Journal.
+ * ------------------------------------------------------------------------- */
+$locations = get_theme_mod( 'nav_menu_locations', array() );
+$has_primary = ! empty( $locations['primary'] ) && is_nav_menu( $locations['primary'] );
+if ( $has_primary ) {
+	$report[] = 'primary nav menu already assigned — skip';
+} else {
+	$menu_id = wp_create_nav_menu( 'Primary Navigation' );
+	if ( is_wp_error( $menu_id ) ) {
+		// Name may already exist; reuse it.
+		$existing_menu = wp_get_nav_menu_object( 'Primary Navigation' );
+		$menu_id = $existing_menu ? (int) $existing_menu->term_id : 0;
+	}
+	if ( $menu_id ) {
+		$nav = array(
+			'about'                              => 'About',
+			'luxury-cruise-planning'             => 'Luxury Cruise Planning',
+			'custom-italy-travel'                => 'Custom Italy',
+			'multi-generational-travel-planning' => 'Multi-Generational',
+			'journal'                            => 'Journal',
+			'discovery-call'                     => 'Discovery Call',
+		);
+		$pos = 0;
+		foreach ( $nav as $slug => $label ) {
+			$pg = get_page_by_path( $slug );
+			if ( ! $pg ) {
+				continue;
+			}
+			$pos++;
+			wp_update_nav_menu_item( $menu_id, 0, array(
+				'menu-item-title'     => $label,
+				'menu-item-object'    => 'page',
+				'menu-item-object-id' => $pg->ID,
+				'menu-item-type'      => 'post_type',
+				'menu-item-status'    => 'publish',
+				'menu-item-position'  => $pos,
+			) );
+		}
+		$locations['primary'] = $menu_id;
+		set_theme_mod( 'nav_menu_locations', $locations );
+		$report[] = "primary nav menu CREATED (#{$menu_id}) with {$pos} items";
+	}
 }
 
 flush_rewrite_rules( false );

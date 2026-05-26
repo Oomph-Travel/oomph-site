@@ -45,6 +45,10 @@ final class Schema {
 			}
 		}
 
+		if ( is_singular( 'post' ) ) {
+			$graph[] = self::article();
+		}
+
 		if ( self::is_service_page() ) {
 			$graph[] = self::service_for_current_page();
 			$faqpage = self::faqpage_for_current_page();
@@ -266,5 +270,36 @@ final class Schema {
 			'url'         => (string) get_permalink( $post ),
 			'organizer'   => array( '@id' => home_url( '/' ) . '#organization' ),
 		);
+	}
+
+	private static function article(): array {
+		$post = get_post();
+		$site = home_url( '/' );
+		$url  = (string) get_permalink( $post );
+
+		$article = array(
+			'@type'            => 'BlogPosting',
+			'@id'              => $url . '#article',
+			'mainEntityOfPage' => $url,
+			'headline'         => get_the_title( $post ),
+			'description'      => wp_strip_all_tags( (string) get_the_excerpt( $post ) ),
+			'author'           => array( '@id' => $site . 'about/#advisor' ),
+			'publisher'        => array( '@id' => $site . '#organization' ),
+			'datePublished'    => get_the_date( 'c', $post ),
+			'dateModified'     => get_the_modified_date( 'c', $post ),
+			'inLanguage'       => 'en-US',
+		);
+
+		$image = get_the_post_thumbnail_url( $post, 'large' );
+		if ( $image ) {
+			$article['image'] = $image;
+		}
+
+		$cats = get_the_category( $post->ID );
+		if ( $cats ) {
+			$article['articleSection'] = $cats[0]->name;
+		}
+
+		return $article;
 	}
 }
