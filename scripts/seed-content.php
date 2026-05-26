@@ -586,6 +586,52 @@ foreach ( $journal_posts as $jp ) {
 	}
 }
 
+/* ---------------------------------------------------------------------------
+ * 8. Primary navigation menu (only if the 'primary' location has none).
+ *    Replaces WordPress's auto page-list with a curated menu including Journal.
+ * ------------------------------------------------------------------------- */
+$locations = get_theme_mod( 'nav_menu_locations', array() );
+$has_primary = ! empty( $locations['primary'] ) && is_nav_menu( $locations['primary'] );
+if ( $has_primary ) {
+	$report[] = 'primary nav menu already assigned — skip';
+} else {
+	$menu_id = wp_create_nav_menu( 'Primary Navigation' );
+	if ( is_wp_error( $menu_id ) ) {
+		// Name may already exist; reuse it.
+		$existing_menu = wp_get_nav_menu_object( 'Primary Navigation' );
+		$menu_id = $existing_menu ? (int) $existing_menu->term_id : 0;
+	}
+	if ( $menu_id ) {
+		$nav = array(
+			'about'                              => 'About',
+			'luxury-cruise-planning'             => 'Luxury Cruise Planning',
+			'custom-italy-travel'                => 'Custom Italy',
+			'multi-generational-travel-planning' => 'Multi-Generational',
+			'journal'                            => 'Journal',
+			'discovery-call'                     => 'Discovery Call',
+		);
+		$pos = 0;
+		foreach ( $nav as $slug => $label ) {
+			$pg = get_page_by_path( $slug );
+			if ( ! $pg ) {
+				continue;
+			}
+			$pos++;
+			wp_update_nav_menu_item( $menu_id, 0, array(
+				'menu-item-title'     => $label,
+				'menu-item-object'    => 'page',
+				'menu-item-object-id' => $pg->ID,
+				'menu-item-type'      => 'post_type',
+				'menu-item-status'    => 'publish',
+				'menu-item-position'  => $pos,
+			) );
+		}
+		$locations['primary'] = $menu_id;
+		set_theme_mod( 'nav_menu_locations', $locations );
+		$report[] = "primary nav menu CREATED (#{$menu_id}) with {$pos} items";
+	}
+}
+
 flush_rewrite_rules( false );
 
 echo "\n=== Oomph content seed ===\n";
