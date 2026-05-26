@@ -111,10 +111,8 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
 	$existing  = $FormModel::where( 'title', 'Discovery Call Intake' )->first();
 
-	if ( $existing ) {
-		$form_id  = $existing->id;
-		$report[] = "form 'Discovery Call Intake' exists (#{$form_id}) — skip";
-	} else {
+	$existing_id = $existing ? (int) $existing->id : 0;
+	if ( true ) {
 		$req = function ( $msg ) {
 			return array( 'required' => array( 'value' => true, 'message' => $msg, 'global' => false ) );
 		};
@@ -169,8 +167,39 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 			'uniqElKey' => 'el_msg_1',
 		);
 
+		// Reorder into 3 steps with form_step dividers (trip → details → contact).
+		list( $f_name, $f_email, $f_phone, $f_trip, $f_time, $f_msg ) = $fields;
+		$step_divider = function ( $k ) {
+			return array(
+				'index'      => $k,
+				'element'    => 'form_step',
+				'attributes' => array( 'id' => '', 'class' => '' ),
+				'settings'   => array(
+					'prev_btn' => array( 'type' => 'default', 'text' => 'Back', 'img_url' => '' ),
+					'next_btn' => array( 'type' => 'default', 'text' => 'Next', 'img_url' => '' ),
+				),
+				'editor_options' => array( 'title' => 'Form Step', 'icon_class' => 'icon-step-forward', 'template' => 'formStep' ),
+				'uniqElKey'  => 'el_step_' . $k,
+			);
+		};
+		$fields = array( $f_trip, $f_time, $step_divider( 20 ), $f_msg, $step_divider( 21 ), $f_name, $f_email, $f_phone );
+
 		$form_fields = array(
 			'fields'       => $fields,
+			'stepsWrapper' => array(
+				'stepStart' => array(
+					'element'        => 'step_start',
+					'attributes'     => array( 'id' => '', 'class' => '' ),
+					'settings'       => array( 'progress_indicator' => 'progress-bar', 'step_titles' => array( 'The trip', 'A few details', 'Your details' ) ),
+					'editor_options' => array( 'title' => 'Start Paging' ),
+				),
+				'stepEnd'   => array(
+					'element'        => 'step_end',
+					'attributes'     => array( 'id' => '', 'class' => '' ),
+					'settings'       => array( 'prev_btn' => array( 'type' => 'default', 'text' => 'Back', 'img_url' => '' ) ),
+					'editor_options' => array( 'title' => 'End Paging' ),
+				),
+			),
 			'submitButton' => array(
 				'uniqElKey' => 'el_submit_1', 'element' => 'button',
 				'attributes' => array( 'type' => 'submit', 'class' => '' ),
@@ -179,12 +208,18 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 			),
 		);
 
-		$form = $FormModel::create( array(
-			'title' => 'Discovery Call Intake', 'form_fields' => json_encode( $form_fields ),
-			'status' => 'published', 'appearance_settings' => '', 'type' => 'form',
-			'has_payment' => 0, 'conditions' => '', 'created_by' => 1,
-		) );
-		$form_id = $form->id;
+		if ( $existing_id ) {
+			$existing->form_fields = json_encode( $form_fields );
+			$existing->save();
+			$form_id = $existing_id;
+		} else {
+			$form = $FormModel::create( array(
+				'title' => 'Discovery Call Intake', 'form_fields' => json_encode( $form_fields ),
+				'status' => 'published', 'appearance_settings' => '', 'type' => 'form',
+				'has_payment' => 0, 'conditions' => '', 'created_by' => 1,
+			) );
+			$form_id = $form->id;
+		}
 
 		$notify_to = apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) );
 		$Helper::setFormMeta( $form_id, 'formSettings', array(
@@ -197,7 +232,7 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 			'fromName' => '', 'fromEmail' => '', 'replyTo' => '{inputs.email}', 'bcc' => '',
 			'subject' => 'New Discovery Call request from {inputs.names.first_name}', 'message' => '{all_data}', 'enabled' => true,
 		) );
-		$report[] = "form 'Discovery Call Intake' CREATED (#{$form_id})";
+		$report[] = "form 'Discovery Call Intake' (#{$form_id}) set to 3-step";
 	}
 } else {
 	$report[] = 'WARNING: Fluent Forms not active — form not created. Activate it, then re-run.';
