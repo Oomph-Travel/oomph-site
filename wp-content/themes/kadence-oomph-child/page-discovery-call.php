@@ -132,6 +132,15 @@ if ( function_exists( 'wpFluent' ) ) {
 					true
 				);
 				?>
+				<div class="oomph-calendly__confirm" data-calendly-confirm hidden role="status" aria-live="polite" style="text-align:center;padding:var(--space-8) 0;">
+					<p class="oomph-eyebrow">You're booked</p>
+					<h3 class="oomph-italic-display" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Your call is on the calendar.</h3>
+					<p>Check your inbox for the confirmation and the calendar invite — I'll come prepared. See you then.</p>
+					<p class="oomph-quiz__cta" style="justify-content:center;">
+						<a class="oomph-btn oomph-btn--primary" href="/">Back to home <span aria-hidden="true">&rarr;</span></a>
+						<a class="oomph-btn oomph-btn--ghost" href="/journal/">Read the journal</a>
+					</p>
+				</div>
 			<?php else : ?>
 				<div class="oomph-calendly oomph-calendly--placeholder" role="note" style="border:1px solid var(--hairline);border-radius:var(--radius-md);padding:var(--space-7);text-align:center;">
 					<p style="margin:0 0 var(--space-3);"><strong>Calendly booking loads here.</strong></p>
@@ -171,6 +180,28 @@ if ( function_exists( 'wpFluent' ) ) {
 		window.dataLayer.push( { event: 'generate_lead', lead_source: 'discovery_call_form' } );
 		if ( typeof window.gtag === 'function' ) {
 			window.gtag( 'event', 'generate_lead', { lead_source: 'discovery_call_form' } );
+		}
+	} );
+}() );
+</script>
+<script>
+// When Calendly confirms a booking, swap the widget for an on-page confirmation
+// with clear exits — otherwise the visitor is stranded on Calendly's own screen.
+( function () {
+	window.addEventListener( 'message', function ( e ) {
+		if ( ! e.data || typeof e.data !== 'object' || e.data.event !== 'calendly.event_scheduled' ) {
+			return;
+		}
+		var widget  = document.querySelector( '.calendly-inline-widget' );
+		var confirm = document.querySelector( '[data-calendly-confirm]' );
+		var book    = document.getElementById( 'book' );
+		if ( widget ) { widget.style.display = 'none'; }
+		if ( confirm ) { confirm.hidden = false; }
+		if ( book ) { book.scrollIntoView( { behavior: 'smooth', block: 'start' } ); }
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push( { event: 'generate_lead', lead_source: 'calendly_booking' } );
+		if ( typeof window.gtag === 'function' ) {
+			window.gtag( 'event', 'generate_lead', { lead_source: 'calendly_booking' } );
 		}
 	} );
 }() );
