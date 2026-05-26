@@ -27,8 +27,11 @@ $posts_q = new WP_Query( array(
 	<a class="skip-link sr-only sr-only-focusable" href="#oomph-content">Skip to main content</a>
 	<div id="oomph-content"></div>
 
-	<section class="oomph-section oomph-hero" aria-labelledby="journal-title">
-		<div class="oomph-container oomph-container--prose">
+	<section class="oomph-hero oomph-hero--imaged" aria-labelledby="journal-title">
+		<picture class="oomph-hero__media">
+			<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/heroes/journal-hero.jpg' ); ?>" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
+		</picture>
+		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow">From the Journal</p>
 			<h1 id="journal-title" class="oomph-hero__headline oomph-italic-display">Field notes from the road and the rail.</h1>
 			<p class="oomph-hero__subhead">First-hand notes on cruising and custom European travel — what's worth knowing before you book, from one advisor who sails and travels it himself.</p>
