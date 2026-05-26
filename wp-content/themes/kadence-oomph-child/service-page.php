@@ -50,6 +50,8 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 // Hero background image: ACF image array or no image (Bone canvas).
 $hero_image_acf = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
 $hero_has_image = is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] );
+// Fall back to a bundled cruise hero photo when no ACF image is set.
+$hero_url = $hero_has_image ? $hero_image_acf['url'] : get_stylesheet_directory_uri() . '/assets/images/heroes/cruise-hero.jpg';
 
 /*
  * Service Page ACF fields with voice-aligned fallbacks. Fallbacks
@@ -140,19 +142,17 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 	<div id="oomph-content"></div>
 
 	<?php /* 1. HERO ---------------------------------------------------- */ ?>
-	<section class="oomph-section oomph-hero<?php echo $hero_has_image ? ' oomph-hero--imaged' : ''; ?>" aria-label="Luxury cruise planning">
-		<?php if ( $hero_has_image ) : ?>
+	<section class="oomph-hero oomph-hero--imaged" aria-label="Luxury cruise planning">
 		<picture class="oomph-hero__media">
 			<img
-				src="<?php echo esc_url( $hero_image_acf['url'] ); ?>"
-				alt="<?php echo esc_attr( $hero_image_acf['alt'] ?? '' ); ?>"
-				width="<?php echo esc_attr( $hero_image_acf['width'] ?? 1000 ); ?>"
-				height="<?php echo esc_attr( $hero_image_acf['height'] ?? 667 ); ?>"
+				src="<?php echo esc_url( $hero_url ); ?>"
+				alt="<?php echo esc_attr( $hero_has_image ? ( $hero_image_acf['alt'] ?? '' ) : '' ); ?>"
+				width="1600"
+				height="1067"
 				fetchpriority="high"
 				decoding="async"
 			>
 		</picture>
-		<?php endif; ?>
 		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow"><?php echo esc_html( strtoupper( $hero_eyebrow ) ); ?></p>
 			<h1 class="oomph-hero__headline oomph-italic-display"><?php echo esc_html( $hero_headline ); ?></h1>

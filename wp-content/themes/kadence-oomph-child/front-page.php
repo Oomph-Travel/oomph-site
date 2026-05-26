@@ -137,21 +137,24 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				<h2 id="what-i-plan-title">Three services. One named advisor.</h2>
 			</div>
 			<div class="oomph-grid oomph-grid--3">
-				<a class="oomph-card oomph-card--clickable" href="/luxury-cruise-planning/">
+				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/luxury-cruise-planning/">
+					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-cruise.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
 					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 01</p>
 					<h3 class="oomph-card__headline">Luxury cruise planning.</h3>
 					<p>Silversea, Regent, Seabourn, Crystal, Cunard Grills, Viking Ocean. Cabin selection by deck and wave-zone, onboard credit, pre- and post-cruise extensions.</p>
 					<p class="oomph-card__meta">See cruise planning →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
-				<a class="oomph-card oomph-card--clickable" href="/custom-italy-travel/">
+				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/custom-italy-travel/">
+					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-italy.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
 					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 02</p>
 					<h3 class="oomph-card__headline">Custom Italy travel.</h3>
 					<p>Hand-built itineraries by region — Puglia, Sicily, the Lakes, the Dolomites. Private drivers, vetted guides, the villa rentals that actually deliver.</p>
 					<p class="oomph-card__meta">See custom Italy →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
-				<a class="oomph-card oomph-card--clickable" href="/multi-generational-travel-planning/">
+				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/multi-generational-travel-planning/">
+					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-multigen.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
 					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 03</p>
 					<h3 class="oomph-card__headline">Multi-generational travel.</h3>
 					<p>The trip that works for grandparents, parents, teens, and the toddler. Pace, mobility, dietary, special-occasion choreography — planned around the slowest walker.</p>
