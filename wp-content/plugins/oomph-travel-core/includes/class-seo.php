@@ -22,30 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class SEO {
 
 	public static function init(): void {
-		add_filter( 'robots_txt', array( __CLASS__, 'robots_txt' ), 10, 2 );
-		// Serve /llms.txt early, before WordPress's canonical trailing-slash
-		// redirect kicks in on the .txt request.
+		// Rank Math already serves a crawl-friendly robots.txt with the XML
+		// sitemap, so we don't filter robots_txt. We only add /llms.txt,
+		// served early — before WordPress's canonical trailing-slash redirect
+		// would fire on the .txt request.
 		add_action( 'init', array( __CLASS__, 'serve_llms' ), 0 );
 	}
 
-	public static function robots_txt( string $output, $public ): string {
-		if ( ! $public ) {
-			return $output; // staging / non-public: keep WP's disallow-all.
-		}
-		$lines   = array();
-		$lines[] = 'User-agent: *';
-		$lines[] = 'Allow: /';
-		$lines[] = 'Disallow: /wp-admin/';
-		$lines[] = 'Allow: /wp-admin/admin-ajax.php';
-		$lines[] = '';
-		$lines[] = 'Sitemap: ' . home_url( '/sitemap_index.xml' );
-		$lines[] = 'Sitemap: ' . home_url( '/llms.txt' );
-		return implode( "\n", $lines ) . "\n";
-	}
-
 	public static function serve_llms(): void {
-		$uri = strtok( (string) ( $_SERVER['REQUEST_URI'] ?? '' ), '?' );
-		if ( rtrim( $uri, '/' ) !== '/llms.txt' ) {
+		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+			return; // No request context (e.g. WP-CLI).
+		}
+		$uri = strtok( (string) $_SERVER['REQUEST_URI'], '?' );
+		if ( ! is_string( $uri ) || '/llms.txt' !== rtrim( $uri, '/' ) ) {
 			return;
 		}
 		header( 'Content-Type: text/plain; charset=utf-8' );
@@ -54,7 +43,7 @@ final class SEO {
 		exit;
 	}
 
-	private static function llms_content(): string {
+	public static function llms_content(): string {
 		$site = home_url( '/' );
 		$out  = array();
 
