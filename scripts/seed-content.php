@@ -632,6 +632,20 @@ if ( $has_primary ) {
 	}
 }
 
+/* ---------------------------------------------------------------------------
+ * 9. Physical /llms.txt (SiteGround serves .txt statically, bypassing PHP).
+ * ------------------------------------------------------------------------- */
+if ( class_exists( 'OomphTravel\\Core\\SEO' ) ) {
+	$llms = \OomphTravel\Core\SEO::llms_content();
+	if ( false !== @file_put_contents( ABSPATH . 'llms.txt', $llms ) ) {
+		$report[] = 'wrote ' . ABSPATH . 'llms.txt';
+	} else {
+		$report[] = 'WARNING: could not write llms.txt to web root';
+	}
+} else {
+	$report[] = 'SEO class not loaded — llms.txt not written (deploy plugin first)';
+}
+
 flush_rewrite_rules( false );
 
 echo "\n=== Oomph content seed ===\n";
