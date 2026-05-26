@@ -38,6 +38,18 @@ if ( get_option( 'blogdescription' ) !== 'Premium cruises & custom European trav
 	$report[] = 'tagline already correct (skip)';
 }
 
+// Journal permalink — posts live at /journal/{slug}/.
+if ( get_option( 'permalink_structure' ) !== '/journal/%postname%/' ) {
+	global $wp_rewrite;
+	update_option( 'permalink_structure', '/journal/%postname%/' );
+	if ( isset( $wp_rewrite ) ) {
+		$wp_rewrite->set_permalink_structure( '/journal/%postname%/' );
+	}
+	$report[] = 'permalink structure -> /journal/%postname%/';
+} else {
+	$report[] = 'permalink structure already /journal/ (skip)';
+}
+
 /* ---------------------------------------------------------------------------
  * 2. Rank Math — homepage SEO (front page = posts, so meta lives in options)
  * ------------------------------------------------------------------------- */
@@ -413,6 +425,7 @@ $service_pages = array(
 	'multi-generational-travel-planning'  => 'Multi-Generational Travel Planning',
 	'trip-quiz'                           => 'Trip Quiz', // cabin quiz (page-trip-quiz.php)
 	'cruise-travel-trends'                => 'Cruise Travel Trends', // guide landing (page-cruise-travel-trends.php)
+	'journal'                             => 'Journal', // post archive (page-journal.php)
 );
 foreach ( $service_pages as $slug => $title ) {
 	if ( get_page_by_path( $slug ) ) {
@@ -427,6 +440,83 @@ foreach ( $service_pages as $slug => $title ) {
 		'post_content' => '',
 	) );
 	$report[] = is_wp_error( $pid ) ? "ERROR creating /$slug/: " . $pid->get_error_message() : "page /$slug/ CREATED (#{$pid})";
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. First journal posts (adapted from the Cruise Travel Trends guide).
+ *    Create-if-missing by slug — Eric's later edits are preserved.
+ * ------------------------------------------------------------------------- */
+$cruise_cat = term_exists( 'Cruise', 'category' );
+if ( ! $cruise_cat ) {
+	$cruise_cat = wp_insert_term( 'Cruise', 'category' );
+}
+$cruise_cat_id = is_array( $cruise_cat ) ? (int) $cruise_cat['term_id'] : 0;
+
+$slow_cruise = <<<'HTML'
+<p>Fifteen years ago, a Mediterranean cruise meant eight ports in ten days. Embark by noon, sail by six, repeat. You got a passport stamp, a postcard, and a tired group of guests who had eaten lunch in three countries.</p>
+<p>The lines I work with have spent the last two years quietly redesigning that. For 2026 and 2027, the brochures are full of phrases that did not appear a decade ago: <em>overnight in port. Late-evening departure. Two-night stay.</em></p>
+<h2>What is actually changing</h2>
+<p>Azamara's 2026 itineraries now include roughly 28 ports with consecutive overnights. Regent's expanded Concierge Collection added 32 itineraries between late 2026 and late 2027 — including the line's first full winter Mediterranean season, partly because winter avoids the crowds. Cunard added 22 overnight stays and 26 late-evening departures to its 2026–2027 schedule. And Explora Journeys built Explora III's first season around what they call longer stays, overnight immersions, and a more unhurried pace of discovery.</p>
+<blockquote>The ships that overnight in port are the ones whose passengers come back saying they actually saw the place.</blockquote>
+<h2>Why it matters for your trip</h2>
+<p>The math is simple. A ship that overnights in Bordeaux gets you a sun-warmed afternoon in Saint-Émilion and dinner back on board, then dinner the next night at a family-run table in town. A ship that arrives at eight a.m. and leaves at five p.m. gets you a coach tour and a souvenir.</p>
+<p>For repeat cruisers, this is the single most important shift in how to book. Two ten-night sailings with overnights now feel longer and richer than one fourteen-night sailing without.</p>
+<h2>The one question to ask before you book</h2>
+<p>Before you commit to any 2026 or 2027 sailing, ask: <strong>how many ports include an overnight or a late departure?</strong> The answer will tell you more about the trip than the ship's name will.</p>
+<!-- TODO: Eric — add a first-hand line: a specific overnight you have sailed and what it changed about the trip. -->
+HTML;
+
+$first_cruise = <<<'HTML'
+<p>The trends I write about can sound like inside language. They are not meant to. If you have never sailed premium or luxury before, here is the short version of how I would plan a first one.</p>
+<h2>1. Pick the destination first, not the line</h2>
+<p>The right line depends on the trip. Alaska is best served by a small-to-mid-size luxury ship. The Mediterranean by a smaller ship that can call in city ports. Japan by a line with strong port programming. The first question is always where you want to go.</p>
+<h2>2. Length matters more than category</h2>
+<p>A ten-night sailing in a comfortable balcony cabin will give you a richer experience than a seven-night sailing in a suite. Length is the single most important variable in how the trip feels.</p>
+<h2>3. Book mid-ship, low to mid deck</h2>
+<p>First-time cruisers consistently underestimate motion. Mid-ship on a lower deck is the most stable cabin location. Move higher and forward once you know how your body handles the sea. (If you are not sure, my <a href="/trip-quiz/">cabin quiz</a> will point you to the right category.)</p>
+<h2>4. Choose all-inclusive for your first sailing</h2>
+<p>It removes the constant pricing decisions that make a first cruise mentally exhausting. Regent, Silversea's Door-to-Door fares, and Explora Journeys are the cleanest entries.</p>
+<h2>5. Do not book the cheapest sailing</h2>
+<p>A repositioning sailing with five sea days in a row, or shoulder season with unpredictable weather, is the wrong introduction. Pay the modest premium for an established itinerary in a reliable season.</p>
+<h2>6. Use an advisor</h2>
+<p>The things that go wrong on a first cruise — wrong cabin, wrong itinerary, wrong line — are not rare, and they are not always cheap to fix. A good advisor catches them before your deposit.</p>
+<!-- TODO: Eric — open with a first-hand line: a first-timer you planned for and how it landed. -->
+HTML;
+
+$journal_posts = array(
+	array(
+		'slug'    => 'the-slow-cruise',
+		'title'   => 'The Slow Cruise: Why Ships Are Finally Staying Longer in Port',
+		'excerpt' => 'Cruise lines are rebuilding 2026–2027 itineraries around overnight stays and late departures — fewer ports, more time in each. Here is why it matters, and the one question to ask before you book.',
+		'content' => $slow_cruise,
+	),
+	array(
+		'slug'    => 'first-premium-cruise',
+		'title'   => "Your First Premium Cruise: How I'd Plan It",
+		'excerpt' => 'Six rules for a first premium or luxury cruise: pick the destination before the line, length over cabin category, book mid-ship, and why all-inclusive is the easiest way in.',
+		'content' => $first_cruise,
+	),
+);
+
+foreach ( $journal_posts as $jp ) {
+	$exists = get_posts( array( 'post_type' => 'post', 'name' => $jp['slug'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $exists ) {
+		$report[] = "post /journal/{$jp['slug']}/ exists — skip";
+		continue;
+	}
+	$pid = wp_insert_post( array(
+		'post_type'    => 'post',
+		'post_status'  => 'publish',
+		'post_title'   => $jp['title'],
+		'post_name'    => $jp['slug'],
+		'post_excerpt' => $jp['excerpt'],
+		'post_content' => $jp['content'],
+		'post_author'  => 1,
+	) );
+	if ( ! is_wp_error( $pid ) && $cruise_cat_id ) {
+		wp_set_post_categories( $pid, array( $cruise_cat_id ) );
+	}
+	$report[] = is_wp_error( $pid ) ? "ERROR post {$jp['slug']}: " . $pid->get_error_message() : "post /journal/{$jp['slug']}/ CREATED (#{$pid})";
 }
 
 flush_rewrite_rules( false );
