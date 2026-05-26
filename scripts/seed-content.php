@@ -309,6 +309,86 @@ if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
 }
 
 /* ---------------------------------------------------------------------------
+ * 4d. Cruise Travel Trends form (email-only) — emails the guide download link.
+ *     Looks up the uploaded "Cruise Travel Trends" PDF for the per-env URL.
+ * ------------------------------------------------------------------------- */
+if ( class_exists( 'FluentForm\\App\\Models\\Form' ) ) {
+	$FormModel = 'FluentForm\\App\\Models\\Form';
+	$Helper    = 'FluentForm\\App\\Helpers\\Helper';
+
+	$guide_url = '';
+	$att = get_posts( array( 'post_type' => 'attachment', 'title' => 'Cruise Travel Trends', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $att ) {
+		$guide_url = wp_get_attachment_url( $att[0] );
+		// The PDF's auto-slug "cruise-travel-trends" collides with the landing
+		// page slug — free it so /cruise-travel-trends/ resolves to the page.
+		$att_post = get_post( $att[0] );
+		if ( $att_post && 'cruise-travel-trends' === $att_post->post_name ) {
+			wp_update_post( array( 'ID' => $att[0], 'post_name' => 'cruise-travel-trends-guide' ) );
+			$report[] = 'freed slug: guide attachment → cruise-travel-trends-guide';
+		}
+	}
+
+	$tg = $FormModel::where( 'title', 'Cruise Travel Trends' )->first();
+	if ( $tg ) {
+		$report[] = "form 'Cruise Travel Trends' exists (#{$tg->id}) — skip" . ( $guide_url ? '' : ' (WARNING: guide PDF not in media)' );
+	} elseif ( '' === $guide_url ) {
+		$report[] = "SKIP 'Cruise Travel Trends' form — upload the PDF to media (title 'Cruise Travel Trends') first, then re-run.";
+	} else {
+		$tg_fields = array(
+			'fields' => array(
+				array(
+					'index' => 0, 'element' => 'input_email',
+					'attributes' => array( 'type' => 'email', 'name' => 'email', 'value' => '', 'class' => '', 'placeholder' => 'you@example.com' ),
+					'settings' => array(
+						'container_class' => '', 'label' => 'Email', 'label_placement' => 'hidden', 'admin_field_label' => '', 'help_message' => '',
+						'validation_rules' => array(
+							'required' => array( 'value' => true, 'message' => 'Email is required', 'global' => false ),
+							'email'    => array( 'value' => true, 'message' => 'Please enter a valid email', 'global' => true ),
+						),
+						'conditional_logics' => array(),
+					),
+					'editor_options' => array( 'title' => 'Email', 'icon_class' => 'dashicon dashicons dashicons-email', 'template' => 'inputText' ),
+					'uniqElKey' => 'el_tg_email_1',
+				),
+			),
+			'submitButton' => array(
+				'uniqElKey' => 'el_tg_submit_1', 'element' => 'button',
+				'attributes' => array( 'type' => 'submit', 'class' => '' ),
+				'settings' => array( 'container_class' => '', 'align' => 'left', 'button_style' => 'default', 'button_size' => 'md', 'color' => '#14171A', 'button_ui' => array( 'type' => 'default', 'text' => 'Send me the guide', 'img_url' => '' ), 'normal_styles' => array(), 'hover_styles' => array() ),
+				'editor_options' => array( 'title' => 'Submit Button' ),
+			),
+		);
+		$tgf = $FormModel::create( array(
+			'title' => 'Cruise Travel Trends', 'form_fields' => json_encode( $tg_fields ),
+			'status' => 'published', 'appearance_settings' => '', 'type' => 'form',
+			'has_payment' => 0, 'conditions' => '', 'created_by' => 1,
+		) );
+		$Helper::setFormMeta( $tgf->id, 'formSettings', array(
+			'confirmation' => array( 'redirectTo' => 'samePage', 'messageToShow' => '<p>Check your inbox — the guide is on its way.</p>', 'samePageFormBehavior' => 'hide_form', 'customPage' => null, 'redirectUrl' => '' ),
+			'restrictions' => array( 'requireLogin' => array( 'enabled' => false ) ),
+			'layout' => array( 'labelPlacement' => 'top', 'errorMessagePlacement' => 'inline' ),
+		) );
+		// Single feed: deliver to the subscriber, BCC the advisor.
+		$Helper::setFormMeta( $tgf->id, 'notifications', array(
+			'name'      => 'Cruise Travel Trends delivery',
+			'sendTo'    => array( 'type' => 'email', 'email' => '{inputs.email}', 'field' => '', 'routing' => array() ),
+			'fromName'  => 'Eric Hempel · Oomph Travel',
+			'fromEmail' => '',
+			'replyTo'   => '',
+			'bcc'       => apply_filters( 'oomph_lead_notify_email', get_option( 'admin_email' ) ),
+			'subject'   => 'Your Cruise Travel Trends guide',
+			'message'   => '<p>Thanks for grabbing the guide — here it is:</p>'
+				. '<p><a href="' . esc_url( $guide_url ) . '">Download Cruise Travel Trends (2026–2027)</a></p>'
+				. '<p>If you\'re weighing a cruise in the next year and want a second set of eyes before you book, a free 30-minute call is the next step.</p>'
+				. '<p>— Eric Hempel, Oomph Travel</p>',
+			'enabled'   => true,
+		) );
+		$report[] = "form 'Cruise Travel Trends' CREATED (#{$tgf->id}) → guide: $guide_url";
+	}
+}
+
+/* ---------------------------------------------------------------------------
  * 5. /discovery-call/ page (template binds by slug via page-discovery-call.php)
  * ------------------------------------------------------------------------- */
 $dc = get_page_by_path( 'discovery-call' );
@@ -332,6 +412,7 @@ $service_pages = array(
 	'custom-italy-travel'                 => 'Custom Italy Travel',
 	'multi-generational-travel-planning'  => 'Multi-Generational Travel Planning',
 	'trip-quiz'                           => 'Trip Quiz', // cabin quiz (page-trip-quiz.php)
+	'cruise-travel-trends'                => 'Cruise Travel Trends', // guide landing (page-cruise-travel-trends.php)
 );
 foreach ( $service_pages as $slug => $title ) {
 	if ( get_page_by_path( $slug ) ) {
