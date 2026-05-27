@@ -49,8 +49,7 @@ add_action( 'init', array( \OomphTravel\Core\CPT_Itinerary::class,   'register' 
 add_action( 'init', array( \OomphTravel\Core\CPT_Cruise::class,      'register' ) );
 add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' ) );
 
-add_action( 'wp_head', array( \OomphTravel\Core\Schema::class, 'output' ), 5 );
-
+\OomphTravel\Core\Schema::init();
 \OomphTravel\Core\Clarity_Guard::init();
 \OomphTravel\Core\ACF_Config::init();
 \OomphTravel\Core\SEO::init();

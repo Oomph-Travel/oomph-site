@@ -28,6 +28,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Schema {
 
+	/**
+	 * Wire schema output and defend the plugin's role as the single source of
+	 * structured data.
+	 *
+	 * See docs/schema-audit-2026-05-26.md: Rank Math's Schema module is disabled
+	 * today, but its settings are pre-configured to emit a duplicate
+	 * Person / Organization / Article graph the moment that module is toggled on
+	 * (dashboard or setup wizard). Emptying the rank_math/json_ld graph
+	 * unconditionally keeps oomph-travel-core the sole source of JSON-LD
+	 * regardless of that UI toggle. Registered at plugin load, so it is in place
+	 * before wp_head fires whether or not the module is active.
+	 */
+	public static function init(): void {
+		add_action( 'wp_head', array( __CLASS__, 'output' ), 5 );
+		add_filter( 'rank_math/json_ld', '__return_empty_array', 99 );
+	}
+
 	public static function output(): void {
 		$graph = array();
 
