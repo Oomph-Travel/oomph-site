@@ -89,6 +89,10 @@ $page_meta = array(
 		'rank_math_title'       => 'Luxury Cruise Planning %sep% %sitename%',
 		'rank_math_description' => 'Premium and ultra-luxury cruise planning by a Silversea specialist — cabin selection, onboard credit, pre and post extensions. Book a free discovery call.',
 	),
+	'client-stories' => array(
+		'rank_math_title'       => 'Client Reviews · Cruise & Custom Travel %sep% %sitename%',
+		'rank_math_description' => 'Real reviews from cruise and custom-travel clients I\'ve planned for — Silversea, Oceania, NCL, Mexican Riviera, and more. Book a free 30-min call.',
+	),
 );
 foreach ( $page_meta as $slug => $meta ) {
 	$page = get_page_by_path( $slug );
@@ -493,6 +497,7 @@ $service_pages = array(
 	'trip-quiz'                           => 'Trip Quiz', // cabin quiz (page-trip-quiz.php)
 	'cruise-travel-trends'                => 'Cruise Travel Trends', // guide landing (page-cruise-travel-trends.php)
 	'journal'                             => 'Journal', // post archive (page-journal.php)
+	'client-stories'                      => 'Client Stories', // testimonials (page-client-stories.php)
 );
 foreach ( $service_pages as $slug => $title ) {
 	if ( get_page_by_path( $slug ) ) {
@@ -643,6 +648,7 @@ if ( $has_primary ) {
 			'custom-italy-travel'                => 'Custom Italy',
 			'multi-generational-travel-planning' => 'Multi-Generational',
 			'journal'                            => 'Journal',
+			'client-stories'                     => 'Client Stories',
 			'discovery-call'                     => 'Discovery Call',
 		);
 		$pos = 0;
@@ -664,6 +670,63 @@ if ( $has_primary ) {
 		$locations['primary'] = $menu_id;
 		set_theme_mod( 'nav_menu_locations', $locations );
 		$report[] = "primary nav menu CREATED (#{$menu_id}) with {$pos} items";
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * 8b. Always-runs: ensure "Client Stories" exists in Primary Navigation.
+ *     Section 8 only creates the menu when none is assigned; this back-fills
+ *     environments where the menu already exists. Inserts before Discovery Call.
+ * ------------------------------------------------------------------------- */
+$primary_menu = wp_get_nav_menu_object( 'Primary Navigation' );
+$cs_page      = get_page_by_path( 'client-stories' );
+if ( $primary_menu && $cs_page ) {
+	$items   = wp_get_nav_menu_items( $primary_menu->term_id ) ?: array();
+	$exists  = false;
+	$dc_pos  = 0;
+	$max_pos = 0;
+	foreach ( $items as $it ) {
+		if ( (int) $it->object_id === (int) $cs_page->ID && $it->object === 'page' ) {
+			$exists = true;
+		}
+		if ( $it->object === 'page' ) {
+			$pg = get_post( (int) $it->object_id );
+			if ( $pg && $pg->post_name === 'discovery-call' ) {
+				$dc_pos = (int) $it->menu_order;
+			}
+		}
+		if ( (int) $it->menu_order > $max_pos ) {
+			$max_pos = (int) $it->menu_order;
+		}
+	}
+	if ( $exists ) {
+		$report[] = 'Client Stories already in Primary Navigation (skip)';
+	} else {
+		$insert_pos = $dc_pos > 0 ? $dc_pos : ( $max_pos + 1 );
+		// If inserting before Discovery Call, push it (and anything after) down one slot.
+		if ( $dc_pos > 0 ) {
+			foreach ( $items as $it ) {
+				if ( (int) $it->menu_order >= $dc_pos ) {
+					wp_update_nav_menu_item( $primary_menu->term_id, (int) $it->ID, array(
+						'menu-item-title'     => $it->title,
+						'menu-item-object'    => $it->object,
+						'menu-item-object-id' => (int) $it->object_id,
+						'menu-item-type'      => $it->type,
+						'menu-item-status'    => 'publish',
+						'menu-item-position'  => (int) $it->menu_order + 1,
+					) );
+				}
+			}
+		}
+		wp_update_nav_menu_item( $primary_menu->term_id, 0, array(
+			'menu-item-title'     => 'Client Stories',
+			'menu-item-object'    => 'page',
+			'menu-item-object-id' => (int) $cs_page->ID,
+			'menu-item-type'      => 'post_type',
+			'menu-item-status'    => 'publish',
+			'menu-item-position'  => $insert_pos,
+		) );
+		$report[] = "Client Stories ADDED to Primary Navigation at position {$insert_pos}";
 	}
 }
 
