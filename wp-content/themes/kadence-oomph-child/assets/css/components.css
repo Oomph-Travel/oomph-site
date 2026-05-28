@@ -925,3 +925,67 @@
   transition: transform var(--duration-base) var(--easing-standard);
 }
 .oomph-card--media:hover .oomph-card__media img { transform: scale(1.03); }
+
+/* ============================================================
+ * Testimonials (Client Stories) — Quiet Premium signature:
+ * Paper card, Stone hairline, Old Brass stars, Marine Navy headings.
+ * 1-col mobile, 2-col >=768px (long quotes read better wide than 3-up).
+ * ============================================================ */
+.oomph-grid--testimonials {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+@media (min-width: 768px) {
+  .oomph-grid--testimonials {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-7);
+  }
+}
+
+.oomph-testimonial {
+  background: var(--surface-paper);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.oomph-testimonial__rating {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--color-old-brass);
+  font-size: var(--text-body);
+  line-height: 1;
+}
+.oomph-testimonial__star { display: inline-block; }
+.oomph-testimonial__star.is-filled { color: var(--color-old-brass); }
+.oomph-testimonial__star:not(.is-filled) { color: var(--color-stone); }
+
+.oomph-testimonial__title {
+  font-size: var(--text-h3);
+  color: var(--color-marine-navy);
+  margin: 0;
+}
+
+.oomph-testimonial__body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--color-charcoal);
+  font-size: var(--text-body);
+  line-height: 1.6;
+}
+.oomph-testimonial__body p { margin: 0; }
+
+.oomph-testimonial__meta {
+  border-top: 1px solid var(--color-stone);
+  padding-top: var(--space-4);
+  color: var(--color-slate);
+  font-size: var(--text-body-sm);
+}
+.oomph-testimonial__meta p { margin: 0 0 var(--space-1); }
+.oomph-testimonial__author strong { color: var(--color-charcoal); }
+.oomph-testimonial__trip { font-style: italic; }

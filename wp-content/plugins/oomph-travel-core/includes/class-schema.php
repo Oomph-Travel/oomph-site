@@ -74,6 +74,17 @@ final class Schema {
 			}
 		}
 
+		// Client stories: attach Review[] + AggregateRating to the org via a
+		// second TravelAgency node with the same @id (Google merges by @id).
+		// Source of truth for testimonials is the theme's
+		// oomph_client_testimonials filter, so on-page and schema can't drift.
+		if ( is_page( 'client-stories' ) ) {
+			$reviews_node = self::client_stories_reviews();
+			if ( $reviews_node ) {
+				$graph[] = $reviews_node;
+			}
+		}
+
 		$payload = array(
 			'@context' => 'https://schema.org',
 			'@graph'   => array_values( array_filter( $graph ) ),
@@ -286,6 +297,73 @@ final class Schema {
 			'description' => wp_strip_all_tags( (string) get_the_excerpt( $post ) ),
 			'url'         => (string) get_permalink( $post ),
 			'organizer'   => array( '@id' => home_url( '/' ) . '#organization' ),
+		);
+	}
+
+	/**
+	 * Reviews + AggregateRating for /client-stories/.
+	 *
+	 * Returns a partial TravelAgency node carrying review[] + aggregateRating,
+	 * sharing the #organization @id with self::organization() so Google merges
+	 * them into a single org entity. Data comes from the theme's
+	 * `oomph_client_testimonials` filter (inc/client-stories.php) so on-page
+	 * and schema stay in sync (cro-rules R12).
+	 *
+	 * Returns null if no testimonials are registered, so we never emit empty
+	 * aggregate signals.
+	 */
+	private static function client_stories_reviews(): ?array {
+		$rows = apply_filters( 'oomph_client_testimonials', array() );
+		if ( ! is_array( $rows ) || empty( $rows ) ) {
+			return null;
+		}
+
+		$reviews = array();
+		$sum     = 0;
+		$count   = 0;
+		foreach ( $rows as $r ) {
+			if ( ! is_array( $r ) ) {
+				continue;
+			}
+			$body = (string) ( $r['body'] ?? '' );
+			$auth = (string) ( $r['author'] ?? '' );
+			if ( $body === '' || $auth === '' ) {
+				continue;
+			}
+			$rating = max( 1, min( 5, (int) ( $r['rating'] ?? 5 ) ) );
+			$sum   += $rating;
+			$count++;
+			$reviews[] = array(
+				'@type'         => 'Review',
+				'reviewRating'  => array(
+					'@type'       => 'Rating',
+					'ratingValue' => (string) $rating,
+					'bestRating'  => '5',
+				),
+				'author'        => array(
+					'@type' => 'Person',
+					'name'  => $auth,
+				),
+				'datePublished' => (string) ( $r['date_pub'] ?? '' ),
+				'name'          => (string) ( $r['title'] ?? '' ),
+				'reviewBody'    => $body,
+			);
+		}
+
+		if ( $count === 0 ) {
+			return null;
+		}
+
+		return array(
+			'@type'           => 'TravelAgency',
+			'@id'             => home_url( '/' ) . '#organization',
+			'aggregateRating' => array(
+				'@type'       => 'AggregateRating',
+				'ratingValue' => number_format( $sum / $count, 1, '.', '' ),
+				'reviewCount' => (string) $count,
+				'bestRating'  => '5',
+			),
+			'review'          => $reviews,
 		);
 	}
 

@@ -62,6 +62,7 @@ function oomph_render_footer(): void {
 		'custom-italy-travel'                => 'Custom Italy',
 		'multi-generational-travel-planning' => 'Multi-Generational',
 		'journal'                            => 'Journal',
+		'client-stories'                     => 'Client Stories',
 		'trip-quiz'                          => 'Cabin Quiz',
 		'cruise-travel-trends'               => 'Cruise Trends Guide',
 		'discovery-call'                     => 'Discovery Call',
