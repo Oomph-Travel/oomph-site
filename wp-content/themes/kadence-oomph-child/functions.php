@@ -20,6 +20,7 @@ require_once OOMPH_CHILD_PATH . '/inc/block-patterns.php';
 require_once OOMPH_CHILD_PATH . '/inc/helpers.php';
 require_once OOMPH_CHILD_PATH . '/inc/footer.php';
 require_once OOMPH_CHILD_PATH . '/inc/service-pages.php';
+require_once OOMPH_CHILD_PATH . '/inc/client-stories.php';
 
 // Calendly booking link for the Discovery Call page inline embed.
 add_filter(
