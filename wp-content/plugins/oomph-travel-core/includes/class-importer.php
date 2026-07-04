@@ -22,8 +22,8 @@ declare( strict_types=1 );
 
 namespace OomphTravel\Core;
 
-if ( ! defined( 'ABSPATH' ) || ! defined( 'WP_CLI' ) || ! WP_CLI ) {
-	return;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 final class Importer {
@@ -109,41 +109,115 @@ final class Importer {
 	 * @param array<string,string> $assoc_args Flags.
 	 */
 	public function __invoke( array $args, array $assoc_args ): void {
+		$res = $this->run(
+			(string) ( $args[0] ?? '' ),
+			array(
+				'type'        => (string) ( $assoc_args['type'] ?? 'dv' ),
+				'status'      => (string) ( $assoc_args['status'] ?? 'draft' ),
+				'dry_run'     => isset( $assoc_args['dry-run'] ),
+				'retire_past' => isset( $assoc_args['retire-past'] ),
+				'limit'       => isset( $assoc_args['limit'] ) ? (int) $assoc_args['limit'] : 0,
+				'after'       => (string) ( $assoc_args['after'] ?? '' ),
+				'before'      => (string) ( $assoc_args['before'] ?? '' ),
+				'lines'       => isset( $assoc_args['lines'] ) ? array_filter( array_map( 'trim', explode( ',', (string) $assoc_args['lines'] ) ) ) : array(),
+			)
+		);
+
+		if ( null !== $res['error'] ) {
+			\WP_CLI::error( $res['error'] );
+		}
+
+		$f = $res['filters'];
+		\WP_CLI::log( sprintf(
+			'Read %d data rows. Filters: type=%s, lines=[%s], %s .. %s%s',
+			$res['total_rows'], $f['type'], implode( ', ', $f['lines'] ), $f['after'], $f['before'], $f['dry_run'] ? ', DRY RUN' : ''
+		) );
+		foreach ( $res['missing_headers'] as $h ) {
+			\WP_CLI::warning( "Column not found in file: \"{$h}\" — treating as empty." );
+		}
+
+		if ( $f['dry_run'] && ! empty( $res['record_seen'] ) ) {
+			\WP_CLI::log( "\nSailing Record Type values seen (all rows, pre-filter):" );
+			$seen = $res['record_seen'];
+			arsort( $seen );
+			foreach ( $seen as $val => $n ) {
+				\WP_CLI::log( sprintf( '  %5d  %s', $n, $val ) );
+			}
+		}
+
+		if ( ! empty( $res['results'] ) ) {
+			\WP_CLI::log( '' );
+			\WP_CLI\Utils\format_items( 'table', $res['results'], array( 'action', 'title', 'ship', 'sail', 'type', 'reason' ) );
+		}
+		if ( $res['retired'] > 0 ) {
+			\WP_CLI::log( sprintf( 'Retire-past: %d past sailing(s) %s to draft.', $res['retired'], $f['dry_run'] ? 'would be set' : 'set' ) );
+		}
+
+		$parts = array();
+		foreach ( $res['counts'] as $action => $n ) {
+			$parts[] = "{$action}: {$n}";
+		}
+		$summary = $parts ? implode( ' · ', $parts ) : 'No rows matched the filters.';
+		\WP_CLI::success( $f['dry_run'] ? "Dry run — no writes. {$summary}" : $summary );
+	}
+
+	/** The default cruise lines the site features. */
+	public static function default_lines(): array {
+		return array( 'Silversea Cruises', 'Oceania Cruises', 'Explora Journeys', 'Celebrity Cruises', 'Regent Seven Seas Cruises', 'Cunard' );
+	}
+
+	/**
+	 * Run an import (or dry run) and return a structured result — no output.
+	 * Shared by the WP-CLI command and the wp-admin "Import Sailings" screen.
+	 *
+	 * @param string              $csv_path Readable path to a CSV file.
+	 * @param array<string,mixed> $opts     type, status, lines[], after, before, limit, dry_run, retire_past.
+	 * @return array{error:?string,total_rows:int,results:array,record_seen:array,counts:array,retired:int,missing_headers:array,filters:array}
+	 */
+	public function run( string $csv_path, array $opts ): array {
+		$empty = array(
+			'error'           => null,
+			'total_rows'      => 0,
+			'results'         => array(),
+			'record_seen'     => array(),
+			'counts'          => array(),
+			'retired'         => 0,
+			'missing_headers' => array(),
+			'filters'         => array( 'type' => '', 'lines' => array(), 'after' => '', 'before' => '', 'dry_run' => false ),
+		);
+		$this->missing_headers = array();
+
 		if ( ! function_exists( 'update_field' ) ) {
-			\WP_CLI::error( 'Advanced Custom Fields is not active; cannot write cruise fields.' );
+			return array_merge( $empty, array( 'error' => 'Advanced Custom Fields is not active; cannot write cruise fields.' ) );
+		}
+		if ( '' === $csv_path || ! is_readable( $csv_path ) ) {
+			return array_merge( $empty, array( 'error' => 'File not readable.' ) );
 		}
 
-		$file = $args[0] ?? '';
-		if ( $file === '' || ! is_readable( $file ) ) {
-			\WP_CLI::error( "CSV file not readable: {$file}" );
-		}
+		$type    = (string) ( $opts['type'] ?? 'dv' );
+		$status  = (string) ( $opts['status'] ?? 'draft' );
+		$dry_run = ! empty( $opts['dry_run'] );
+		$limit   = isset( $opts['limit'] ) ? max( 0, (int) $opts['limit'] ) : 0;
 
-		$type    = (string) ( $assoc_args['type'] ?? 'dv' );
-		$status  = (string) ( $assoc_args['status'] ?? 'draft' );
-		$dry_run = isset( $assoc_args['dry-run'] );
-		$limit   = isset( $assoc_args['limit'] ) ? max( 0, (int) $assoc_args['limit'] ) : 0;
+		$lines    = ( ! empty( $opts['lines'] ) && is_array( $opts['lines'] ) ) ? array_values( array_filter( array_map( 'trim', $opts['lines'] ) ) ) : self::default_lines();
+		$lines_lc = array_map( 'strtolower', $lines );
 
-		$lines_raw = (string) ( $assoc_args['lines'] ?? 'Silversea Cruises,Oceania Cruises,Explora Journeys,Celebrity Cruises,Regent Seven Seas Cruises,Cunard' );
-		$lines     = array_filter( array_map( 'trim', explode( ',', $lines_raw ) ) );
-		$lines_lc  = array_map( 'strtolower', $lines );
-
-		$after  = $this->parse_date( (string) ( $assoc_args['after'] ?? '' ) ) ?? gmdate( 'Y-m-d' );
-		$before = $this->parse_date( (string) ( $assoc_args['before'] ?? '' ) ) ?? gmdate( 'Y-m-d', strtotime( '+15 months' ) );
+		$after  = ( ! empty( $opts['after'] ) ? $this->parse_date( (string) $opts['after'] ) : null ) ?? gmdate( 'Y-m-d' );
+		$before = ( ! empty( $opts['before'] ) ? $this->parse_date( (string) $opts['before'] ) : null ) ?? gmdate( 'Y-m-d', strtotime( '+15 months' ) );
 
 		$want = 'dv' === $type ? array( 'dv' ) : ( 'add' === $type ? array( 'amenity' ) : array( 'dv', 'amenity' ) );
 
-		$rows = $this->read_csv( $file );
+		$rows = $this->read_csv( $csv_path );
 		if ( null === $rows ) {
-			\WP_CLI::error( 'Could not read a header row from the CSV.' );
+			return array_merge( $empty, array( 'error' => 'Could not read a header row from the file.' ) );
 		}
-		\WP_CLI::log( sprintf( 'Read %d data rows. Filters: type=%s, lines=[%s], %s .. %s%s', count( $rows ), $type, implode( ', ', $lines ), $after, $before, $dry_run ? ', DRY RUN' : '' ) );
 
 		$results     = array();
-		$record_seen = array(); // For the dry-run classifier diagnostic.
+		$record_seen = array();
 		$processed   = 0;
 
 		foreach ( $rows as $i => $row ) {
-			$line_no = $i + 2; // +1 header, +1 for 1-indexed.
+			$line_no = $i + 2;
 
 			$ship = trim( $this->cell( $row, 'Ship' ) );
 			$sail = $this->parse_date( $this->cell( $row, 'Sail Date' ) );
@@ -154,9 +228,8 @@ final class Importer {
 				$record_seen[ $rt ] = ( $record_seen[ $rt ] ?? 0 ) + 1;
 			}
 
-			// --- filters (skip with a reason so the summary explains itself) ---
 			if ( ! in_array( $lane, $want, true ) ) {
-				continue; // Off-lane rows are silently excluded (not "skipped" noise).
+				continue;
 			}
 			if ( '' === $ship ) {
 				$results[] = $this->skip( $line_no, '(no ship)', $sail, $lane, 'missing Ship' );
@@ -168,10 +241,10 @@ final class Importer {
 			}
 			$cruise_line = trim( $this->cell( $row, 'Cruise Line' ) );
 			if ( ! empty( $lines_lc ) && ! in_array( strtolower( $cruise_line ), $lines_lc, true ) ) {
-				continue; // Off-list line, excluded quietly.
+				continue;
 			}
 			if ( $sail < $after || $sail > $before ) {
-				continue; // Out of date window, excluded quietly.
+				continue;
 			}
 			if ( $limit > 0 && $processed >= $limit ) {
 				break;
@@ -181,11 +254,23 @@ final class Importer {
 			$results[] = $this->handle_row( $row, $ship, $sail, $lane, $cruise_line, $status, $dry_run );
 		}
 
-		$this->render_summary( $results, $dry_run, $record_seen );
+		$retired = ! empty( $opts['retire_past'] ) ? $this->retire_past( $dry_run ) : 0;
 
-		if ( isset( $assoc_args['retire-past'] ) ) {
-			$this->retire_past( $dry_run );
+		$counts = array();
+		foreach ( $results as $r ) {
+			$counts[ $r['action'] ] = ( $counts[ $r['action'] ] ?? 0 ) + 1;
 		}
+
+		return array(
+			'error'           => null,
+			'total_rows'      => count( $rows ),
+			'results'         => $results,
+			'record_seen'     => $record_seen,
+			'counts'          => $counts,
+			'retired'         => $retired,
+			'missing_headers' => array_keys( $this->missing_headers ),
+			'filters'         => array( 'type' => $type, 'lines' => $lines, 'after' => $after, 'before' => $before, 'dry_run' => $dry_run ),
+		);
 	}
 
 	/**
@@ -348,8 +433,9 @@ final class Importer {
 
 	/**
 	 * Set published sailings whose sail date has passed back to draft.
+	 * Returns how many were (or would be) retired.
 	 */
-	private function retire_past( bool $dry_run ): void {
+	private function retire_past( bool $dry_run ): int {
 		$today = gmdate( 'Y-m-d' );
 		$ids   = get_posts(
 			array(
@@ -363,15 +449,14 @@ final class Importer {
 			)
 		);
 		if ( ! $ids ) {
-			\WP_CLI::log( 'Retire-past: no published sailings with a past sail date.' );
-			return;
+			return 0;
 		}
-		foreach ( $ids as $id ) {
-			if ( ! $dry_run ) {
+		if ( ! $dry_run ) {
+			foreach ( $ids as $id ) {
 				wp_update_post( array( 'ID' => (int) $id, 'post_status' => 'draft' ) );
 			}
 		}
-		\WP_CLI::log( sprintf( 'Retire-past: %d past sailing(s) %s to draft.', count( $ids ), $dry_run ? 'would be set' : 'set' ) );
+		return count( $ids );
 	}
 
 	// --- CSV plumbing -------------------------------------------------------
@@ -417,10 +502,7 @@ final class Importer {
 		if ( array_key_exists( $header, $row ) ) {
 			return $row[ $header ];
 		}
-		if ( ! isset( $this->missing_headers[ $header ] ) ) {
-			$this->missing_headers[ $header ] = true;
-			\WP_CLI::warning( "Column not found in CSV: \"{$header}\" — treating as empty." );
-		}
+		$this->missing_headers[ $header ] = true;
 		return '';
 	}
 
@@ -499,43 +581,8 @@ final class Importer {
 		);
 	}
 
-	/**
-	 * @param array<int,array<string,string>> $results
-	 * @param array<string,int>               $record_seen
-	 */
-	private function render_summary( array $results, bool $dry_run, array $record_seen ): void {
-		$counts = array();
-		foreach ( $results as $r ) {
-			$counts[ $r['action'] ] = ( $counts[ $r['action'] ] ?? 0 ) + 1;
-		}
-
-		if ( $dry_run && ! empty( $record_seen ) ) {
-			\WP_CLI::log( "\nSailing Record Type values seen (all rows, pre-filter):" );
-			arsort( $record_seen );
-			foreach ( $record_seen as $val => $n ) {
-				\WP_CLI::log( sprintf( '  %5d  %s', $n, $val ) );
-			}
-		}
-
-		if ( empty( $results ) ) {
-			\WP_CLI::success( 'No rows matched the filters.' );
-			return;
-		}
-
-		\WP_CLI::log( '' );
-		\WP_CLI\Utils\format_items( 'table', $results, array( 'action', 'title', 'ship', 'sail', 'type', 'reason' ) );
-
-		$parts = array();
-		foreach ( $counts as $action => $n ) {
-			$parts[] = "{$action}: {$n}";
-		}
-		$summary = implode( ' · ', $parts );
-		if ( $dry_run ) {
-			\WP_CLI::success( "Dry run — no writes. {$summary}" );
-		} else {
-			\WP_CLI::success( $summary );
-		}
-	}
 }
 
-\WP_CLI::add_command( 'oomph import-sailings', Importer::class );
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	\WP_CLI::add_command( 'oomph import-sailings', Importer::class );
+}
