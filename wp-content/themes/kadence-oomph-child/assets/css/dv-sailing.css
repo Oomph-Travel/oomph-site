@@ -192,6 +192,8 @@
   min-height: 260px;
   background:
     linear-gradient(160deg, var(--color-marine-navy) 0%, var(--color-midnight-deep) 100%);
+  background-size: cover;
+  background-position: center;
 }
 .oomph-dv-ticket__body {
   background: var(--color-bone);
@@ -392,4 +394,85 @@
 }
 @media (max-width: 640px) {
   .oomph-cruise-incl { grid-template-columns: 1fr; }
+}
+
+/* ---------- group cruise archive / listing -------------------------------- */
+.oomph-cruise-archive__hero { text-align: left; }
+.oomph-cruise-archive__body {
+  padding-block: clamp(var(--space-8), 8vw, var(--space-10));
+}
+
+/* filter bar */
+.oomph-cruise-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-bone);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  margin-bottom: clamp(var(--space-6), 5vw, var(--space-8));
+}
+.oomph-cruise-filters__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-body-sm);
+}
+.oomph-cruise-filters__field > span {
+  font-weight: 600;
+  color: var(--signal-primary);
+  font-size: var(--text-eyebrow);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.oomph-cruise-filters__field select {
+  font-family: var(--font-text);
+  font-size: var(--text-body);
+  padding: var(--space-3) var(--space-4);
+  min-width: 12rem;
+  background: var(--color-paper);
+  color: var(--text-default);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-sm);
+}
+.oomph-cruise-filters__clear {
+  align-self: center;
+  font-size: var(--text-body-sm);
+  color: var(--signal-primary);
+}
+
+/* results grid + cards (.oomph-sailing-card__event lives in components.css — global) */
+.oomph-cruise-archive__grid { margin-top: 0; }
+.oomph-cruise-archive__empty {
+  text-align: center;
+  padding: clamp(var(--space-8), 8vw, var(--space-10)) 0;
+  max-width: 48ch;
+  margin-inline: auto;
+}
+.oomph-cruise-archive__empty p { margin-bottom: var(--space-4); }
+
+/* pagination */
+.oomph-cruise-archive .pagination,
+.oomph-cruise-archive .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: clamp(var(--space-7), 6vw, var(--space-9));
+}
+.oomph-cruise-archive .page-numbers {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-sm);
+  color: var(--signal-primary);
+  text-decoration: none;
+  font-size: var(--text-body-sm);
+}
+.oomph-cruise-archive .page-numbers.current {
+  background: var(--color-marine-navy);
+  color: var(--color-bone);
+  border-color: var(--color-marine-navy);
 }

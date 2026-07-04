@@ -731,6 +731,142 @@ if ( $primary_menu && $cs_page ) {
 }
 
 /* ---------------------------------------------------------------------------
+ * 8c. Always-runs: ensure "Group Cruises" (CPT archive) is in Primary
+ *     Navigation, right after Luxury Cruise Planning. Custom link carrying the
+ *     class `oomph-nav-sailings`, which the theme hides at render time until a
+ *     sailing is published (see inc/cruise-archive.php).
+ * ------------------------------------------------------------------------- */
+$primary_menu = wp_get_nav_menu_object( 'Primary Navigation' );
+$gc_url       = get_post_type_archive_link( 'oomph_cruise' );
+if ( $primary_menu && $gc_url ) {
+	$items   = wp_get_nav_menu_items( $primary_menu->term_id ) ?: array();
+	$exists  = false;
+	$lcp_pos = 0;
+	$max_pos = 0;
+	foreach ( $items as $it ) {
+		if ( is_array( $it->classes ) && in_array( 'oomph-nav-sailings', $it->classes, true ) ) {
+			$exists = true;
+		}
+		if ( $it->object === 'page' ) {
+			$pg = get_post( (int) $it->object_id );
+			if ( $pg && $pg->post_name === 'luxury-cruise-planning' ) {
+				$lcp_pos = (int) $it->menu_order;
+			}
+		}
+		if ( (int) $it->menu_order > $max_pos ) {
+			$max_pos = (int) $it->menu_order;
+		}
+	}
+	if ( $exists ) {
+		$report[] = 'Group Cruises already in Primary Navigation (skip)';
+	} else {
+		$insert_pos = $lcp_pos > 0 ? $lcp_pos + 1 : $max_pos + 1;
+		// Push everything at/after the insert slot down one to make room.
+		foreach ( $items as $it ) {
+			if ( (int) $it->menu_order >= $insert_pos ) {
+				wp_update_nav_menu_item( $primary_menu->term_id, (int) $it->ID, array(
+					'menu-item-title'     => $it->title,
+					'menu-item-object'    => $it->object,
+					'menu-item-object-id' => (int) $it->object_id,
+					'menu-item-type'      => $it->type,
+					'menu-item-url'       => $it->url,
+					'menu-item-status'    => 'publish',
+					'menu-item-position'  => (int) $it->menu_order + 1,
+				) );
+			}
+		}
+		wp_update_nav_menu_item( $primary_menu->term_id, 0, array(
+			'menu-item-title'   => 'Group Cruises',
+			'menu-item-type'    => 'custom',
+			'menu-item-url'     => $gc_url,
+			'menu-item-classes' => 'oomph-nav-sailings',
+			'menu-item-status'  => 'publish',
+			'menu-item-position' => $insert_pos,
+		) );
+		$report[] = "Group Cruises ADDED to Primary Navigation at position {$insert_pos}";
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * 8d. Always-runs: consolidate the three service PAGES under a "Services"
+ *     dropdown parent (custom link, class `oomph-nav-services`) so the header
+ *     stays short. Group Cruises stays a top-level item, positioned right after
+ *     Services. Idempotent.
+ * ------------------------------------------------------------------------- */
+$primary_menu = wp_get_nav_menu_object( 'Primary Navigation' );
+if ( $primary_menu ) {
+	$items          = wp_get_nav_menu_items( $primary_menu->term_id ) ?: array();
+	$services_id    = 0;
+	$services_order = 0;
+	$about_order    = 0;
+	foreach ( $items as $it ) {
+		if ( is_array( $it->classes ) && in_array( 'oomph-nav-services', $it->classes, true ) ) {
+			$services_id    = (int) $it->ID;
+			$services_order = (int) $it->menu_order;
+		}
+		if ( $it->object === 'page' ) {
+			$pg = get_post( (int) $it->object_id );
+			if ( $pg && $pg->post_name === 'about' ) {
+				$about_order = (int) $it->menu_order;
+			}
+		}
+	}
+	if ( ! $services_id ) {
+		$services_order = $about_order > 0 ? $about_order + 1 : 2;
+		$services_id    = (int) wp_update_nav_menu_item( $primary_menu->term_id, 0, array(
+			'menu-item-title'    => 'Services',
+			'menu-item-type'     => 'custom',
+			'menu-item-url'      => '#',
+			'menu-item-classes'  => 'oomph-nav-services',
+			'menu-item-status'   => 'publish',
+			'menu-item-position' => $services_order,
+		) );
+		$report[] = "Services dropdown parent CREATED (#{$services_id})";
+	} else {
+		$report[] = 'Services dropdown parent already exists (skip)';
+	}
+
+	// Nest the three service pages under Services.
+	$service_slugs = array( 'luxury-cruise-planning', 'custom-italy-travel', 'multi-generational-travel-planning' );
+	$items         = wp_get_nav_menu_items( $primary_menu->term_id ) ?: array();
+	foreach ( $items as $it ) {
+		if ( $it->object !== 'page' ) {
+			continue;
+		}
+		$pg = get_post( (int) $it->object_id );
+		if ( $pg && in_array( $pg->post_name, $service_slugs, true ) && (int) $it->menu_item_parent !== $services_id ) {
+			wp_update_nav_menu_item( $primary_menu->term_id, (int) $it->ID, array(
+				'menu-item-title'     => $it->title,
+				'menu-item-object'    => $it->object,
+				'menu-item-object-id' => (int) $it->object_id,
+				'menu-item-type'      => $it->type,
+				'menu-item-parent-id' => $services_id,
+				'menu-item-status'    => 'publish',
+				'menu-item-position'  => (int) $it->menu_order,
+			) );
+			$report[] = "nested under Services: {$it->title}";
+		}
+	}
+
+	// Group Cruises stays top-level, right after Services (migrate it out if a
+	// prior run nested it).
+	foreach ( $items as $it ) {
+		if ( is_array( $it->classes ) && in_array( 'oomph-nav-sailings', $it->classes, true ) && (int) $it->menu_item_parent !== 0 ) {
+			wp_update_nav_menu_item( $primary_menu->term_id, (int) $it->ID, array(
+				'menu-item-title'     => $it->title,
+				'menu-item-type'      => 'custom',
+				'menu-item-url'       => $it->url,
+				'menu-item-classes'   => 'oomph-nav-sailings',
+				'menu-item-parent-id' => 0,
+				'menu-item-status'    => 'publish',
+				'menu-item-position'  => $services_order > 0 ? $services_order + 1 : 3,
+			) );
+			$report[] = 'Group Cruises kept top-level (after Services)';
+		}
+	}
+}
+
+/* ---------------------------------------------------------------------------
  * 9. Physical /llms.txt (SiteGround serves .txt statically, bypassing PHP).
  * ------------------------------------------------------------------------- */
 if ( class_exists( 'OomphTravel\\Core\\SEO' ) ) {

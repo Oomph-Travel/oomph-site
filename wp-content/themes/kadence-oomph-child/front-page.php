@@ -165,6 +165,26 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 		</div>
 	</section>
 
+	<?php /* 4b. SAILINGS I'M HOSTING (only when a sailing is published) -- */ ?>
+	<?php if ( function_exists( 'oomph_has_published_sailings' ) && oomph_has_published_sailings() ) : ?>
+	<section class="oomph-section" aria-labelledby="home-sailings-title">
+		<div class="oomph-container">
+			<div class="oomph-section__intro">
+				<p class="oomph-eyebrow">Group Cruises · Distinctive Voyages</p>
+				<h2 id="home-sailings-title">Sailings I'm hosting.</h2>
+			</div>
+			<div class="oomph-grid oomph-grid--3">
+				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
+			</div>
+			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'oomph_cruise' ) ); ?>">
+					See all sailings <span aria-hidden="true">→</span>
+				</a>
+			</p>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<?php /* 5. FOUNDER MINI-BIO --------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="founder-title">
 		<div class="oomph-container">

@@ -77,7 +77,7 @@ add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_styles', 20 );
  * @return void
  */
 function oomph_child_enqueue_cruise(): void {
-	if ( ! is_singular( 'oomph_cruise' ) ) {
+	if ( ! is_singular( 'oomph_cruise' ) && ! is_post_type_archive( 'oomph_cruise' ) ) {
 		return;
 	}
 	$path = get_stylesheet_directory() . '/assets/css/dv-sailing.css';
@@ -102,7 +102,7 @@ add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_cruise', 20 );
  * @return void
  */
 function oomph_child_cruise_color_scheme(): void {
-	if ( is_singular( 'oomph_cruise' ) ) {
+	if ( is_singular( 'oomph_cruise' ) || is_post_type_archive( 'oomph_cruise' ) ) {
 		echo '<meta name="color-scheme" content="light only">' . "\n";
 	}
 }

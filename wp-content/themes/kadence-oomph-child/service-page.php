@@ -302,6 +302,26 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 		</div>
 	</section>
 
+	<?php /* 6b. SAILINGS I'M HOSTING — cruise page only, when published --- */ ?>
+	<?php if ( is_page( 'luxury-cruise-planning' ) && function_exists( 'oomph_has_published_sailings' ) && oomph_has_published_sailings() ) : ?>
+	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="cruise-sailings-title">
+		<div class="oomph-container">
+			<div class="oomph-section__intro">
+				<p class="oomph-eyebrow">Open departures</p>
+				<h2 id="cruise-sailings-title">Sailings I'm hosting right now.</h2>
+			</div>
+			<div class="oomph-grid oomph-grid--3">
+				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
+			</div>
+			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'oomph_cruise' ) ); ?>">
+					See all sailings <span aria-hidden="true">→</span>
+				</a>
+			</p>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<?php /* 7. HOW I WORK ---------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="how-i-work-title">
 		<div class="oomph-container">
