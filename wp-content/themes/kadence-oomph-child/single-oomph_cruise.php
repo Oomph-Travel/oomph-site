@@ -92,6 +92,7 @@ while ( have_posts() ) :
 			if ( '' === $ename && '' === $edate && '' === $eloc ) {
 				continue;
 			}
+			$eimg = $get( "shore_event_{$n}_image" );
 			$events[] = array(
 				'name'     => $ename,
 				'date'     => $edate,
@@ -99,6 +100,7 @@ while ( have_posts() ) :
 				'length'   => trim( (string) $get( "shore_event_{$n}_length_hours" ) ),
 				'location' => $eloc,
 				'details'  => trim( (string) $get( "shore_event_{$n}_details" ) ),
+				'image'    => ( is_array( $eimg ) && ! empty( $eimg['url'] ) ) ? (string) $eimg['url'] : '',
 			);
 		}
 		$lead_event = $events[0] ?? null;
@@ -127,7 +129,7 @@ while ( have_posts() ) :
 			<div id="oomph-content"></div>
 
 			<?php /* HERO — event-led when there's a shore event, itinerary-led otherwise. */ ?>
-			<section class="oomph-dv-hero"<?php echo has_post_thumbnail() ? ' style="background-image: ' . esc_attr( 'var(--scrim-hero)' ) . ', url(' . esc_url( (string) get_the_post_thumbnail_url( null, 'full' ) ) . ');"' : ''; ?>>
+			<section class="oomph-dv-hero<?php echo has_post_thumbnail() ? ' oomph-dv-hero--imaged' : ''; ?>"<?php echo has_post_thumbnail() ? ' style="background-image: linear-gradient(160deg, rgba(8,41,57,0.86), rgba(14,59,94,0.62)), url(' . esc_url( (string) get_the_post_thumbnail_url( null, 'full' ) ) . ');"' : ''; ?>>
 				<div class="oomph-dv-hero__inner">
 					<?php if ( $lead_event ) : ?>
 						<p class="oomph-eyebrow oomph-dv-hero__eyebrow">
@@ -220,7 +222,7 @@ while ( have_posts() ) :
 								<h2><?php echo count( $events ) > 1 ? 'What I’ve arranged ashore' : 'One morning ' . esc_html( $lead_event['location'] ? 'in ' . $lead_event['location'] : 'ashore' ); ?></h2>
 								<?php foreach ( $events as $ev ) : ?>
 									<div class="oomph-dv-ticket">
-										<div class="oomph-dv-ticket__visual" aria-hidden="true"></div>
+										<div class="oomph-dv-ticket__visual"<?php echo $ev['image'] ? ' style="background-image: linear-gradient(180deg, rgba(20,44,54,0.15), rgba(14,59,94,0.45)), url(' . esc_url( $ev['image'] ) . ');"' : ''; ?> aria-hidden="true"></div>
 										<div class="oomph-dv-ticket__body">
 											<p class="oomph-dv-label">Included with this sailing</p>
 											<h3 class="oomph-italic-display"><?php echo esc_html( $ev['name'] ); ?></h3>

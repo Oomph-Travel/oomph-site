@@ -523,6 +523,40 @@
             "append": ""
         },
         {
+            "key": "field_oomph_shore_event_1_image",
+            "label": "Shore event 1 — image",
+            "name": "shore_event_1_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_oomph_shore_event_1_date",
             "label": "Shore event 1 — date",
             "name": "shore_event_1_date",
@@ -697,6 +731,40 @@
             "append": ""
         },
         {
+            "key": "field_oomph_shore_event_2_image",
+            "label": "Shore event 2 — image",
+            "name": "shore_event_2_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_oomph_shore_event_2_date",
             "label": "Shore event 2 — date",
             "name": "shore_event_2_date",
@@ -869,6 +937,40 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_3_image",
+            "label": "Shore event 3 — image",
+            "name": "shore_event_3_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
         },
         {
             "key": "field_oomph_shore_event_3_date",
@@ -1100,5 +1202,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1783132479
+    "modified": 1783178033
 }
