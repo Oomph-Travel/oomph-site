@@ -41,6 +41,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-seo.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-cli.php';
+	require_once OOMPH_CORE_DIR . 'includes/class-importer.php';
 }
 
 // Boot.
@@ -49,6 +50,7 @@ add_action( 'init', array( \OomphTravel\Core\CPT_Itinerary::class,   'register' 
 add_action( 'init', array( \OomphTravel\Core\CPT_Cruise::class,      'register' ) );
 add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' ) );
 
+\OomphTravel\Core\CPT_Cruise::init();
 \OomphTravel\Core\Schema::init();
 \OomphTravel\Core\Clarity_Guard::init();
 \OomphTravel\Core\ACF_Config::init();

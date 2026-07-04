@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Wildlife Adventure &amp; Beachside Salmon Charcuterie — Silver Whisper, Alaska | Oomph Travel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light only;
+  --peacock:#1F4E5F;
+  --peacock-deep:#153744;
+  --terracotta:#B8543A;
+  --terracotta-dark:#9C4630;
+  --ink:#14171A;
+  --bone:#F4EDE2;
+  --mist:#E9E4DB;
+  --paper:#FBF8F2;
+  --font-display:'Fraunces',serif;
+  --font-body:'Inter',sans-serif;
+  --measure:68ch;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--paper)!important}
+body{background:var(--paper)!important}
+#page{background:var(--paper);color:var(--ink);min-height:100vh}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--font-body);color:var(--ink);background:var(--paper);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--terracotta);outline-offset:3px}
+
+/* ---------- header ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px clamp(20px,5vw,64px);background:var(--paper);border-bottom:1px solid var(--mist)}
+.wordmark{font-family:var(--font-display);font-weight:300;font-size:30px;letter-spacing:.01em;color:var(--ink);text-decoration:none}
+.topnav{display:flex;gap:28px;font-size:14px;font-weight:500}
+.topnav a{text-decoration:none;color:var(--ink)}
+.topnav a:hover{color:var(--terracotta)}
+@media(max-width:720px){.topnav{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;color:var(--bone);background:
+  linear-gradient(160deg,rgba(20,44,54,.88) 0%,rgba(31,78,95,.72) 55%,rgba(31,78,95,.55) 100%),
+  radial-gradient(1200px 500px at 80% 110%,#3A7285 0%,transparent 60%),
+  linear-gradient(180deg,#1B4454 0%,#12303C 100%);
+  padding:clamp(72px,11vw,140px) clamp(20px,5vw,64px) clamp(64px,9vw,120px)}
+.hero-inner{max-width:1120px;margin:0 auto}
+.eyebrow{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bone);opacity:.85}
+.eyebrow .dot{margin:0 10px;opacity:.5}
+.hero h1{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(38px,6vw,74px);line-height:1.06;max-width:19ch;margin:22px 0 26px;letter-spacing:-.01em;color:var(--bone)}
+.hero .shipline{font-size:clamp(16px,2vw,19px);font-weight:400;opacity:.92;max-width:52ch;color:var(--bone)}
+.hero .shipline strong{font-weight:600}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:40px}
+.btn{display:inline-block;font-family:var(--font-body);font-size:15px;font-weight:600;letter-spacing:.02em;padding:15px 30px;border-radius:3px;text-decoration:none;transition:background .18s ease,color .18s ease;border:1.5px solid transparent}
+.btn-primary{background:var(--terracotta);color:#fff}
+.btn-primary:hover{background:var(--terracotta-dark)}
+.btn-ghost{border-color:rgba(244,237,226,.55);color:var(--bone)}
+.btn-ghost:hover{border-color:var(--bone);background:rgba(244,237,226,.08)}
+.hero-note{margin-top:34px;font-size:13px;letter-spacing:.02em;color:var(--bone);opacity:.85}
+.photo-tag{position:absolute;bottom:14px;right:18px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;color:var(--bone)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.main-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:clamp(40px,6vw,84px);padding:clamp(56px,8vw,96px) 0}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}}
+
+.section-label{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--terracotta);margin-bottom:14px}
+h2{font-family:var(--font-display);font-weight:400;font-size:clamp(26px,3.4vw,36px);line-height:1.15;margin-bottom:22px;letter-spacing:-.01em;color:var(--ink)}
+.prose p{max-width:var(--measure);margin-bottom:20px;color:var(--ink)}
+summary{color:var(--ink)}
+.lede{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(19px,2.4vw,23px);line-height:1.55;color:var(--peacock);max-width:var(--measure);margin-bottom:26px}
+.prose p{max-width:var(--measure);margin-bottom:20px}
+.content-block{margin-bottom:clamp(56px,8vw,88px)}
+
+/* ---------- sidebar ---------- */
+.sidebar{position:sticky;top:28px;align-self:start;background:var(--bone);border-radius:6px;padding:30px 28px;border:1px solid var(--mist)}
+@media(max-width:900px){.sidebar{position:static;order:-1}}
+.sidebar h3{font-family:var(--font-display);font-weight:400;font-size:21px;margin-bottom:20px}
+.glance{width:100%;border-collapse:collapse;font-size:14.5px}
+.glance tr{border-bottom:1px solid var(--mist)}
+.glance tr:last-child{border-bottom:none}
+.glance th{text-align:left;font-weight:600;color:var(--peacock);padding:11px 12px 11px 0;vertical-align:top;white-space:nowrap;font-size:13px;letter-spacing:.03em;text-transform:uppercase}
+.glance td{padding:11px 0;text-align:right}
+.sidebar .btn{width:100%;text-align:center;margin-top:24px}
+.sidebar-foot{font-size:12.5px;line-height:1.55;color:var(--peacock);margin-top:16px;opacity:.85}
+
+/* ---------- comparison (signature) ---------- */
+.compare{background:var(--bone);border-radius:6px;padding:clamp(30px,4vw,48px);border:1px solid var(--mist)}
+.compare h2{margin-bottom:8px}
+.compare .sub{max-width:var(--measure);margin-bottom:32px;color:var(--ink)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--mist);border-radius:5px;overflow:hidden;background:var(--paper)}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+.compare-col{padding:28px 28px 32px}
+.compare-col.mine{background:var(--peacock);color:var(--bone)}
+.compare-col.mine h4,.compare-col.mine .fare,.compare-col.mine .compare-item{color:var(--bone)}
+.cta-band p,.cta-band .prefill{color:var(--bone)}
+.compare-col h4{font-family:var(--font-display);font-weight:400;font-size:20px;margin-bottom:4px}
+.compare-col .fare{font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;opacity:.65;margin-bottom:22px}
+.compare-item{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--mist);font-size:15px;line-height:1.5}
+.mine .compare-item{border-top:1px solid rgba(244,237,226,.18)}
+.compare-item .mark{flex:0 0 auto;font-weight:600}
+.compare-item.off{opacity:.42}
+.mine .mark{color:#E8B99B}
+.compare-foot{font-size:13px;margin-top:20px;max-width:var(--measure);color:var(--peacock)}
+
+/* ---------- shore event ticket ---------- */
+.ticket{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);border-radius:6px;overflow:hidden;border:1px solid var(--mist)}
+@media(max-width:760px){.ticket{grid-template-columns:1fr}}
+.ticket-visual{min-height:300px;background:
+  linear-gradient(180deg,rgba(31,78,95,.25),rgba(20,44,54,.55)),
+  radial-gradient(700px 300px at 30% 90%,#4B8296 0%,transparent 65%),
+  linear-gradient(160deg,#2C6274 0%,#183E4C 100%);
+  position:relative;display:flex;align-items:flex-end;padding:26px}
+.ticket-visual span{color:var(--bone);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.55}
+.ticket-body{background:var(--paper);padding:34px 32px;border-left:2px dashed var(--mist)}
+@media(max-width:760px){.ticket-body{border-left:none;border-top:2px dashed var(--mist)}}
+.ticket-body .section-label{margin-bottom:8px}
+.ticket-body h3{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(22px,2.8vw,27px);line-height:1.2;margin-bottom:20px}
+.ticket-meta{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:20px}
+.ticket-meta th{text-align:left;font-weight:600;color:var(--peacock);padding:8px 14px 8px 0;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.ticket-meta td{padding:8px 0}
+.ticket-body p{font-size:15px;line-height:1.65}
+.once{display:inline-block;background:var(--bone);border:1px solid var(--mist);border-radius:3px;padding:6px 12px;font-size:12.5px;font-weight:600;letter-spacing:.05em;color:var(--terracotta);margin-top:18px}
+
+/* ---------- FAQ ---------- */
+details{border-top:1px solid var(--mist);max-width:var(--measure)}
+details:last-of-type{border-bottom:1px solid var(--mist)}
+summary{cursor:pointer;padding:20px 0;font-weight:600;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-family:var(--font-display);font-size:24px;font-weight:300;color:var(--terracotta);flex:0 0 auto}
+details[open] summary::after{content:'–'}
+details .prose{padding:0 0 22px}
+
+/* ---------- final CTA ---------- */
+.cta-band{background:var(--peacock);color:var(--bone);padding:clamp(64px,9vw,110px) clamp(20px,5vw,64px);text-align:center}
+.cta-band h2{color:var(--bone);max-width:24ch;margin:0 auto 18px}
+.cta-band p{max-width:56ch;margin:0 auto 34px;opacity:.9}
+.prefill{display:inline-block;background:rgba(244,237,226,.1);border:1px solid rgba(244,237,226,.3);border-radius:3px;padding:12px 20px;font-size:14px;margin-bottom:30px;font-style:italic}
+
+footer{padding:36px clamp(20px,5vw,64px);font-size:13px;color:var(--peacock);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--mist)}
+footer .wordmark{font-size:22px}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero .eyebrow,.hero h1,.hero .shipline,.hero-ctas,.hero-note{animation:rise .7s ease both}
+.hero h1{animation-delay:.08s}.hero .shipline{animation-delay:.16s}.hero-ctas{animation-delay:.24s}.hero-note{animation-delay:.3s}
+</style>
+</head>
+<body>
+<div id="page">
+
+<header class="topbar">
+  <a class="wordmark" href="#">oomph</a>
+  <nav class="topnav" aria-label="Primary">
+    <a href="#">Cruises</a><a href="#">Italy</a><a href="#">Journal</a><a href="#">About</a><a href="#">Start a conversation</a>
+  </nav>
+</header>
+
+<!-- HERO — event-led hierarchy. Background is a placeholder gradient; swap for
+     approved Silversea / destination photography from the trade portal. -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Haines, Alaska <span class="dot">·</span> July 19, 2026 <span class="dot">·</span> One sailing only</p>
+    <h1>Wildlife Adventure &amp; Beachside Salmon Charcuterie</h1>
+    <p class="shipline">A private shore event reserved for my guests aboard <strong>Silver Whisper</strong> — Silversea's 7-day Seward to Vancouver sailing, July 16–23, 2026.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#cta">Start a conversation</a>
+      <a class="btn btn-ghost" href="#event">See the day in Haines</a>
+    </div>
+    <p class="hero-note">Same Silversea fare you'd pay booking direct. The difference is what's included.</p>
+  </div>
+  <span class="photo-tag">Photo placeholder — Silversea trade asset</span>
+</section>
+
+<div class="wrap">
+  <div class="main-grid">
+    <main>
+
+      <!-- WHY THIS SAILING — sample copy; replace with Eric's own paragraph before publishing -->
+      <section class="content-block">
+        <p class="section-label">Why this sailing</p>
+        <p class="lede">Mid-July is when Southeast Alaska is at full strength — long daylight, salmon running, whales feeding in the Inside Passage.</p>
+        <div class="prose">
+          <p>This departure threads Seward to Vancouver in seven days on a ship that carries a few hundred guests, not a few thousand — which is what lets it call on Haines at all. The shore event on July 19 is the reason I'm featuring this sailing: a small-group wildlife excursion that ends with a salmon charcuterie spread on the beach, arranged exclusively for guests booked through the Distinctive Voyages program. You will not find it in the ship's excursion catalog.</p>
+          <p>If Alaska has been on your list and you want the version with fewer people and better food, this is the week I'd point you to.</p>
+        </div>
+      </section>
+
+      <!-- SIGNATURE — same fare, more included -->
+      <section class="content-block">
+        <div class="compare">
+          <p class="section-label">The honest math</p>
+          <h2>Same fare. More included.</h2>
+          <p class="sub">Silversea sets the cruise fare — it's identical whether you book direct or with me. What changes is everything that comes with it.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Booking direct</h4>
+              <p class="fare">Silversea's published fare</p>
+              <div class="compare-item"><span class="mark">✓</span> The 7-day Seward to Vancouver sailing</div>
+              <div class="compare-item off"><span class="mark">—</span> Hosted sailing with a dedicated onboard host</div>
+              <div class="compare-item off"><span class="mark">—</span> Private welcome reception</div>
+              <div class="compare-item off"><span class="mark">—</span> Exclusive shore event in Haines</div>
+              <div class="compare-item off"><span class="mark">—</span> An advisor who answers when plans change</div>
+            </div>
+            <div class="compare-col mine">
+              <h4>Booking with me</h4>
+              <p class="fare">The same published fare</p>
+              <div class="compare-item"><span class="mark">✓</span> The 7-day Seward to Vancouver sailing</div>
+              <div class="compare-item"><span class="mark">✓</span> Hosted sailing with a dedicated onboard host</div>
+              <div class="compare-item"><span class="mark">✓</span> Private welcome reception</div>
+              <div class="compare-item"><span class="mark">✓</span> Exclusive shore event in Haines</div>
+              <div class="compare-item"><span class="mark">✓</span> An advisor who answers when plans change</div>
+            </div>
+          </div>
+          <p class="compare-foot">These amenities come through my Travel Leaders Network membership and apply only to this specific departure.</p>
+        </div>
+      </section>
+
+      <!-- SHORE EVENT TICKET -->
+      <section class="content-block" id="event">
+        <p class="section-label">The exclusive shore event</p>
+        <h2>One morning in Haines</h2>
+        <div class="ticket">
+          <div class="ticket-visual"><span>Photo placeholder — Haines, Alaska destination asset</span></div>
+          <div class="ticket-body">
+            <p class="section-label">Included with this sailing</p>
+            <h3>Wildlife Adventure &amp; Beachside Salmon Charcuterie</h3>
+            <table class="ticket-meta">
+              <tr><th>Date</th><td>Sunday, July 19, 2026</td></tr>
+              <tr><th>Departs</th><td>9:00 AM</td></tr>
+              <tr><th>Length</th><td>4 hours</td></tr>
+              <tr><th>Port</th><td>Haines, Alaska</td></tr>
+            </table>
+            <p>Reserved for Distinctive Voyages guests on this departure. Full event details arrive with your booking documents.</p>
+            <span class="once">This event runs once — then it's gone</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT'S INCLUDED — narrative, not bullets -->
+      <section class="content-block">
+        <p class="section-label">What comes with it</p>
+        <h2>Three things you can't buy separately</h2>
+        <div class="prose">
+          <p>Every Distinctive Voyages departure includes a dedicated host who sails with the group and handles the small frictions of travel before you notice them. Early in the voyage there's a private welcome reception — a chance to meet the host and the handful of fellow travelers booked on the same program. And then there's the shore event above, which exists only for this group, on this date.</p>
+          <p>None of it changes what Silversea already includes in the fare. It sits on top.</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="content-block">
+        <p class="section-label">Questions I get asked</p>
+        <h2>Before you ask</h2>
+        <details>
+          <summary>Does booking through you cost more?</summary>
+          <div class="prose"><p>No. The cruise fare is set by Silversea and is the same whether you book direct or with me. The host, reception, and shore event are added at no extra cost through my network membership.</p></div>
+        </details>
+        <details>
+          <summary>Is this a group cruise? Will I be locked into group activities?</summary>
+          <div class="prose"><p>No. You sail as an independent guest with full run of the ship. The welcome reception and shore event are invitations, not obligations.</p></div>
+        </details>
+        <details>
+          <summary>What if the sailing sells out or the program fills?</summary>
+          <div class="prose"><p>Amenity space on these departures is limited and separate from the ship's overall capacity. If the program fills, I'll tell you straight and we'll look at the next departure that carries the same inclusions.</p></div>
+        </details>
+        <details>
+          <summary>Can you also handle flights, hotels, and the days around the cruise?</summary>
+          <div class="prose"><p>Yes — pre- and post-cruise planning is most of what I do. Anchorage or Vancouver time on either end of this sailing is worth building in, and I'll map that with you.</p></div>
+        </details>
+      </section>
+
+    </main>
+
+    <!-- AT A GLANCE sidebar -->
+    <aside class="sidebar" aria-label="Sailing at a glance">
+      <h3>At a glance</h3>
+      <table class="glance">
+        <tr><th>Ship</th><td>Silver Whisper</td></tr>
+        <tr><th>Line</th><td>Silversea Cruises</td></tr>
+        <tr><th>Route</th><td>Seward → Vancouver</td></tr>
+        <tr><th>Dates</th><td>Jul 16–23, 2026</td></tr>
+        <tr><th>Nights</th><td>7</td></tr>
+        <tr><th>Program</th><td>Distinctive Voyages</td></tr>
+        <tr><th>Event</th><td>Haines · Jul 19</td></tr>
+      </table>
+      <a class="btn btn-primary" href="#cta">Check availability</a>
+      <p class="sidebar-foot">Fare set by Silversea. Amenities added through my Travel Leaders Network membership at no additional cost.</p>
+    </aside>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<section class="cta-band" id="cta">
+  <p class="section-label" style="color:#E8B99B">Next step</p>
+  <h2>Interested in this sailing?</h2>
+  <p>Tell me about your travelers and your dates. If this departure isn't the right fit, I'll say so and find the one that is.</p>
+  <div><span class="prefill">"I'm interested in Silver Whisper, July 16, 2026 — Seward to Vancouver."</span></div>
+  <div><a class="btn btn-primary" href="#">Start a conversation</a></div>
+</section>
+
+<footer>
+  <span class="wordmark">oomph</span>
+  <span>Oomph Travel LLC · Port Angeles, Washington · Affiliated with Nexion, LLC</span>
+</footer>
+
+</div>
+</body>
+</html>

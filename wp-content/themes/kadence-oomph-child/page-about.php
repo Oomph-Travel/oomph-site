@@ -3,7 +3,7 @@
  * About page template.
  *
  * Per docx §10.4 — nine narrative sections from hero to final CTA. Primary
- * CTA "Book a Discovery Call →" appears in the hero and the final CTA
+ * CTA "Start a conversation →" appears in the hero and the final CTA
  * block (two placements + the sticky mobile bar = three surfaces total).
  *
  * Person schema is injected sitewide via the oomph-travel-core plugin's
@@ -32,7 +32,7 @@ $hero_subhead   = oomph_acf_field(
 	'hero_subhead',
 	'From Port Angeles, Washington, I plan premium cruises and custom European journeys for clients who want one named advisor across the whole trip — first call to last flight home.'
 );
-$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Book a Discovery Call →' );
+$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Start a conversation →' );
 $hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
 $hero_cta_text  = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
 
@@ -69,7 +69,7 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 						<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
 							<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 						</a>
-						<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+						<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 					</p>
 				</div>
 			</div>
@@ -243,9 +243,9 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 			</h2>
 			<p style="margin-top: var(--space-6);">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+					Start a conversation <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 		</div>
 	</section>
@@ -255,7 +255,7 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 <?php /* Sticky mobile CTA — R2. Visible at every scroll depth, mobile only. */ ?>
 <aside class="oomph-sticky-cta" aria-label="Quick contact">
 	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-		Book a Discovery Call <span aria-hidden="true">→</span>
+		Start a conversation <span aria-hidden="true">→</span>
 	</a>
 </aside>
 

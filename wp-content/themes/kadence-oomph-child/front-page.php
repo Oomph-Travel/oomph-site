@@ -4,7 +4,7 @@
  *
  * Per docx §10.3 — eleven sections from hero to final CTA. The FEES
  * TEASER (section 9) is currently deferred — see placeholder comment
- * where it lived. Primary CTA "Book a Discovery Call →" appears in
+ * where it lived. Primary CTA "Start a conversation →" appears in
  * hero, after the founder bio, in the lead magnet, and in the final
  * CTA block (four placements + the sticky mobile bar = five surfaces
  * total).
@@ -35,7 +35,7 @@ $hero_subhead   = oomph_acf_field(
 	'hero_subhead',
 	'Premium and luxury cruises, and custom European journeys — planned by one named advisor who stays on your trip from the first call to the last flight home.'
 );
-$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Book a Discovery Call →' );
+$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Start a conversation →' );
 $hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
 
 // Strip a trailing arrow from the label so we can re-append it inside
@@ -86,7 +86,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
 					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 		</div>
 	</section>
@@ -335,9 +335,9 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			</h2>
 			<p style="margin-top: var(--space-6);">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+					Start a conversation <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 		</div>
 	</section>
@@ -347,7 +347,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 <?php /* Sticky mobile CTA — R2. Visible at every scroll depth, mobile only. */ ?>
 <aside class="oomph-sticky-cta" aria-label="Quick contact">
 	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-		Book a Discovery Call <span aria-hidden="true">→</span>
+		Start a conversation <span aria-hidden="true">→</span>
 	</a>
 </aside>
 

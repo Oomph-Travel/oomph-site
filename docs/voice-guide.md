@@ -83,12 +83,12 @@ If a draft contains any of these, rewrite.
 | Get Started | Start Planning My Trip |
 | Download | Send Me the Cabin Guide |
 | Sign Up | Get Italy Trip Tips |
-| Book a Call | Book a Discovery Call → |
+| Book a Call | Start a conversation → |
 
-The Discovery Call CTA is always **"Book a Discovery Call →"** — that exact phrasing, with the arrow. Never "Schedule a Consultation," never "Book Now."
+The Discovery Call CTA is always **"Start a conversation →"** — that exact phrasing, with the arrow. Never "Schedule a Consultation," never "Book Now."
 
 Microcopy directly under it:
-> Free 30-minute call. No pressure, no obligation.
+> Email, text, or a quick call — whatever's easiest for you.
 
 ---
 

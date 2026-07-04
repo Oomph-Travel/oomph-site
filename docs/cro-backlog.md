@@ -20,7 +20,7 @@ Required: benefit-focused headline · subhead naming the target audience · sing
 
 Desktop hero 60–100% viewport. Mobile 50–70%. Hero video adds ~1.2s LCP and every 100KB of media = +1.8% bounce. **Image beats video for luxury services** unless the video earns its weight (short, muted, lazy-loaded background loop, static fallback, <5MB).
 
-**Oomph hero formula:** real photography · headline naming the milestone · subhead naming the niche · primary CTA "Book a Discovery Call" · trust strip with CLIA · Nexion · Silversea Ultra-Luxury Specialist · BritAgent Pro.
+**Oomph hero formula:** real photography · headline naming the milestone · subhead naming the niche · primary CTA "Start a conversation" · trust strip with CLIA · Nexion · Silversea Ultra-Luxury Specialist · BritAgent Pro.
 
 ---
 

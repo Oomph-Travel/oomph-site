@@ -63,8 +63,8 @@ while ( have_posts() ) :
 					</div>
 
 					<p class="oomph-post__cta">
-						<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
-						<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+						<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
+						<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 					</p>
 				</div>
 			</div>
@@ -103,7 +103,7 @@ while ( have_posts() ) :
 	</main>
 
 	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
+		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 	</aside>
 
 	<?php

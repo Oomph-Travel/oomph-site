@@ -36,7 +36,7 @@ After sync, editing fields in the admin UI on any environment regenerates the JS
 | `hero_headline` | Text | No | — | Max 80 chars. Renders as H1, Fraunces 300 italic. Leave empty to use the page template's built-in fallback (template never renders blank). |
 | `hero_subhead` | Textarea | No | — | Max 200 chars. Fraunces italic 400. |
 | `hero_image` | Image | No | — | Return format: Array. 1920×1080 WebP target. If empty, hero uses Bone canvas with no photograph. |
-| `hero_cta_label` | Text | No | `Book a Discovery Call →` | Primary CTA copy. Don't change without updating `cro-rules.md` R1. |
+| `hero_cta_label` | Text | No | `Start a conversation →` | Primary CTA copy. Don't change without updating `cro-rules.md` R1. |
 | `hero_cta_url` | Text | No | `/discovery-call/` | Primary CTA destination. Accepts relative paths or fully-qualified URLs (Text type, not URL — ACF's URL type rejects relative paths). |
 | `hero_trust_strip` | True/False | No | `true` | Whether to show the credentials strip below the hero. |
 

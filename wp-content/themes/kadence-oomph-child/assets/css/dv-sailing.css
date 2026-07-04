@@ -1,0 +1,395 @@
+/* ============================================================================
+ * Oomph Travel — Group Cruise single (Distinctive Voyages + hosted)
+ * ----------------------------------------------------------------------------
+ * Structure/spacing follow docs/reference/dv-sailing-mockup.html, but every
+ * colour, font, space and radius resolves to the Deep Marine tokens in
+ * tokens.css — no palette values are duplicated here.
+ *
+ * Loaded only on single oomph_cruise views (see inc/enqueue.php).
+ * ========================================================================== */
+
+.oomph-dv,
+.oomph-cruise {
+  color-scheme: light;
+  background: var(--color-paper);
+  color: var(--text-default);
+}
+
+/* ---------- DV hero (event-led) ------------------------------------------- */
+.oomph-dv-hero {
+  background:
+    linear-gradient(160deg, var(--color-midnight-deep) 0%, var(--color-marine-navy) 60%, var(--color-marine-navy) 100%);
+  background-size: cover;
+  background-position: center;
+  color: var(--text-inverse);
+  padding: clamp(var(--space-9), 11vw, var(--space-11)) var(--container-gutter) clamp(var(--space-8), 9vw, var(--space-10));
+}
+.oomph-dv-hero__inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+.oomph-dv-hero__eyebrow {
+  color: var(--color-champagne);
+}
+.oomph-dv-hero__title {
+  font-size: var(--text-display);
+  line-height: var(--line-display);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-bone);
+  max-width: 19ch;
+  margin: var(--space-5) 0 var(--space-5);
+}
+.oomph-dv-hero__ship {
+  font-size: var(--text-lead);
+  line-height: var(--line-lead);
+  color: var(--color-bone);
+  max-width: 54ch;
+  opacity: 0.94;
+}
+.oomph-dv-hero__ship strong { font-weight: 600; }
+.oomph-dv-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+}
+.oomph-dv-hero__note {
+  margin-top: var(--space-6);
+  font-size: var(--text-body-sm);
+  color: var(--color-bone);
+  opacity: 0.85;
+}
+
+/* Ghost button that reads on a dark hero. */
+.oomph-btn--ghost-light {
+  background: transparent;
+  color: var(--color-bone);
+  border: 1.5px solid rgba(253, 250, 242, 0.5);
+}
+.oomph-btn--ghost-light:hover,
+.oomph-btn--ghost-light:focus-visible {
+  border-color: var(--color-bone);
+  background: rgba(253, 250, 242, 0.08);
+  color: var(--color-bone);
+}
+
+/* ---------- layout grid --------------------------------------------------- */
+.oomph-dv-wrap {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}
+.oomph-dv-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: clamp(var(--space-7), 6vw, var(--space-10));
+  padding-block: clamp(var(--space-8), 8vw, var(--space-10));
+}
+@media (max-width: 900px) {
+  .oomph-dv-grid { grid-template-columns: 1fr; }
+}
+
+.oomph-dv-block { margin-bottom: clamp(var(--space-8), 8vw, var(--space-10)); }
+.oomph-dv-block:last-child { margin-bottom: 0; }
+
+.oomph-dv-label {
+  font-family: var(--font-text);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--signal-accent);
+  margin-bottom: var(--space-3);
+}
+.oomph-dv h2,
+.oomph-cruise h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  line-height: var(--line-h2);
+  color: var(--text-default);
+  margin-bottom: var(--space-5);
+}
+.oomph-dv-why > :last-child { margin-bottom: 0; }
+
+/* ---------- comparison (signature) ---------------------------------------- */
+.oomph-dv-compare {
+  background: var(--color-bone);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  padding: clamp(var(--space-6), 4vw, var(--space-8));
+}
+.oomph-dv-compare h2 { margin-bottom: var(--space-2); }
+.oomph-dv-compare__sub {
+  max-width: var(--container-prose);
+  margin-bottom: var(--space-6);
+  color: var(--text-soft);
+}
+.oomph-dv-compare__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-paper);
+}
+@media (max-width: 640px) {
+  .oomph-dv-compare__grid { grid-template-columns: 1fr; }
+}
+.oomph-dv-compare__col { padding: var(--space-6); }
+.oomph-dv-compare__col.is-mine {
+  background: var(--color-marine-navy);
+  color: var(--color-bone);
+}
+.oomph-dv-compare__col h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  margin-bottom: var(--space-1);
+}
+.oomph-dv-compare__fare {
+  font-size: var(--text-body-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.65;
+  margin-bottom: var(--space-5);
+}
+.oomph-dv-compare__item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-stone);
+  font-size: var(--text-body);
+  line-height: var(--line-body-sm);
+}
+.oomph-dv-compare__col.is-mine .oomph-dv-compare__item { border-top-color: rgba(253, 250, 242, 0.18); }
+.oomph-dv-compare__mark { flex: 0 0 auto; font-weight: 600; }
+.oomph-dv-compare__col.is-mine .oomph-dv-compare__mark { color: var(--color-champagne); }
+.oomph-dv-compare__item.is-off { opacity: 0.42; }
+.oomph-dv-compare__foot {
+  font-size: var(--text-body-sm);
+  margin-top: var(--space-5);
+  max-width: var(--container-prose);
+  color: var(--signal-primary);
+}
+
+/* ---------- shore-event ticket -------------------------------------------- */
+.oomph-dv-ticket {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+}
+.oomph-dv-ticket:last-child { margin-bottom: 0; }
+@media (max-width: 760px) {
+  .oomph-dv-ticket { grid-template-columns: 1fr; }
+}
+.oomph-dv-ticket__visual {
+  min-height: 260px;
+  background:
+    linear-gradient(160deg, var(--color-marine-navy) 0%, var(--color-midnight-deep) 100%);
+}
+.oomph-dv-ticket__body {
+  background: var(--color-bone);
+  padding: clamp(var(--space-6), 4vw, var(--space-7));
+  border-left: 2px dashed var(--color-stone);
+}
+@media (max-width: 760px) {
+  .oomph-dv-ticket__body { border-left: none; border-top: 2px dashed var(--color-stone); }
+}
+.oomph-dv-ticket__body h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: var(--line-h3);
+  margin: var(--space-2) 0 var(--space-5);
+}
+.oomph-dv-ticket__meta {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+  margin-bottom: var(--space-4);
+}
+.oomph-dv-ticket__meta th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--signal-primary);
+  padding: var(--space-2) var(--space-4) var(--space-2) 0;
+  font-size: var(--text-body-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.oomph-dv-ticket__meta td { padding: var(--space-2) 0; }
+.oomph-dv-ticket__once {
+  display: inline-block;
+  background: var(--color-mist);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--signal-accent);
+  margin-top: var(--space-4);
+}
+
+/* ---------- FAQ (details) ------------------------------------------------- */
+.oomph-dv-faq { max-width: var(--container-prose); }
+.oomph-dv-faq__item { border-top: 1px solid var(--color-stone); }
+.oomph-dv-faq__item:last-child { border-bottom: 1px solid var(--color-stone); }
+.oomph-dv-faq__item summary {
+  cursor: pointer;
+  padding: var(--space-5) 0;
+  font-weight: 600;
+  font-size: var(--text-lead);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+.oomph-dv-faq__item summary::-webkit-details-marker { display: none; }
+.oomph-dv-faq__item summary::after {
+  content: '+';
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 300;
+  color: var(--signal-accent);
+  flex: 0 0 auto;
+}
+.oomph-dv-faq__item[open] summary::after { content: '\2013'; }
+.oomph-dv-faq__item .oomph-prose { padding-bottom: var(--space-5); }
+
+/* ---------- at-a-glance sidebar ------------------------------------------- */
+.oomph-dv-side,
+.oomph-cruise-side {
+  position: sticky;
+  top: var(--space-6);
+  align-self: start;
+  background: var(--color-bone);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+@media (max-width: 900px) {
+  .oomph-dv-side,
+  .oomph-cruise-side { position: static; order: -1; margin-bottom: var(--space-7); }
+}
+.oomph-dv-side__title {
+  font-size: var(--text-h3);
+  font-style: italic;
+  margin-bottom: var(--space-4);
+}
+.oomph-dv-side__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+.oomph-dv-side__table tr { border-bottom: 1px solid var(--color-mist); }
+.oomph-dv-side__table tr:last-child { border-bottom: none; }
+.oomph-dv-side__table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--signal-primary);
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  font-size: var(--text-eyebrow);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.oomph-dv-side__table td { padding: var(--space-3) 0; text-align: right; }
+.oomph-dv-side__cta { display: block; text-align: center; margin-top: var(--space-5); }
+.oomph-dv-side__foot {
+  font-size: var(--text-body-sm);
+  line-height: var(--line-body-sm);
+  color: var(--signal-primary);
+  margin-top: var(--space-4);
+  opacity: 0.85;
+}
+.oomph-cruise-side__scarcity {
+  margin-top: var(--space-4);
+  font-weight: 600;
+  color: var(--color-error);
+  font-size: var(--text-body-sm);
+}
+
+/* ---------- final CTA band ------------------------------------------------ */
+.oomph-dv-cta {
+  background: var(--color-marine-navy);
+  color: var(--color-bone);
+  text-align: center;
+  padding: clamp(var(--space-9), 9vw, var(--space-11)) var(--container-gutter);
+}
+.oomph-dv-cta__label { color: var(--color-champagne); }
+.oomph-dv-cta h2 { color: var(--color-bone); max-width: 24ch; margin-inline: auto; margin-bottom: var(--space-4); font-size: var(--text-h1); }
+.oomph-dv-cta__lede { max-width: 56ch; margin: 0 auto var(--space-5); opacity: 0.9; }
+.oomph-dv-cta__prefill,
+.oomph-cruise-cta__prefill {
+  display: inline-block;
+  background: rgba(253, 250, 242, 0.1);
+  border: 1px solid rgba(253, 250, 242, 0.3);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-display);
+  font-style: italic;
+  margin-bottom: var(--space-6);
+}
+.oomph-dv-cta__micro { color: var(--color-champagne); display: block; margin-top: var(--space-3); }
+
+/* ---------- hosted group cruise ------------------------------------------- */
+.oomph-cruise-hero--plain {
+  background: linear-gradient(160deg, var(--color-midnight-deep), var(--color-marine-navy));
+  color: var(--text-inverse);
+}
+.oomph-cruise-hero--plain .oomph-hero__headline,
+.oomph-cruise-hero--plain .oomph-hero__subhead { color: var(--color-bone); }
+.oomph-cruise-hero--plain .oomph-eyebrow { color: var(--color-champagne); }
+
+.oomph-cruise-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: clamp(var(--space-7), 6vw, var(--space-10));
+}
+@media (max-width: 900px) {
+  .oomph-cruise-grid { grid-template-columns: 1fr; }
+}
+.oomph-cruise-main > * { margin-bottom: clamp(var(--space-7), 6vw, var(--space-9)); }
+.oomph-cruise-main > :last-child { margin-bottom: 0; }
+
+.oomph-cruise-itin__day { border-top: 1px solid var(--color-stone); }
+.oomph-cruise-itin__day:last-of-type { border-bottom: 1px solid var(--color-stone); }
+.oomph-cruise-itin__day summary {
+  cursor: pointer;
+  padding: var(--space-4) 0;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+.oomph-cruise-itin__day summary::-webkit-details-marker { display: none; }
+.oomph-cruise-itin__num {
+  color: var(--signal-accent);
+  font-size: var(--text-body-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.oomph-cruise-itin__day .oomph-prose { padding-bottom: var(--space-4); }
+
+.oomph-cruise-incl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+}
+@media (max-width: 640px) {
+  .oomph-cruise-incl { grid-template-columns: 1fr; }
+}
