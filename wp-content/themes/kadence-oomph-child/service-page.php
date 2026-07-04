@@ -15,7 +15,7 @@
  *   • §1 ghost CTA "Send me the cabin guide" — pending lead-magnet
  *     system.
  *
- * Primary CTA "Book a Discovery Call →" appears in the hero, after the
+ * Primary CTA "Start a conversation →" appears in the hero, after the
  * deliverables grid, after the "why advisor" section, and in the final
  * CTA block (four placements + sticky mobile bar = five surfaces).
  *
@@ -41,7 +41,7 @@ $hero_subhead   = oomph_acf_field(
 	'hero_subhead',
 	'Premium and ultra-luxury cruise advice from a Silversea Ultra-Luxury Specialist. One named advisor across the booking — first call to last flight home.'
 );
-$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Book a Discovery Call →' );
+$hero_cta_label = oomph_acf_field( 'hero_cta_label', 'Start a conversation →' );
 $hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
 $hero_cta_text  = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
 
@@ -161,7 +161,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( $hero_cta_url ); ?>">
 					<?php echo esc_html( $hero_cta_text ); ?> <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 			<?php /* TODO: Hero ghost CTA "Send me the cabin guide" — deferred pending
 			        lead-magnet system. Re-enable here once /cabin-guide/ or the inline
@@ -238,7 +238,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			</div>
 			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
 				<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+					Start a conversation <span aria-hidden="true">→</span>
 				</a>
 			</p>
 		</div>
@@ -259,7 +259,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			</div>
 			<p style="margin-top: var(--space-7);">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+					Start a conversation <span aria-hidden="true">→</span>
 				</a>
 			</p>
 		</div>
@@ -431,9 +431,9 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			</h2>
 			<p style="margin-top: var(--space-6);">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
-					Book a Discovery Call <span aria-hidden="true">→</span>
+					Start a conversation <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 			<?php /* TODO: Final dual CTA — secondary ghost "Send me the cabin guide"
 			        deferred pending lead-magnet system. Re-enable beside the primary
@@ -446,7 +446,7 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 <?php /* Sticky mobile CTA — R2. Visible at every scroll depth, mobile only. */ ?>
 <aside class="oomph-sticky-cta" aria-label="Quick contact">
 	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-		Book a Discovery Call <span aria-hidden="true">→</span>
+		Start a conversation <span aria-hidden="true">→</span>
 	</a>
 </aside>
 

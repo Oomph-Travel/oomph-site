@@ -66,9 +66,9 @@ if ( function_exists( 'wpFluent' ) ) {
 			<p class="oomph-hero__subhead"><?php echo esc_html( $hero_subhead ); ?></p>
 			<p class="oomph-hero__cta">
 				<a class="oomph-btn oomph-btn--primary" href="#book">
-					Book a Discovery Call <span aria-hidden="true">&rarr;</span>
+					Start a conversation <span aria-hidden="true">&rarr;</span>
 				</a>
-				<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+				<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 		</div>
 	</section>
@@ -210,7 +210,7 @@ if ( function_exists( 'wpFluent' ) ) {
 <?php /* Sticky mobile CTA — R2. Scrolls to the booking section. */ ?>
 <aside class="oomph-sticky-cta" aria-label="Quick contact">
 	<a class="oomph-btn oomph-btn--primary" href="#book">
-		Book a Discovery Call <span aria-hidden="true">&rarr;</span>
+		Start a conversation <span aria-hidden="true">&rarr;</span>
 	</a>
 </aside>
 

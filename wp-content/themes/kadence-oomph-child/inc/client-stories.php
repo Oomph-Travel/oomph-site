@@ -111,8 +111,8 @@ function oomph_render_client_stories(): void {
 				<h1 class="oomph-hero__headline oomph-italic-display">Stories from clients I&rsquo;ve planned for.</h1>
 				<p class="oomph-hero__subhead">Real reviews &mdash; names and trip details as the clients posted them. Mostly Pacific Northwest travelers, mostly cruise. The list grows as more come in.</p>
 				<p class="oomph-hero__cta">
-					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
-					<span class="oomph-btn-microcopy">Free 30-minute call. No pressure, no obligation.</span>
+					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
+					<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
 				</p>
 			</div>
 		</section>
@@ -149,7 +149,7 @@ function oomph_render_client_stories(): void {
 					<?php endforeach; ?>
 				</div>
 				<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
-					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
+					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 				</p>
 			</div>
 		</section>
@@ -168,15 +168,15 @@ function oomph_render_client_stories(): void {
 				<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
 				<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">Want a trip you can review like that?</h2>
 				<p style="margin-top: var(--space-6);">
-					<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
-					<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Free 30-minute call. No pressure, no obligation.</span>
+					<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
+					<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
 				</p>
 			</div>
 		</section>
 	</main>
 
 	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a Discovery Call <span aria-hidden="true">&rarr;</span></a>
+		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 	</aside>
 	<?php
 }

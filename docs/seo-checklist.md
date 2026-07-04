@@ -66,7 +66,7 @@ URL `/about`. Schema: Person with full hasCredential, memberOf, worksFor, sameAs
 URL `/[service-slug]`. Schema: Service + FAQPage + BreadcrumbList. Word count: 1,200–2,500. Hub for 8–12 cluster blog posts.
 
 1. H1 contains primary service keyword
-2. Hero with dual CTA: primary "Book a Discovery Call →" + secondary lead-magnet CTA
+2. Hero with dual CTA: primary "Start a conversation →" + secondary lead-magnet CTA
 3. "Who this is for" + "Who this is NOT for" — negative qualifiers pre-qualify
 4. "What I actually do" — concrete deliverables, not adjectives
 5. "Why an advisor matters here" — lead with the problem, 4 short paragraphs
