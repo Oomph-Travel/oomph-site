@@ -1,8 +1,26 @@
 # Oomph Travel — WordPress Build Plan
 
-**Status reconciled:** 2026-05-14
+**Status reconciled:** 2026-07-03
 **Canonical spec:** [`docs/source/build-plan-v2.docx`](docs/source/build-plan-v2.docx) (the 16-phase plan with full prompts, section sequences, and acceptance criteria)
 **Working principle:** the docx is the immutable spec; this file tracks live status, locked decisions, deviations, and open questions. When the two disagree, the docx is the spec, this file is the truth about reality.
+
+---
+
+## Where the build stands (2026-07-03)
+
+**The site is LIVE on production (oomphtravel.com) and healthy.** Phases 0–12 and 15 are complete; the remaining work is automated testing (Phase 13), a formal pre-launch audit pass (Phase 14), and the ongoing operating cadence (Phase 16, mostly content).
+
+Last code deploy was **2026-05-27**. Since then the repo has been dormant, but **content has continued to be added directly in WordPress** — e.g. a third journal post (`/journal/10-day-united-kingdom-itinerary/`) now live that isn't reflected in any commit. Journal posts, forms, and menus are DB content, not git-deployed.
+
+**Live and verified (health-check 2026-07-03):**
+- All primary pages return HTTP 200; a nonsense path correctly 404s. TTFB mostly < 0.7s.
+- Home, About, Luxury Cruise Planning, Discovery Call, Custom Italy, Multi-Generational, Journal (3 posts), Client Stories, Cabin Quiz (`/trip-quiz/`), Cruise Travel Trends.
+- JSON-LD `@graph` renders (TravelAgency + Person + BreadcrumbList sitewide; BlogPosting on posts; Review + AggregateRating on `/client-stories/`) — plugin is the sole source.
+- GA4 (`G-2QCSEFT44S`) firing; `sitemap_index.xml` (2 sub-sitemaps), `llms.txt`, `robots.txt` all served.
+- SSL valid through 2026-10-01 (Let's Encrypt, auto-renews).
+- Primary CTA "Start a conversation →" present sitewide.
+
+**No planning fee** — Eric does not charge one; all fee copy is reframed to commission-based / no-added-cost. R44–R46 (the `/how-i-work/` fees page) are **moot** and will not be built.
 
 ---
 
@@ -10,7 +28,7 @@
 
 | Decision | Choice | Date | Notes |
 |---|---|---|---|
-| Child theme directory | `kadence-oomph-child` | 2026-05-14 | Renamed from `oomph-child` to match docx §6.3. Migration tracked under "Theme rename" below. |
+| Child theme directory | `kadence-oomph-child` | 2026-05-14 | Renamed from `oomph-child` to match docx §6.3. Rename complete; live on prod. |
 | Theme/plugin split | Adopted | 2026-05-14 | Custom plugin `plugins/oomph-travel-core` for CPTs, taxonomies, schema injection, environment guards. Theme = presentation only. (docx §6.1, §7) |
 | ACF Pro | **Adopted** | 2026-05-14 | JSON sync redirected to `plugins/oomph-travel-core/acf-json/` so field groups live with the CPTs they describe. Three field groups specified in [`docs/acf-field-groups.md`](docs/acf-field-groups.md): Page Hero, Service Page, Group Cruise. Create via UI; JSON commits via the plugin rsync. |
 | Local environment | WP Local (Local by Flywheel) | (pre-existing) | Keeping; docx §1 specs DDEV but Local is set up and symlinked. No migration unless something breaks. WP-CLI runs via Local's site shell, not `ddev wp`. |
@@ -20,27 +38,27 @@
 
 ---
 
-## Phase status — as of 2026-05-14
+## Phase status — as of 2026-07-03
 
-| # | Phase | Docx ref | Status | Immediate next action |
+| # | Phase | Docx ref | Status | Notes / remaining |
 |---|---|---|---|---|
 | 0 | Pre-flight | §0 | ✅ Done | — |
-| 1 | Local environment | §1 | ✅ Done (Local by Flywheel, see decisions) | — |
+| 1 | Local environment | §1 | ✅ Done | Local by Flywheel (see decisions) |
 | 2 | GitHub repo | §2 | ✅ Done | — |
 | 3 | Claude Code config | §3 | ✅ Done | — |
-| 4 | CLAUDE.md + 7 deeper docs | §4 | ⚠️ Partial | Generate `cro-backlog.md`, `seo-checklist.md`; stub `deploy.md`, `page-playbooks.md`. (No `AGENTS.md` — not using Cursor/Antigravity.) |
-| 5 | WordPress foundation | §5 | ⚠️ Partial | Kadence + child theme active. Customizer, Rank Math, Site Kit, Clarity, Fluent Forms, SG Optimizer baseline pending. |
-| 6 | Child theme scaffold | §6 | ⚠️ Skeleton only | Rename to `kadence-oomph-child` (next session); tokens implementation lives in Phase 9. |
-| 7 | Custom plugin | §7 | ❌ Not started | Scaffold `plugins/oomph-travel-core` per docx §7.2 |
-| 8 | Deploy pipeline | §8 | ✅ Done (CI not local script) | Adopt `pull-db.sh` / `pull-uploads.sh` when first DB pull is needed |
-| 9 | Brand system in code | §9 | ❌ Not started | Generate `theme.json` + `tokens.css` + `base.css` + `components.css` (after theme rename) |
-| 10 | Page builds | §10 | ❌ Not started | Home page first |
-| 11 | SEO + schema wiring | §11 | ❌ Not started | After plugin scaffold |
-| 12 | Forms + Calendly + lead magnets | §12 | ❌ Not started | After Home page exists |
-| 13 | Playwright (MCP + e2e) | §13 | ❌ Not started | After first 2-3 pages |
-| 14 | Pre-launch checklist | §14 | ❌ Not started | Final stretch |
-| 15 | Launch day | §15 | ❌ Not started | Final stretch |
-| 16 | Operating cadence | §16 | ❌ Not started | Post-launch |
+| 4 | CLAUDE.md + deeper docs | §4 | ✅ Done | All docs present: brand-tokens, voice-guide, schema, cro-rules, cro-backlog, seo-checklist, deploy, page-playbooks, acf-field-groups, schema-division. No `AGENTS.md` by decision. |
+| 5 | WordPress foundation | §5 | ✅ Done | Kadence Pro + child active; Rank Math, Site Kit (GA4+GSC), Clarity (prod-only), Fluent Forms **Pro**, SG Optimizer all live. |
+| 6 | Child theme scaffold | §6 | ✅ Done | `kadence-oomph-child` — templates, parts, custom footer (`inc/footer.php`). |
+| 7 | Custom plugin | §7 | ✅ Done | `wp-content/plugins/oomph-travel-core` — schema, seo, environment, clarity-guard, CLI, ACF config, 3 CPTs (cruise/itinerary/destination). |
+| 8 | Deploy pipeline | §8 | ✅ Done | GitHub Actions → rsync (theme + plugin). `pull-*` scripts still un-adopted. |
+| 9 | Brand system in code | §9 | ✅ Done | `theme.json` + tokens/base/components CSS; "Deep Marine" palette (Marine Navy + Old Brass + Warm Bone). |
+| 10 | Page builds | §10 | ✅ Done | Home, About, all service pages, Discovery Call, Journal, Client Stories, Cabin Quiz, lead-magnet landers. Group-cruise template **not** built (see Phase 16 backlog). |
+| 11 | SEO + schema wiring | §11 | ✅ Done | Plugin owns all JSON-LD (hardened vs. Rank Math); llms.txt, robots.txt, XML sitemap, Bing Webmaster. Deep contextual internal-linking pass deferred until more journal content. |
+| 12 | Forms + Calendly + lead magnets | §12 | ✅ Done | Discovery 3-step form (R38) → Calendly inline + on-page booking confirmation; Cabin Quiz + Cruise Trends + Newsletter, each auto-delivering its PDF. **Flodesk not yet wired** (using Fluent Forms). |
+| 13 | Playwright (MCP + e2e) | §13 | ❌ Not started | No `tests/` dir. Biggest remaining engineering gap. |
+| 14 | Pre-launch checklist | §14 | ⚠️ Effectively passed | Site is live and green, but no formal §14 audit doc was run/recorded. Worth a one-time sweep. |
+| 15 | Launch day | §15 | ✅ Done | Production live since 2026-05-24; DNS/SSL/analytics all confirmed. |
+| 16 | Operating cadence | §16 | 🔄 Ongoing | Content cadence active (journal posts being added). Group cruises, real testimonials + more Review schema, Flodesk, deeper internal linking are the open items. |
 
 ---
 
@@ -48,7 +66,7 @@
 
 1. **Local by Flywheel, not DDEV.** Working setup. No reason to migrate. Implication: WP-CLI commands run via Local's site shell, not `ddev wp`. The `pull-*` scripts in docx Appendix D need adjustment to the Local path (`~/Local Sites/oomph-local/app/public/`) when adopted.
 2. **GitHub Actions CI deploy, not local `scripts/deploy.sh`.** CI is strictly better for audit and machine-independence. The current pipeline rsyncs the child theme on push to `develop` → staging or `main` → production with a manual approval gate on prod.
-3. **Child theme name `kadence-oomph-child`** (matches docx) but the GitHub Actions `SG_*_THEME_PATH` secrets will need updating during the rename — see "Theme rename" section below.
+3. **Child theme name `kadence-oomph-child`** (matches docx). Rename is complete and the GitHub Actions `SG_*_THEME_PATH` secrets were updated; deploys to staging + prod verified.
 4. ~~**ACF Pro deferred.**~~ ACF Pro adopted 2026-05-14. JSON sync target redirected to the plugin; field group specs in `docs/acf-field-groups.md`.
 
 ---
@@ -67,7 +85,7 @@
 Carried over from prior versions; non-negotiable.
 
 - **Two-direction rule.** Code flows up: repo → staging → production. Content flows down: production → staging → local. Violate the rule and you overwrite real client content.
-- **One CTA per page.** "Book a Discovery Call →" linking to `/discovery-call`. Voice rules in [`docs/voice-guide.md`](docs/voice-guide.md) are non-negotiable.
+- **One CTA per page.** "Start a conversation →" linking to `/discovery-call`. Voice rules in [`docs/voice-guide.md`](docs/voice-guide.md) are non-negotiable.
 - **No page builder.** Block editor only. No Elementor, Divi, Bricks.
 - **Block editor constraints.** Authors cannot pick arbitrary colors — palette is locked via `theme.json`. No pill radius on buttons.
 - **Verification gate.** Before any page is marked done: Lighthouse mobile passes (LCP <2.5s, INP <200ms, CLS <0.1), schema validates in Google Rich Results Test, WCAG AA contrast verified on every text/background pair, screenshots taken at mobile + desktop.
@@ -77,23 +95,25 @@ Carried over from prior versions; non-negotiable.
 
 ## Sequenced work plan
 
-### Immediate (this round)
+The initial build (Phases 0–12) shipped and is live. Remaining work, in priority order:
 
-1. **Phase 4 docs cleanup.** Generate `docs/cro-backlog.md` and `docs/seo-checklist.md`. Stub `docs/deploy.md` and `docs/page-playbooks.md`. (No `AGENTS.md` — only Claude Code in use.)
-2. **Theme rename `oomph-child` → `kadence-oomph-child`.** Local FS rename + symlink + `style.css` text domain + `CLAUDE.md` references + `.gitignore` references. **User action embedded:** update GH secrets `SG_PROD_THEME_PATH` and `SG_STAGE_THEME_PATH`. Then push develop → verify staging deploy → push main → verify production deploy.
-3. **Phase 9.1 — `theme.json` + `tokens.css`.** Generate schema v3 `theme.json` from [`docs/brand-tokens.md`](docs/brand-tokens.md). Generate `assets/css/tokens.css` with all raw tokens + semantic tokens (`--surface-default`, `--signal-accent`, etc.) per docx §9.1.
-4. **Phase 9.2–9.5 — Components.** `base.css` (reset + body + headings + prose + links), `components.css` (buttons + cards + sticky CTA + forms), `editor.css` (Gutenberg mirror). `register_block_style()` calls in `inc/kadence-overrides.php`.
-5. **Phase 7 — Plugin scaffold.** `plugins/oomph-travel-core` with namespace `OomphTravel\Core`, three CPTs, two taxonomies, `class-schema.php`, `class-environment.php`, `class-clarity-guard.php`, `class-cli.php`. No ACF wiring yet.
-6. **Phase 10.3 — Home page.** First real page. Forces tokens + components + schema + plugin to prove themselves end-to-end on one URL before we replicate the pattern across nine more pages.
+### Next up (engineering)
 
-### Deferred until after Home page is shipped
+1. **Phase 13 — Playwright e2e tests.** No `tests/` dir exists yet. Highest-value remaining engineering work: smoke tests for the money paths (Discovery 3-step form → Calendly, Cabin Quiz email gate, lead-magnet PDF delivery) + a schema-presence assertion per page type, wired into GitHub Actions.
+2. **Phase 14 — Formal pre-launch/health audit.** The site passes in practice, but no §14 checklist was ever recorded. One-time sweep: Lighthouse mobile per page type (LCP/INP/CLS), Rich Results Test on each schema type, WCAG AA contrast pass, 404/redirect map. Capture as a dated doc.
 
-- Phase 5 WordPress foundation completions (Customizer, Rank Math wizard, Clarity production-only config, Fluent Forms SMTP setup).
-- Phase 10.4–10.15 (About → Service hubs → Discovery Call → lead magnets → fees → testimonials → group cruise template → journal).
-- Phase 11 SEO wiring (Rank Math schema config, `llms.txt`, robots.txt, Bing Webmaster, internal linking pass).
-- Phase 12 Forms (Discovery Pre-Intake 3-step, Calendly inline class, Flodesk embeds, Clarity tags).
-- Phase 13 Playwright (MCP config + committed `tests/e2e/` + GH Actions workflow).
-- Phase 14–16 pre-launch, launch, ops cadence.
+### Content & growth (Phase 16, ongoing — mostly Eric's input)
+
+- **Journal cadence.** 3 posts live; the Trends guide has ~7 chapters left to mine. Add first-hand opening lines and swap in Eric's own travel photos (R19/R20).
+- **Group-cruise template + Event schema.** The one page type from Phase 10 not yet built; `oomph_cruise` CPT + Event schema already scaffolded in the plugin, so this is template + content.
+- **Real testimonials + expanded Review schema.** `/client-stories/` has 4 seeded testimonials; grow toward the Year-1 target (R32) as real ones arrive.
+- **Flodesk** newsletter integration (currently Fluent Forms handles signups).
+- **Deeper contextual internal-linking pass** once there's more journal content (R17/R18).
+
+### Un-adopted / optional
+
+- Docx `pull-db.sh` / `pull-uploads.sh` content-down scripts (adopt when a prod→local mirror is first needed).
+- Cloudflare Free in front of production (docx §15.3) — open question below.
 
 ---
 
