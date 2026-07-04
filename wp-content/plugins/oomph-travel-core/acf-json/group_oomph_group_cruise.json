@@ -3,6 +3,62 @@
     "title": "Group Cruise",
     "fields": [
         {
+            "key": "field_oomph_sailing_type",
+            "label": "Sailing type",
+            "name": "sailing_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Which lane this sailing belongs to. Drives the front-end layout and controls which fields show below.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "hosted_group": "Hosted Group Cruise",
+                "distinctive_voyage": "Distinctive Voyages",
+                "amenity_departure": "Amenity Departure"
+            },
+            "default_value": "hosted_group",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_cruise_theme",
+            "label": "Cruise theme",
+            "name": "cruise_theme",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Optional themed program for this sailing. Leave as None if it has no theme.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "none": "None",
+                "culinary": "Culinary Collection",
+                "car_and_driver": "Car & Driver"
+            },
+            "default_value": "none",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_oomph_cruise_ship_name",
             "label": "Ship name",
             "name": "cruise_ship_name",
@@ -11,7 +67,11 @@
             "instructions": "e.g., Silver Nova",
             "required": 1,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -28,7 +88,11 @@
             "instructions": "e.g., Silversea, Seabourn",
             "required": 1,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -45,7 +109,11 @@
             "instructions": "",
             "required": 1,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "taxonomy": "oomph_region",
             "add_term": 1,
             "save_terms": 1,
@@ -64,10 +132,14 @@
             "name": "cruise_dates_start",
             "aria-label": "",
             "type": "date_picker",
-            "instructions": "",
+            "instructions": "Sail date. Feeds the Event schema startDate.",
             "required": 1,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "display_format": "F j, Y",
             "return_format": "Y-m-d",
             "first_day": 1,
@@ -79,14 +151,102 @@
             "name": "cruise_dates_end",
             "aria-label": "",
             "type": "date_picker",
-            "instructions": "",
+            "instructions": "Disembarkation date. Feeds the Event schema endDate.",
             "required": 1,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "display_format": "F j, Y",
             "return_format": "Y-m-d",
             "first_day": 1,
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_embark_city",
+            "label": "Embarkation city",
+            "name": "embark_city",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Where the sailing begins, e.g., Seward",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_disembark_city",
+            "label": "Disembarkation city",
+            "name": "disembark_city",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Where the sailing ends, e.g., Vancouver",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_amenity_summary",
+            "label": "Amenity summary",
+            "name": "amenity_summary",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Short line naming what's included on this departure. Drives the 'more included' side of the comparison block.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_amenity_details",
+            "label": "Amenity details",
+            "name": "amenity_details",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Narrative description of the included amenities. Rendered as prose in the 'what comes with it' section. One amenity per line if you want them as separate comparison rows.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
         },
         {
             "key": "field_oomph_cruise_price_per_person",
@@ -94,10 +254,14 @@
             "name": "cruise_price_per_person",
             "aria-label": "",
             "type": "number",
-            "instructions": "USD, no decimals. Feeds Event schema offers.price.",
-            "required": 1,
+            "instructions": "USD, no decimals. Feeds Event schema offers.price on hosted sailings. Optional — leave blank when there's no set price (e.g. Distinctive Voyages).",
+            "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "min": 0,
             "max": "",
@@ -116,7 +280,11 @@
             "instructions": "USD. Optional.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "min": 0,
             "max": "",
@@ -132,10 +300,14 @@
             "name": "cruise_cabins_remaining",
             "aria-label": "",
             "type": "number",
-            "instructions": "Real scarcity (cro-rules R53). Update weekly. NEVER fake.",
-            "required": 1,
+            "instructions": "Real scarcity (cro-rules R53). Update weekly. NEVER fake. Optional — leave blank when not tracking cabins (e.g. Distinctive Voyages).",
+            "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "min": 0,
             "max": "",
@@ -151,13 +323,17 @@
             "name": "cruise_itinerary",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Day-by-day. 7–21 rows.",
-            "required": 1,
+            "instructions": "Day-by-day. Starts with one row; add days as needed (up to 21). Hosted sailings use this for the itinerary accordion. Leave rows blank if a sailing has no set itinerary.",
+            "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "layout": "block",
             "pagination": 0,
-            "min": 7,
+            "min": 1,
             "max": 21,
             "collapsed": "field_oomph_cruise_itinerary_port",
             "button_label": "Add day",
@@ -170,9 +346,13 @@
                     "aria-label": "",
                     "type": "number",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "20", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "min": 1,
                     "max": 30,
@@ -190,9 +370,13 @@
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "30", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -210,7 +394,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -230,7 +418,11 @@
             "instructions": "What's included. One item per line.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -247,7 +439,11 @@
             "instructions": "What's NOT included. One item per line.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -264,7 +460,11 @@
             "instructions": "USD per person.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "min": 0,
             "max": "",
@@ -283,11 +483,780 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "display_format": "F j, Y",
             "return_format": "Y-m-d",
             "first_day": 1,
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_1_name",
+            "label": "Shore event 1 — name",
+            "name": "shore_event_1_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Exclusive shore event title. Becomes the hero headline for Distinctive Voyages sailings.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_1_image",
+            "label": "Shore event 1 — image",
+            "name": "shore_event_1_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_1_link",
+            "label": "Shore event 1 — flyer link",
+            "name": "shore_event_1_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_1_date",
+            "label": "Shore event 1 — date",
+            "name": "shore_event_1_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_1_time",
+            "label": "Shore event 1 — time",
+            "name": "shore_event_1_time",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "e.g., 9:00 AM",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_1_length_hours",
+            "label": "Shore event 1 — length (hours)",
+            "name": "shore_event_1_length_hours",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 0,
+            "max": "",
+            "step": "0.5",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "hours"
+        },
+        {
+            "key": "field_oomph_shore_event_1_location",
+            "label": "Shore event 1 — location",
+            "name": "shore_event_1_location",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Port or place the event happens, e.g., Haines, Alaska",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_1_details",
+            "label": "Shore event 1 — details",
+            "name": "shore_event_1_details",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Narrative description of the event. No bullet lists.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_oomph_shore_event_2_name",
+            "label": "Shore event 2 — name",
+            "name": "shore_event_2_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Second exclusive shore event, if any.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_2_image",
+            "label": "Shore event 2 — image",
+            "name": "shore_event_2_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_2_link",
+            "label": "Shore event 2 — flyer link",
+            "name": "shore_event_2_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_2_date",
+            "label": "Shore event 2 — date",
+            "name": "shore_event_2_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_2_time",
+            "label": "Shore event 2 — time",
+            "name": "shore_event_2_time",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "e.g., 9:00 AM",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_2_length_hours",
+            "label": "Shore event 2 — length (hours)",
+            "name": "shore_event_2_length_hours",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 0,
+            "max": "",
+            "step": "0.5",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "hours"
+        },
+        {
+            "key": "field_oomph_shore_event_2_location",
+            "label": "Shore event 2 — location",
+            "name": "shore_event_2_location",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_2_details",
+            "label": "Shore event 2 — details",
+            "name": "shore_event_2_details",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Narrative description of the event. No bullet lists.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_oomph_shore_event_3_name",
+            "label": "Shore event 3 — name",
+            "name": "shore_event_3_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Third exclusive shore event, if any.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_3_image",
+            "label": "Shore event 3 — image",
+            "name": "shore_event_3_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional photo for this event's ticket card. Landscape orientation works best.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_3_link",
+            "label": "Shore event 3 — flyer link",
+            "name": "shore_event_3_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_3_date",
+            "label": "Shore event 3 — date",
+            "name": "shore_event_3_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_3_time",
+            "label": "Shore event 3 — time",
+            "name": "shore_event_3_time",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "e.g., 9:00 AM",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_3_length_hours",
+            "label": "Shore event 3 — length (hours)",
+            "name": "shore_event_3_length_hours",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 0,
+            "max": "",
+            "step": "0.5",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "hours"
+        },
+        {
+            "key": "field_oomph_shore_event_3_location",
+            "label": "Shore event 3 — location",
+            "name": "shore_event_3_location",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_shore_event_3_details",
+            "label": "Shore event 3 — details",
+            "name": "shore_event_3_details",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Narrative description of the event. No bullet lists.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_oomph_voyage_number",
+            "label": "Voyage #",
+            "name": "voyage_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Internal reference. Never displayed publicly.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_us_group_number",
+            "label": "US Group #",
+            "name": "us_group_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Internal reference. Never displayed publicly.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_ca_group_number",
+            "label": "CA Group #",
+            "name": "ca_group_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Internal reference. Never displayed publicly.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -300,16 +1269,16 @@
         ]
     ],
     "menu_order": 2,
-    "position": "normal",
+    "position": "acf_after_title",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "Group-cruise landing page fields. Drives the Event schema, the day-by-day accordion, and the scarcity display.",
+    "description": "Group-cruise landing page fields. sailing_type drives the layout: Hosted Group (pricing, cabins, day-by-day itinerary), Distinctive Voyages (exclusive shore events, amenities), or Amenity Departure. Internal booking references (Voyage / US Group / CA Group #) are stored but never output publicly.",
     "show_in_rest": 0,
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1747276800
+    "modified": 1783187776
 }

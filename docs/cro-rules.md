@@ -6,7 +6,7 @@ The unified rule set. These are the rules Claude Code MUST follow on every page.
 
 ## Universal page rules
 
-**R1** · Every page MUST have ONE primary CTA: **"Book a Discovery Call →"** linking to `/discovery-call/`.
+**R1** · Every page MUST have ONE primary CTA: **"Start a conversation →"** linking to `/discovery-call/`.
 
 **R2** · Every page MUST include a sticky mobile bottom bar with the primary CTA, visible at all scroll depths.
 
@@ -74,7 +74,7 @@ The unified rule set. These are the rules Claude Code MUST follow on every page.
 
 **R24** · Use first-person CTAs: "Book My Discovery Call," "Send Me the Cabin Guide," "Plan My Italy Trip."
 
-**R25** · Every CTA includes microcopy below it (e.g., "Free 30-minute call. No pressure, no obligation.").
+**R25** · Every CTA includes microcopy below it (e.g., "Email, text, or a quick call — whatever's easiest for you.").
 
 **R26** · WCAG AA contrast: 4.5:1 minimum on every button.
 

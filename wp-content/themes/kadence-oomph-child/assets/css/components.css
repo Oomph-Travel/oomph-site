@@ -989,3 +989,11 @@
 .oomph-testimonial__meta p { margin: 0 0 var(--space-1); }
 .oomph-testimonial__author strong { color: var(--color-charcoal); }
 .oomph-testimonial__trip { font-style: italic; }
+
+/* Sailing card — shore-event line (shared: /group-cruises/, homepage, cruise page). */
+.oomph-sailing-card__event {
+  color: var(--signal-accent);
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}

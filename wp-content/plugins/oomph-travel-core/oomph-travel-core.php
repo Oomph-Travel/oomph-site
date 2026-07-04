@@ -38,6 +38,12 @@ require_once OOMPH_CORE_DIR . 'includes/class-schema.php';
 require_once OOMPH_CORE_DIR . 'includes/class-clarity-guard.php';
 require_once OOMPH_CORE_DIR . 'includes/class-acf-config.php';
 require_once OOMPH_CORE_DIR . 'includes/class-seo.php';
+require_once OOMPH_CORE_DIR . 'includes/class-xlsx.php';
+require_once OOMPH_CORE_DIR . 'includes/class-importer.php'; // engine — shared by CLI + admin.
+
+if ( is_admin() ) {
+	require_once OOMPH_CORE_DIR . 'includes/class-admin-import.php';
+}
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-cli.php';
@@ -49,10 +55,15 @@ add_action( 'init', array( \OomphTravel\Core\CPT_Itinerary::class,   'register' 
 add_action( 'init', array( \OomphTravel\Core\CPT_Cruise::class,      'register' ) );
 add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' ) );
 
+\OomphTravel\Core\CPT_Cruise::init();
 \OomphTravel\Core\Schema::init();
 \OomphTravel\Core\Clarity_Guard::init();
 \OomphTravel\Core\ACF_Config::init();
 \OomphTravel\Core\SEO::init();
+
+if ( is_admin() ) {
+	\OomphTravel\Core\Admin_Import::init();
+}
 
 /**
  * Activation — flush rewrite rules so CPT slugs resolve immediately.
