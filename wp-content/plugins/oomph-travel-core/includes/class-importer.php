@@ -381,8 +381,9 @@ final class Importer {
 			$len  = trim( $this->cell( $row, "Shore Event Length Hrs #{$n}" ) );
 			$loc  = trim( $this->cell( $row, "Location of Shore Event #{$n}" ) );
 			$det  = trim( $this->cell( $row, "Additional Shore Event Details #{$n}" ) );
+			$link = trim( $this->cell( $row, "Shore Event Link #{$n}" ) ); // Flyer PDF/URL.
 
-			if ( '' === $name && null === $date && '' === $time && '' === $len && '' === $loc && '' === $det ) {
+			if ( '' === $name && null === $date && '' === $time && '' === $len && '' === $loc && '' === $det && '' === $link ) {
 				continue; // Nothing for this event slot.
 			}
 			update_field( "field_oomph_shore_event_{$n}_name", $name, $post_id );
@@ -393,6 +394,7 @@ final class Importer {
 			update_field( "field_oomph_shore_event_{$n}_length_hours", ( '' === $len ? '' : (float) $len ), $post_id );
 			update_field( "field_oomph_shore_event_{$n}_location", $loc, $post_id );
 			update_field( "field_oomph_shore_event_{$n}_details", $det, $post_id );
+			update_field( "field_oomph_shore_event_{$n}_link", esc_url_raw( $link ), $post_id );
 		}
 	}
 

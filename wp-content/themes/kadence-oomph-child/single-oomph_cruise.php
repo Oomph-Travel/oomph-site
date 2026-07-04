@@ -101,6 +101,7 @@ while ( have_posts() ) :
 				'location' => $eloc,
 				'details'  => trim( (string) $get( "shore_event_{$n}_details" ) ),
 				'image'    => ( is_array( $eimg ) && ! empty( $eimg['url'] ) ) ? (string) $eimg['url'] : '',
+				'link'     => trim( (string) $get( "shore_event_{$n}_link" ) ),
 			);
 		}
 		$lead_event = $events[0] ?? null;
@@ -238,6 +239,11 @@ while ( have_posts() ) :
 												<p><?php echo esc_html( $ev['details'] ); ?></p>
 											<?php else : ?>
 												<p>Reserved for Distinctive Voyages guests on this departure. Full event details arrive with your booking documents.</p>
+											<?php endif; ?>
+											<?php if ( '' !== $ev['link'] ) : ?>
+												<p class="oomph-dv-ticket__flyer">
+													<a class="oomph-btn oomph-btn--ghost" href="<?php echo esc_url( $ev['link'] ); ?>" target="_blank" rel="noopener">See the shore excursion flyer <span aria-hidden="true">&rarr;</span></a>
+												</p>
 											<?php endif; ?>
 											<span class="oomph-dv-ticket__once">This event runs once — then it's gone</span>
 										</div>

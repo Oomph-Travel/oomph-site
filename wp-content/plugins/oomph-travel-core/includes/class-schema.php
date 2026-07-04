@@ -361,6 +361,10 @@ final class Schema {
 				if ( '' !== $sdet ) {
 					$sub['description'] = $sdet;
 				}
+				$slink = trim( (string) $f( "shore_event_{$n}_link" ) ); // Flyer — also shown on the page.
+				if ( '' !== $slink ) {
+					$sub['url'] = $slink;
+				}
 				$subs[] = $sub;
 			}
 			if ( ! empty( $subs ) ) {

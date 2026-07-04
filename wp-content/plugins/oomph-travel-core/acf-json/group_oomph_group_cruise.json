@@ -557,6 +557,32 @@
             "allow_in_bindings": 0
         },
         {
+            "key": "field_oomph_shore_event_1_link",
+            "label": "Shore event 1 — flyer link",
+            "name": "shore_event_1_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_oomph_shore_event_1_date",
             "label": "Shore event 1 — date",
             "name": "shore_event_1_date",
@@ -765,6 +791,32 @@
             "allow_in_bindings": 0
         },
         {
+            "key": "field_oomph_shore_event_2_link",
+            "label": "Shore event 2 — flyer link",
+            "name": "shore_event_2_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_oomph_shore_event_2_date",
             "label": "Shore event 2 — date",
             "name": "shore_event_2_date",
@@ -970,6 +1022,32 @@
             "max_size": "",
             "mime_types": "",
             "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_shore_event_3_link",
+            "label": "Shore event 3 — flyer link",
+            "name": "shore_event_3_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link to the shore excursion flyer (imported from the CSV). Shown as a 'view the flyer' button on the sailing page.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_oomph_sailing_type",
+                        "operator": "==",
+                        "value": "distinctive_voyage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://",
             "allow_in_bindings": 0
         },
         {
@@ -1202,5 +1280,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1783178033
+    "modified": 1783187776
 }
