@@ -72,6 +72,43 @@ function oomph_child_enqueue_styles(): void {
 add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_styles', 20 );
 
 /**
+ * Group Cruise single stylesheet — only on single oomph_cruise views.
+ *
+ * @return void
+ */
+function oomph_child_enqueue_cruise(): void {
+	if ( ! is_singular( 'oomph_cruise' ) ) {
+		return;
+	}
+	$path = get_stylesheet_directory() . '/assets/css/dv-sailing.css';
+	if ( file_exists( $path ) ) {
+		wp_enqueue_style(
+			'oomph-dv-sailing',
+			get_stylesheet_directory_uri() . '/assets/css/dv-sailing.css',
+			array( 'oomph-components' ),
+			(string) filemtime( $path )
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_cruise', 20 );
+
+/**
+ * Force light color-scheme on cruise singles.
+ *
+ * The DV and hosted layouts use deep navy surfaces with light type; a mobile
+ * browser's automatic dark mode would otherwise recolour them and break
+ * contrast. Emitted in <head> because a template can't reach it after the fact.
+ *
+ * @return void
+ */
+function oomph_child_cruise_color_scheme(): void {
+	if ( is_singular( 'oomph_cruise' ) ) {
+		echo '<meta name="color-scheme" content="light only">' . "\n";
+	}
+}
+add_action( 'wp_head', 'oomph_child_cruise_color_scheme', 1 );
+
+/**
  * Cabin quiz script — only on the /trip-quiz/ page.
  *
  * @return void
