@@ -41,6 +41,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-seo.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-cli.php';
+	require_once OOMPH_CORE_DIR . 'includes/class-importer.php';
 }
 
 // Boot.
