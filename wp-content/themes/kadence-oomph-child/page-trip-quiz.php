@@ -185,7 +185,7 @@ if ( function_exists( 'wpFluent' ) ) {
 					<p>I've sent the full Cabin Selection Guide to your inbox. It's the same brief I send clients before we book.</p>
 					<p>The quiz gets you to the category. The actual booking — which deck, which side of the ship, which cabin numbers to avoid on this specific class of vessel — is where I spend my time. If you're sailing in the next 12 months and want a second set of eyes before you commit to a cabin, the 30-minute call is the next step.</p>
 					<p class="oomph-quiz__cta">
-						<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Book a 30-minute call <span aria-hidden="true">&rarr;</span></a>
+						<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 						<a class="oomph-btn oomph-btn--ghost" href="/luxury-cruise-planning/">No, just the guide for now</a>
 					</p>
 				</div>
