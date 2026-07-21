@@ -21,6 +21,11 @@ yarn-error.log*
 dist/
 .cache/
 
+# ─── Playwright e2e (repo-root tooling, never deployed) ───────────
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
 # ─── Environment ──────────────────────────────────────────────────
 .env
 .env.local
