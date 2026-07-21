@@ -14,6 +14,11 @@ import { defineConfig, devices } from '@playwright/test';
 
 const BASE_URL = process.env.OOMPH_BASE_URL ?? 'https://staging2.oomphtravel.com';
 
+// Staging sits behind SiteGround's rate-based anti-bot layer, which challenges
+// bursts of parallel requests from datacenter IPs. In CI, run staging
+// serially (~human speed); production and local runs keep parallel workers.
+const IS_STAGING_TARGET = BASE_URL.includes('staging');
+
 export default defineConfig({
   testDir: './tests/e2e',
   // Warm-up: absorbs SiteGround's anti-bot JS challenge once and shares the
@@ -22,7 +27,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? (IS_STAGING_TARGET ? 1 : 2) : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
 
   use: {
