@@ -1,12 +1,14 @@
 name: E2E smoke (staging)
 
 # Independent, NON-BLOCKING suite — it is not a required status check, so it
-# never gates a deploy or a merge. It runs against staging:
-#   - after each "Deploy to SiteGround" run finishes for the develop branch
-#   - nightly on a schedule
-#   - on demand from the Actions tab (Run workflow)
+# never gates a deploy or a merge. Targets:
+#   - after each develop "Deploy to SiteGround" run  → STAGING (fresh deploy)
+#   - nightly on a schedule                          → PRODUCTION (reliable
+#     canary; prod has no bot-wall issues from datacenter IPs)
+#   - on demand from the Actions tab                 → pick staging/production
 #
-# Tests never submit a form (see docs/testing.md), so runs create no leads.
+# Tests never submit a form (see docs/testing.md), so runs create no leads —
+# safe against production.
 
 on:
   workflow_run:
@@ -15,6 +17,12 @@ on:
   schedule:
     - cron: "0 9 * * *" # 09:00 UTC nightly
   workflow_dispatch:
+    inputs:
+      target:
+        description: "Site to test"
+        type: choice
+        options: [staging, production]
+        default: staging
 
 concurrency:
   group: e2e-${{ github.ref }}
@@ -31,10 +39,18 @@ jobs:
       (github.event.workflow_run.head_branch == 'develop' &&
        github.event.workflow_run.conclusion == 'success')
 
-    env:
-      OOMPH_BASE_URL: https://staging2.oomphtravel.com
-
     steps:
+      - name: Pick target site
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "url=https://oomphtravel.com" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.target }}" = "production" ]; then
+            echo "url=https://oomphtravel.com" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=https://staging2.oomphtravel.com" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -54,6 +70,8 @@ jobs:
 
       - name: Run e2e smoke tests
         run: npx playwright test
+        env:
+          OOMPH_BASE_URL: ${{ steps.target.outputs.url }}
 
       - name: Upload Playwright report
         if: always()

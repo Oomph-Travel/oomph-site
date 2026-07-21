@@ -34,9 +34,14 @@ submission goes through.
 
 - **After each update to staging** — whenever code is pushed to `develop` and
   deploys, the tests run against the freshly-deployed staging site.
-- **Every night** — a scheduled run catches anything that drifted.
+- **Every night against production** — a scheduled run checks the live site
+  (still submitting nothing). Production is also the more reliable target from
+  GitHub's servers: staging's anti-bot protection occasionally challenges
+  datacenter IPs, which can make a staging run flaky. The suite warms up
+  through that challenge automatically, but if a staging run fails with pages
+  "not loading," re-run it before digging deeper.
 - **On demand** — anyone can trigger a run from the repo's **Actions** tab →
-  "E2E smoke (staging)" → **Run workflow**.
+  "E2E smoke (staging)" → **Run workflow** → choose staging or production.
 
 They are **non-blocking**: a failing test reports a problem but never stops a
 deploy or a release. If something fails, the run uploads a **Playwright report**
