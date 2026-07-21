@@ -137,6 +137,7 @@ On editorial pages, push neutrals to 70 and Terracotta to 3. On inquiry flows, P
 4. Take mobile + desktop screenshots. Compare to spec.
 5. Console clean. No failed network requests.
 6. WCAG AA contrast on every text/background pair (4.5:1 minimum).
+7. Run the e2e smoke suite: `npm ci && npx playwright test` (defaults to staging; set `OOMPH_BASE_URL` to retarget). See `docs/testing.md`. These never submit forms — they're repo-root tooling and are never deployed to the theme.
 
 ## When in doubt
 

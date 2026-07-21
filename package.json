@@ -1,0 +1,15 @@
+{
+  "name": "oomph-site-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "End-to-end smoke tests for oomphtravel.com (Playwright). Not part of the deployed theme — repo-root tooling only.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
