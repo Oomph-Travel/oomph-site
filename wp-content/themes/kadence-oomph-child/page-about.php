@@ -106,17 +106,14 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<article>
-					<p class="oomph-eyebrow">ICP · 01</p>
 					<h3 class="oomph-card__headline">Couples planning a milestone.</h3>
 					<p>Anniversaries, retirements, the trip you've talked about for ten years. The kind that has to land — choose the right cabin, get the dinner reservations, pace the days so neither of you comes home tired. I plan milestone trips because I've planned my own; the ones you only get a couple of in a lifetime deserve someone who has been there.</p>
 				</article>
 				<article>
-					<p class="oomph-eyebrow">ICP · 02</p>
 					<h3 class="oomph-card__headline">Families planning across three generations.</h3>
 					<p>Three generations, one wheelchair, three picky eaters. Mobility, dietary, room configurations, a plan B for weather — a hundred small decisions, not one big one. I serve multi-gen families because they remind me of my own, and because the trip works or it doesn't. There's no middle ground.</p>
 				</article>
 				<article>
-					<p class="oomph-eyebrow">ICP · 03</p>
 					<h3 class="oomph-card__headline">Cruisers planning what's next.</h3>
 					<p>You've sailed the mainstream lines and you're curious what ultra-luxury is actually like. I've sailed fourteen Silversea voyages. I'll tell you what's worth it, what isn't, and which cabin categories overdeliver — and which ones quietly disappoint.</p>
 				</article>

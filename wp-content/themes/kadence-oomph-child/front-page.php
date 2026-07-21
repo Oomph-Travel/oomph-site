@@ -111,17 +111,14 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<article class="oomph-card">
-					<p class="oomph-eyebrow oomph-card__eyebrow">Client ICP · 01</p>
 					<h3 class="oomph-card__headline">Couples planning a milestone.</h3>
 					<p>Anniversaries, retirements, the trip you've talked about for ten years. The kind that has to land — choose the cabin, get the dinner reservations right, pace the days so neither of you comes home tired.</p>
 				</article>
 				<article class="oomph-card">
-					<p class="oomph-eyebrow oomph-card__eyebrow">Client ICP · 02</p>
 					<h3 class="oomph-card__headline">Families planning across three generations.</h3>
 					<p>The trip planned around the slowest walker and the pickiest eater. Mobility, dietary, room configurations, a plan B for weather — it's not one decision; it's a hundred.</p>
 				</article>
 				<article class="oomph-card">
-					<p class="oomph-eyebrow oomph-card__eyebrow">Client ICP · 03</p>
 					<h3 class="oomph-card__headline">Cruisers planning what's next.</h3>
 					<p>You've sailed the mainstream lines and you're curious what ultra-luxury is actually like. I've sailed Silversea fourteen times. I'll tell you what's worth it and what isn't.</p>
 				</article>
@@ -139,7 +136,6 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			<div class="oomph-grid oomph-grid--3">
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/luxury-cruise-planning/">
 					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-cruise.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
-					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 01</p>
 					<h3 class="oomph-card__headline">Luxury cruise planning.</h3>
 					<p>Silversea, Regent, Seabourn, Crystal, Cunard Grills, Viking Ocean. Cabin selection by deck and wave-zone, onboard credit, pre- and post-cruise extensions.</p>
 					<p class="oomph-card__meta">See cruise planning →</p>
@@ -147,7 +143,6 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/custom-italy-travel/">
 					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-italy.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
-					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 02</p>
 					<h3 class="oomph-card__headline">Custom Italy travel.</h3>
 					<p>Hand-built itineraries by region — Puglia, Sicily, the Lakes, the Dolomites. Private drivers, vetted guides, the villa rentals that actually deliver.</p>
 					<p class="oomph-card__meta">See custom Italy →</p>
@@ -155,7 +150,6 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/multi-generational-travel-planning/">
 					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-multigen.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
-					<p class="oomph-eyebrow oomph-card__eyebrow">Service · 03</p>
 					<h3 class="oomph-card__headline">Multi-generational travel.</h3>
 					<p>The trip that works for grandparents, parents, teens, and the toddler. Pace, mobility, dietary, special-occasion choreography — planned around the slowest walker.</p>
 					<p class="oomph-card__meta">See multi-gen planning →</p>
