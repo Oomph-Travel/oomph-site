@@ -157,7 +157,7 @@ function oomph_render_client_stories(): void {
 		<?php /* 4. HONEST FRAMER */ ?>
 		<section class="oomph-section is-style-oomph-quiet-premium" aria-label="About this page">
 			<div class="oomph-container oomph-container--prose">
-				<p>More are on the way as past clients post. If you&rsquo;ve traveled with me and want to add a few sentences, send them my way &mdash; or post wherever you found me. Names and details stay exactly as you write them.</p>
+				<p>If you&rsquo;ve traveled with me, I&rsquo;d love to add your story &mdash; send a few sentences my way, or post wherever you found me. It goes up exactly as you write it, names and all.</p>
 				<p class="oomph-meta"><em>Last updated <?php echo esc_html( $last_updated ); ?>.</em></p>
 			</div>
 		</section>
