@@ -16,6 +16,9 @@ const BASE_URL = process.env.OOMPH_BASE_URL ?? 'https://staging2.oomphtravel.com
 
 export default defineConfig({
   testDir: './tests/e2e',
+  // Warm-up: absorbs SiteGround's anti-bot JS challenge once and shares the
+  // cleared cookies (storage state) with every test context.
+  globalSetup: './tests/e2e/global-setup',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -24,10 +27,12 @@ export default defineConfig({
 
   use: {
     baseURL: BASE_URL,
+    storageState: 'playwright/.cache/storage-state.json',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    // A polite, identifiable UA so these hits are easy to spot in logs.
-    userAgent: 'OomphE2E/1.0 (+Playwright smoke tests)',
+    // NOTE: deliberately no custom userAgent — non-browser UA strings are a
+    // classic bot-detection trigger, and this suite must pass SiteGround's
+    // anti-bot layer from CI datacenter IPs.
   },
 
   projects: [
