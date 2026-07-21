@@ -109,7 +109,7 @@ function oomph_render_client_stories(): void {
 			<div class="oomph-container oomph-hero__inner">
 				<p class="oomph-eyebrow">FIELD NOTES &middot; FROM CLIENTS</p>
 				<h1 class="oomph-hero__headline oomph-italic-display">Stories from clients I&rsquo;ve planned for.</h1>
-				<p class="oomph-hero__subhead">Real reviews &mdash; names and trip details as the clients posted them. Mostly Pacific Northwest travelers, mostly cruise. The list grows as more come in.</p>
+				<p class="oomph-hero__subhead">Every story here came from a client I planned for, posted in their own words. I&rsquo;ve changed nothing &mdash; the names, the ships, the trips are theirs.</p>
 				<p class="oomph-hero__cta">
 					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 					<span class="oomph-btn-microcopy">Email, text, or a quick call — whatever's easiest for you.</span>
