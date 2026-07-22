@@ -1,0 +1,12 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Athens (Piraeus), Greece", "activity": "Embarkation; the ship sails at 19:00. Athens is worth arriving early for — the Acropolis at opening time, before the heat and the crowds, then aboard for sailaway." },
+    { "day": 2, "port": "Gythion, Greece", "activity": "The small-port stop the big ships skip — gateway to the Mani peninsula and Mystras' Byzantine hillside, with waterfront tavernas doing exactly what they've always done. In port 08:00–17:30." },
+    { "day": 3, "port": "Katakolon (Olympia), Greece", "activity": "Twenty minutes from Ancient Olympia — the original stadium, the workshop of Phidias, and olive groves that have watched the whole story. In port 08:00–18:00." },
+    { "day": 4, "port": "At sea", "activity": "Ionian and Adriatic water. The Nova class keeps its open side to the sea — this is the day to claim it." },
+    { "day": 5, "port": "Kotor, Montenegro", "activity": "The sail into the Bay of Kotor is the day's event in itself — fjord-like walls closing in on a medieval town. The ship stays late, so the climb to St. John's fortress and dinner in the old town both fit." },
+    { "day": 6, "port": "Split, Croatia", "activity": "A city built inside Diocletian's retirement palace — the cathedral was his mausoleum. Morning in the palace lanes, afternoon on the Riva or out to Trogir. In port 08:00–18:00." },
+    { "day": 7, "port": "Zadar, Croatia", "activity": "Roman forum, the Sea Organ playing whatever the Adriatic sends it, and a sunset Hitchcock called the finest he'd seen. In port 08:00–19:00." },
+    { "day": 8, "port": "Fusina (Venice), Italy", "activity": "Morning arrival at Venice's lagoon port and disembarkation. If there was ever a place to add post-cruise nights, it's this one — I build that with you before you sail." }
+  ]
+}

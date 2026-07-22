@@ -41,9 +41,11 @@ require_once OOMPH_CORE_DIR . 'includes/class-acf-config.php';
 require_once OOMPH_CORE_DIR . 'includes/class-seo.php';
 require_once OOMPH_CORE_DIR . 'includes/class-xlsx.php';
 require_once OOMPH_CORE_DIR . 'includes/class-importer.php'; // engine — shared by CLI + admin.
+require_once OOMPH_CORE_DIR . 'includes/class-enrich-engine.php'; // engine — shared by CLI + Enrichment Sync.
 
 if ( is_admin() ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-admin-import.php';
+	require_once OOMPH_CORE_DIR . 'includes/class-enrich-sync.php';
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -67,6 +69,7 @@ add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' 
 
 if ( is_admin() ) {
 	\OomphTravel\Core\Admin_Import::init();
+	\OomphTravel\Core\Enrich_Sync::init();
 }
 
 /**

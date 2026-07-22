@@ -1,0 +1,17 @@
+{
+  "itinerary": [
+    { "day": 1,  "port": "Tokyo (Yokohama), Japan", "activity": "Embarkation, late-afternoon sailaway. If you fly in a day or two early — and you should — Tokyo rewards every extra hour." },
+    { "day": 2,  "port": "Mt. Fuji (Shimizu), Japan", "activity": "The port sits on Suruga Bay with Fuji behind it; on a clear morning the mountain is there before breakfast. Green-tea country is a short drive inland." },
+    { "day": 3,  "port": "Kyoto (Osaka), Japan", "activity": "The ship arrives midday and stays overnight — the schedule most Japan itineraries don't give you. Evening in Osaka's Dotonbori or an early start for Kyoto's temples, your call." },
+    { "day": 4,  "port": "Kyoto (Osaka), Japan", "activity": "A full second day. Fushimi Inari before the crowds, Arashiyama's bamboo grove, or Nara's deer park — all reachable, none rushed." },
+    { "day": 5,  "port": "Kochi, Japan", "activity": "Shikoku's Pacific side: Kochi Castle is one of only a dozen originals left in Japan, and the Sunday market has run on the same street for 300 years." },
+    { "day": 6,  "port": "At sea", "activity": "A day to exhale between the busy first stretch and Korea." },
+    { "day": 7,  "port": "Busan, South Korea", "activity": "Korea's second city — Gamcheon's hillside lanes, Jagalchi fish market, Haedong Yonggungsa temple on the rocks. This is the day of my private Busan Cultural Highlights shore event for guests on this sailing." },
+    { "day": 8,  "port": "At sea", "activity": "Northbound through the Sea of Japan." },
+    { "day": 9,  "port": "Hakodate, Japan", "activity": "Hokkaido's harbor town: the morning seafood market, the old Motomachi district, and — if the evening is clear — the ropeway up Mt. Hakodate for the night view the city is known for. Late departure." },
+    { "day": 10, "port": "Aomori, Japan", "activity": "The reason this sailing exists: Nebuta Matsuri. Enormous illuminated floats, taiko drums, and dancers filling the streets — one of Japan's great summer festivals, and the ship is right there for it." },
+    { "day": 11, "port": "Aomori, Japan", "activity": "A second festival day. Daytime for the Nebuta museum and apple country; the parade again after dark for those still standing." },
+    { "day": 12, "port": "At sea", "activity": "Last sea day to repack and compare festival photos." },
+    { "day": 13, "port": "Tokyo (Yokohama), Japan", "activity": "Early arrival and disembarkation. Worth building in post-cruise Tokyo days if your flights allow — I map that with you." }
+  ]
+}
