@@ -59,6 +59,7 @@ add_action( 'init', array( \OomphTravel\Core\CPT_Ship::class,        'register' 
 add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' ) );
 
 \OomphTravel\Core\CPT_Cruise::init();
+\OomphTravel\Core\CPT_Ship::init();
 \OomphTravel\Core\Schema::init();
 \OomphTravel\Core\Clarity_Guard::init();
 \OomphTravel\Core\ACF_Config::init();
