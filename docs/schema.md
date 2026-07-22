@@ -142,9 +142,6 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
 
 > **No planning fee (locked 2026-07-03, see BUILD-PLAN.md).** Eric does not charge one — never emit an Offer/OfferCatalog implying a fee. Fee framing on pages is commission-based / no-added-cost.
 
-```json
-```
-
 ---
 
 ## FAQPage — required on every service hub and pillar guide
