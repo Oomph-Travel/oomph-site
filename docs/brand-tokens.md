@@ -26,7 +26,7 @@ Single source of truth for colors, typography, spacing, radii, and shadows. Pull
 | Bone | `#FDFAF2` | Default background — warm cream | `--color-bone` |
 | Mist | `#F1EADC` | Alt background | `--color-mist` |
 | Stone | `#C5BBA8` | Hairlines | `--color-stone` |
-| Slate | `#7C786C` | Meta type | `--color-slate` |
+| Slate | `#6B675B` | Meta type (darkened from `#7C786C` 2026-07 for WCAG AA on bone/mist) | `--color-slate` |
 | Charcoal | `#2C2A26` | Body alt | `--color-charcoal` |
 
 ### Secondary accents — one per section, never two

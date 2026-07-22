@@ -25,6 +25,7 @@ dist/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/scripts/audit/out/
 
 # ─── Environment ──────────────────────────────────────────────────
 .env

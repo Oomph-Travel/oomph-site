@@ -86,7 +86,7 @@ add_filter( 'oomph_client_testimonials', 'oomph_client_testimonials', 10, 0 );
  */
 function oomph_render_rating( int $n ): string {
 	$n = max( 0, min( 5, $n ) );
-	$out  = '<span class="oomph-testimonial__rating" aria-label="' . esc_attr( $n ) . ' out of 5 stars">';
+	$out  = '<span class="oomph-testimonial__rating" role="img" aria-label="' . esc_attr( $n ) . ' out of 5 stars">';
 	$out .= str_repeat( '<span class="oomph-testimonial__star is-filled" aria-hidden="true">&#9733;</span>', $n );
 	$out .= str_repeat( '<span class="oomph-testimonial__star" aria-hidden="true">&#9734;</span>', 5 - $n );
 	$out .= '</span>';
@@ -135,7 +135,8 @@ function oomph_render_client_stories(): void {
 				</div>
 				<div class="oomph-grid oomph-grid--testimonials">
 					<?php foreach ( $rows as $r ) : ?>
-						<article class="oomph-testimonial" itemscope itemtype="https://schema.org/Review">
+						<?php // No microdata here — the oomph-travel-core plugin is the sole schema source (docs/schema.md); duplicate Review markup made Google flag invalid items. ?>
+						<article class="oomph-testimonial">
 							<?php echo oomph_render_rating( (int) $r['rating'] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 							<h3 class="oomph-testimonial__title oomph-italic-display"><?php echo esc_html( $r['title'] ); ?></h3>
 							<blockquote class="oomph-testimonial__body">

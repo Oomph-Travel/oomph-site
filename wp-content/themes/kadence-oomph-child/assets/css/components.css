@@ -752,6 +752,20 @@
 
 .ff-hidden-field { display: none !important; }
 
+/* Fluent Forms submit buttons — match .oomph-btn--primary. FF's per-form
+ * style settings emit an EMPTY background-color (broken setting), so the
+ * button fell back to FF defaults and failed AA contrast (2026-07 audit).
+ * !important is required to beat FF's inline <style> per-form selectors. */
+.frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style) {
+  background-color: var(--signal-accent) !important;
+  color: var(--color-true-ink) !important;
+}
+.frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):hover,
+.frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):focus-visible {
+  background-color: var(--color-champagne) !important;
+  color: var(--color-true-ink) !important;
+}
+
 .oomph-quiz__progress {
   font-size: var(--text-eyebrow);
   letter-spacing: 0.08em;
