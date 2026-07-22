@@ -136,21 +136,13 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
     "audienceType": "Affluent travelers 50–75 planning premium or ultra-luxury cruises"
   },
   "description": "End-to-end planning for premium and ultra-luxury cruises, with cabin selection, dining, shore time, and pre/post itineraries handled by one named advisor.",
-  "url": "https://oomphtravel.com/luxury-cruise-planning/",
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Cruise planning tiers",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "name": "Cruise planning fee",
-        "priceCurrency": "USD",
-        "price": "300.00",
-        "description": "Starting fee for cruise planning. Commissions don't change your price."
-      }
-    ]
-  }
+  "url": "https://oomphtravel.com/luxury-cruise-planning/"
 }
+```
+
+> **No planning fee (locked 2026-07-03, see BUILD-PLAN.md).** Eric does not charge one — never emit an Offer/OfferCatalog implying a fee. Fee framing on pages is commission-based / no-added-cost.
+
+```json
 ```
 
 ---
@@ -176,7 +168,7 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
       "name": "Do you charge a planning fee?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — $300 for cruise planning. The fee funds undivided attention to your trip. Cruise lines pay commissions on the booked fare; those commissions don't change your price."
+        "text": "No — my planning costs you nothing. Cruise lines pay commissions on the booked fare, and those commissions don't change your price."
       }
     }
   ]
