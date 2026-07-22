@@ -35,11 +35,21 @@ submission goes through.
 - **After each update to staging** — whenever code is pushed to `develop` and
   deploys, the tests run against the freshly-deployed staging site.
 - **Every night against production** — a scheduled run checks the live site
-  (still submitting nothing). Production is also the more reliable target from
-  GitHub's servers: staging's anti-bot protection occasionally challenges
-  datacenter IPs, which can make a staging run flaky. The suite warms up
-  through that challenge automatically, but if a staging run fails with pages
-  "not loading," re-run it before digging deeper.
+  (still submitting nothing).
+
+### Known limitation: SiteGround's anti-bot protection (confirmed with SG support, 2026-07-21)
+
+Both sites sit behind SiteGround's Anti-Bot system, which sometimes challenges
+GitHub's shared datacenter IPs with an HTTP 202 CAPTCHA page — especially after
+rapid repeated runs. SiteGround investigated (ticket, Jul 2026) and confirmed:
+they won't exempt whole sites or whitelist GitHub's rotating IP pool, but they
+**will whitelist up to 5 static IPs or 5 /24 ranges** if we ever route the test
+runner through a static address (small VPS/proxy, ~$5–20/mo — decided against
+for now). Practical upshot: CI runs are best-effort — at the normal cadence
+(two slow, serialized runs/day) they pass; if a run fails with every page
+"not loading" (202s), it hit the bot wall — **just re-run it**. A local
+`npx playwright test` from a home IP is always reliable and is the
+authoritative check.
 - **On demand** — anyone can trigger a run from the repo's **Actions** tab →
   "E2E smoke (staging)" → **Run workflow** → choose staging or production.
 
