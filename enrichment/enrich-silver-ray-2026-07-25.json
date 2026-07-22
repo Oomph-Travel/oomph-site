@@ -1,0 +1,13 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Barcelona, Spain", "activity": "Embarkation; the ship sails at 19:00. Barcelona deserves a pre-cruise night or two — the Gothic Quarter and a proper lunch before you board set the tone." },
+    { "day": 2, "port": "Palamós, Spain", "activity": "The Costa Brava's working fishing port — gambas de Palamós are the town's calling card, and the coves north of town are the coastline Catalans keep for themselves. In port 08:00–18:00." },
+    { "day": 3, "port": "Palma de Mallorca, Spain", "activity": "The cathedral above the marina, Miró's studio in the hills, and old-town courtyards that stay cool at midday. In port 08:00–17:30." },
+    { "day": 4, "port": "At sea", "activity": "A Nova-class sea day is the point of the class — the pool deck opens to the water on the ship's open side. S.A.L.T. Lab runs Mediterranean sessions today." },
+    { "day": 5, "port": "Alghero (Sardinia), Italy", "activity": "Sardinia's Catalan corner — sea walls, coral workshops, and Neptune's Grotto down the coast. Vermentino country starts twenty minutes inland." },
+    { "day": 6, "port": "Ajaccio (Corsica), France", "activity": "Napoleon's hometown, half French and half Corsican in language and kitchen. The Sanguinaires islands drive at golden hour earns its reputation. In port 08:00–19:00." },
+    { "day": 7, "port": "Saint-Tropez, France", "activity": "Anchor off the old port and tender in. The morning market on Place des Lices, the citadel above the rooftops, and the Pampelonne beach clubs if that's your speed. In port 08:00–19:00." },
+    { "day": 8, "port": "Monte Carlo, Monaco", "activity": "A full final day alongside in the yacht harbor — the Casino, the palace change of guard, the Oceanographic Museum — with the evening on board. Guests on this departure also have my private Insider Gastronomical Tour shore event; details are on this page." },
+    { "day": 9, "port": "Monte Carlo, Monaco", "activity": "Disembarkation after breakfast. Nice airport is under an hour; better, add a Riviera night or two and let me build the bookend." }
+  ]
+}
