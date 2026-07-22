@@ -76,6 +76,20 @@ OOMPH_BASE_URL=https://oomphtravel.com npx playwright test   # production
 OOMPH_BASE_URL=http://oomph-local.local npx playwright test  # your Local site
 ```
 
+## One-time / periodic audits
+
+Beyond the smoke tests, three deeper audit commands exist (run from a home IP;
+they default to production):
+
+```bash
+npm run audit:links   # every sitemap URL + internal link + redirect behavior
+npm run audit:a11y    # WCAG A/AA accessibility (axe-core), all page types
+npm run audit:lh      # Lighthouse mobile scores per page type (~15 min)
+```
+
+Results land in `scripts/audit/out/` (not committed). The dated findings live
+in `docs/audits/` — first one: `2026-07-21-site-health-audit.md`.
+
 ## Where the tests live
 
 - `playwright.config.ts` — configuration (default target, browsers, retries).
