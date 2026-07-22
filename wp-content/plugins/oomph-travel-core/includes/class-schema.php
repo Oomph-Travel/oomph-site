@@ -116,6 +116,7 @@ final class Schema {
 			'description'  => 'Premium and luxury cruises, and custom European journeys, planned by one named advisor.',
 			'slogan'       => 'Life is short — travel with Oomph.',
 			'priceRange'   => '$$$$',
+			'telephone'    => '+1-360-775-4644',
 			'areaServed'   => array( '@type' => 'Country', 'name' => 'United States' ),
 			'address'      => array(
 				'@type'           => 'PostalAddress',

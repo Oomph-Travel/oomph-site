@@ -56,7 +56,7 @@ Last code deploy was **2026-05-27**. Since then the repo has been dormant, but *
 | 11 | SEO + schema wiring | §11 | ✅ Done | Plugin owns all JSON-LD (hardened vs. Rank Math); llms.txt, robots.txt, XML sitemap, Bing Webmaster. Deep contextual internal-linking pass deferred until more journal content. |
 | 12 | Forms + Calendly + lead magnets | §12 | ✅ Done | Discovery 3-step form (R38) → Calendly inline + on-page booking confirmation; Cabin Quiz + Cruise Trends + Newsletter, each auto-delivering its PDF. **Flodesk not yet wired** (using Fluent Forms). |
 | 13 | Playwright (MCP + e2e) | §13 | ✅ Done | `tests/e2e/` Playwright smoke suite (35 checks) vs staging: page loads + CTA, JSON-LD per page type, Discovery form/Calendly render, Cabin Quiz flow→gate, Group Cruises archive + no-leaked-refs. Non-blocking CI in `.github/workflows/e2e.yml`. Docs: `docs/testing.md`. No form is ever submitted. |
-| 14 | Pre-launch checklist | §14 | ⚠️ Effectively passed | Site is live and green, but no formal §14 audit doc was run/recorded. Worth a one-time sweep. |
+| 14 | Pre-launch checklist | §14 | ✅ Done | Formal audit run + recorded 2026-07-21: `docs/audits/2026-07-21-site-health-audit.md`. Links/sitemap/schema clean; 312 WCAG contrast nodes + invisible dark-section headlines found and FIXED same day. Open: HTTPS Enforce toggle (Eric), hero-image LCP workstream, meta descriptions. Re-runnable via `npm run audit:{links,a11y,lh}`. |
 | 15 | Launch day | §15 | ✅ Done | Production live since 2026-05-24; DNS/SSL/analytics all confirmed. |
 | 16 | Operating cadence | §16 | 🔄 Ongoing | Content cadence active (journal posts being added). Group cruises, real testimonials + more Review schema, Flodesk, deeper internal linking are the open items. |
 
@@ -100,7 +100,7 @@ The initial build (Phases 0–12) shipped and is live. Remaining work, in priori
 ### Next up (engineering)
 
 1. ~~**Phase 13 — Playwright e2e tests.**~~ ✅ **Done (2026-07-21).** `tests/e2e/` smoke suite runs against staging (default `OOMPH_BASE_URL`): page-load + sitewide-CTA checks per page type, JSON-LD `@type` presence per type, Discovery form + Calendly render, Cabin Quiz intro→gate flow (+ synthesized success reveal), and Group Cruises archive/single incl. a no-leaked-internal-refs guard. **Forms are never actually submitted** (no junk leads). CI: `.github/workflows/e2e.yml` — non-blocking, runs after each develop→staging deploy + nightly + manual. Guide: `docs/testing.md`. Follow-ons (not built): real tagged-submit PDF-delivery coverage, Lighthouse/perf budgets, visual-regression snapshots.
-2. **Phase 14 — Formal pre-launch/health audit.** The site passes in practice, but no §14 checklist was ever recorded. One-time sweep: Lighthouse mobile per page type (LCP/INP/CLS), Rich Results Test on each schema type, WCAG AA contrast pass, 404/redirect map. Capture as a dated doc.
+2. ~~**Phase 14 — Formal pre-launch/health audit.**~~ ✅ **Done (2026-07-21).** Recorded in `docs/audits/2026-07-21-site-health-audit.md`. Same-day fixes: invisible dark-section headlines, sitewide muted-text contrast token, duplicate Review microdata, FF button styling, star-rating ARIA, schema telephone. Open follow-ups (see the doc's Recommendations): SiteGround HTTPS Enforce (Eric, 1 min), hero-image/LCP performance workstream, meta descriptions (incl. a plugin default for DV sailings).
 
 ### Content & growth (Phase 16, ongoing — mostly Eric's input)
 

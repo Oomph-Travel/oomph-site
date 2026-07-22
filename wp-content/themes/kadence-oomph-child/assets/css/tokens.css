@@ -80,7 +80,7 @@
   --color-bone:     #FDFAF2;  /* default background — warm cream (lifted) */
   --color-mist:     #F1EADC;  /* alt background */
   --color-stone:    #C5BBA8;  /* hairlines */
-  --color-slate:    #7C786C;  /* meta type */
+  --color-slate:    #6B675B;  /* meta type — darkened from #7C786C for WCAG AA: 5.4:1 on bone, 4.7:1 on mist (2026-07 audit) */
   --color-charcoal: #2C2A26;  /* body alt */
 
   /* Secondary — one per section, never two */
