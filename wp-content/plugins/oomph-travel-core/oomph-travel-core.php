@@ -33,6 +33,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-environment.php';
 require_once OOMPH_CORE_DIR . 'includes/class-cpt-destination.php';
 require_once OOMPH_CORE_DIR . 'includes/class-cpt-itinerary.php';
 require_once OOMPH_CORE_DIR . 'includes/class-cpt-cruise.php';
+require_once OOMPH_CORE_DIR . 'includes/class-cpt-ship.php';
 require_once OOMPH_CORE_DIR . 'includes/class-taxonomies.php';
 require_once OOMPH_CORE_DIR . 'includes/class-schema.php';
 require_once OOMPH_CORE_DIR . 'includes/class-clarity-guard.php';
@@ -47,12 +48,14 @@ if ( is_admin() ) {
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-cli.php';
+	require_once OOMPH_CORE_DIR . 'includes/class-enrich.php';
 }
 
 // Boot.
 add_action( 'init', array( \OomphTravel\Core\CPT_Destination::class, 'register' ) );
 add_action( 'init', array( \OomphTravel\Core\CPT_Itinerary::class,   'register' ) );
 add_action( 'init', array( \OomphTravel\Core\CPT_Cruise::class,      'register' ) );
+add_action( 'init', array( \OomphTravel\Core\CPT_Ship::class,        'register' ) );
 add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' ) );
 
 \OomphTravel\Core\CPT_Cruise::init();
@@ -72,6 +75,7 @@ register_activation_hook( __FILE__, function (): void {
 	\OomphTravel\Core\CPT_Destination::register();
 	\OomphTravel\Core\CPT_Itinerary::register();
 	\OomphTravel\Core\CPT_Cruise::register();
+	\OomphTravel\Core\CPT_Ship::register();
 	\OomphTravel\Core\Taxonomies::register();
 	flush_rewrite_rules();
 } );

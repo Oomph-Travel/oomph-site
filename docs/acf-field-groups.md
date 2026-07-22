@@ -88,6 +88,25 @@ After sync, editing fields in the admin UI on any environment regenerates the JS
 
 ---
 
+## Group 4 — Ship Library
+
+**Purpose:** per-ship content reused across every sailing of that ship — the gallery band, ship intro, and quick-facts table on Group Cruise pages. The templates match a sailing's `cruise_ship_name` to the Ship post **title**, so titles must be exact ("Silver Nova", not "SILVER NOVA").
+
+**Location rules:** `Post Type` is equal to `oomph_ship` (registered by `oomph-travel-core`, `class-cpt-ship.php`). Not publicly queryable — a ship record has no front-end URL; it only feeds sailing pages.
+
+**Position:** High (after title).
+
+| Field name | Type | Required | Notes |
+|---|---|---|---|
+| `ship_line` | Text | Yes | e.g., "Silversea". Eyebrow of the ship section. |
+| `ship_photo_credit` | Text | No | e.g., "Photos courtesy of Silversea Cruises". Caption under the gallery. Empty when photos are Eric's own. |
+| `ship_gallery` | Gallery | No | 6–12 images, licensed supplier media or Eric's own only. WebP, R22 file names. First image leads the band. |
+| `ship_facts` | Repeater | No (3–6 rows when populated) | Each row: `fact_label` (Text), `fact_value` (Text). Guests / Crew / Suites / Launched. |
+
+The ship **intro** is the post_content (classic prose, first person, 2–4 sentences — "When I sailed her in March 2025…"). This group ships as hand-authored JSON (`group_oomph_ship.json`); after deploy, ACF admin will show it pending sync — sync it on each environment.
+
+---
+
 ## Rebuilding from scratch
 
 If the `acf-json/` directory is ever wiped or corrupted, this document is the recipe to recreate the field groups via UI. Field names are exact; don't rename — the template reads them by name.

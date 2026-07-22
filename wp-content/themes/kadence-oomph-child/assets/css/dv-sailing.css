@@ -478,3 +478,89 @@
   color: var(--color-bone);
   border-color: var(--color-marine-navy);
 }
+
+/* ============================================================
+   SHIP SECTION — Ship Library content shared by both layouts
+   (parts/ship-section.php). Quiet Premium register: Paper
+   ground, Stone hairlines, no shadow.
+   ============================================================ */
+.oomph-ship {
+  margin-top: clamp(var(--space-7), 6vw, var(--space-9));
+  padding-top: clamp(var(--space-6), 5vw, var(--space-8));
+  border-top: 1px solid var(--color-stone);
+}
+.oomph-ship__head {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+@media (min-width: 782px) {
+  .oomph-ship__head { grid-template-columns: minmax(0, 1fr) 260px; }
+}
+.oomph-ship__intro h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  color: var(--color-marine-navy);
+  margin: var(--space-2) 0 var(--space-4);
+}
+.oomph-ship__facts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-hairline);
+  border-radius: var(--radius-md);
+}
+.oomph-ship__facts th,
+.oomph-ship__facts td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-mist);
+  text-align: left;
+  vertical-align: top;
+}
+.oomph-ship__facts tr:last-child th,
+.oomph-ship__facts tr:last-child td { border-bottom: 0; }
+.oomph-ship__facts th {
+  color: var(--color-slate);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.oomph-ship__facts td { color: var(--color-charcoal); }
+.oomph-ship__gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+@media (min-width: 782px) {
+  .oomph-ship__gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* First image leads the band. */
+  .oomph-ship__gallery .oomph-ship__photo:first-child { grid-column: span 2; grid-row: span 2; }
+}
+.oomph-ship__photo {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-hairline);
+  background: var(--color-mist);
+}
+.oomph-ship__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.oomph-ship__photo figcaption {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-body-sm);
+  color: var(--color-slate);
+  background: var(--color-paper);
+}
+.oomph-ship__credit {
+  margin-top: var(--space-3);
+  font-size: var(--text-body-sm);
+  color: var(--color-slate);
+}
+/* Inside the DV layout the section sits within a block that already has
+   spacing — soften the top rule so it reads as one page, not two systems. */
+.oomph-dv-main .oomph-ship { border-top-color: var(--color-mist); }

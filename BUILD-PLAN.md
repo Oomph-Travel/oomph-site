@@ -106,6 +106,7 @@ The initial build (Phases 0–12) shipped and is live. Remaining work, in priori
 
 - **Journal cadence.** 3 posts live; the Trends guide has ~7 chapters left to mine. Add first-hand opening lines and swap in Eric's own travel photos (R19/R20).
 - **Group-cruise template + Event schema.** The one page type from Phase 10 not yet built; `oomph_cruise` CPT + Event schema already scaffolded in the plugin, so this is template + content.
+- **Ship Library + enrichment (2026-07-21, `feat/ship-library`).** `oomph_ship` CPT (enter a ship once — gallery, intro, quick facts — every sailing of it renders the section automatically), ship/gallery band in both `single-oomph_cruise` layouts, DV layout gains the day-by-day accordion, and `wp oomph enrich-sailing` writes prepared itinerary/inclusions/blurb payloads onto imported drafts (never publishes, never overwrites human copy). Content work now: seed ship records for the lines Eric sells; monthly enrichment payloads per new featured sailing. See `docs/updating-sailings.md` § "Deepening a sailing page".
 - **Real testimonials + expanded Review schema.** `/client-stories/` has 4 seeded testimonials; grow toward the Year-1 target (R32) as real ones arrive.
 - **Flodesk** newsletter integration (currently Fluent Forms handles signups).
 - **Deeper contextual internal-linking pass** once there's more journal content (R17/R18).
