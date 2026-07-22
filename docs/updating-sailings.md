@@ -124,3 +124,20 @@ The TLN file doesn't carry port-by-port days. An enrichment payload (a small JSO
     wp oomph enrich-sailing <post-id> --file=enrich-<post-id>.json            # write
 
 Run via SSH on staging first, same as any change. The command never publishes anything and never overwrites a "Why this sailing" you've already written (a `--force-why` flag exists for deliberate overwrites). Review the draft in admin, adjust the blurb, publish.
+
+### Applying enrichment the easy way — Enrichment Sync (no command line)
+
+If payload files have been added to the repo's `enrichment/` folder, you don't
+need WP-CLI at all:
+
+1. WP admin → **Group Cruises → Enrichment Sync**.
+2. The screen lists every payload on GitHub and whether it's new, updated, or
+   already applied.
+3. Click **Apply new payloads**. Same safety rails as the command: drafts stay
+   drafts, and a "Why this sailing" you've written is never overwritten.
+4. Open each sailing, read it over, publish when happy.
+
+Adding payload files from anywhere (phone included): open the repo on
+github.com → `enrichment/` folder → **Add file → Upload files** → commit to a
+branch and merge. The Sync screen sees them within about five minutes (or
+immediately with **Refresh from GitHub**).
