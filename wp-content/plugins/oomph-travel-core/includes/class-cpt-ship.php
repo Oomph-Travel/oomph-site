@@ -28,6 +28,19 @@ final class CPT_Ship {
 	/** Per-request lookup cache: normalized ship name => post ID (0 = miss). */
 	private static array $cache = array();
 
+	/**
+	 * Classic editor, same as Group Cruises: the ACF group's acf_after_title
+	 * position only works there — in the block editor the fields sink into a
+	 * collapsed meta box under an empty canvas (confirmed on prod 2026-07-22).
+	 */
+	public static function init(): void {
+		add_filter( 'use_block_editor_for_post_type', array( __CLASS__, 'use_classic_editor' ), 10, 2 );
+	}
+
+	public static function use_classic_editor( bool $use_block_editor, string $post_type ): bool {
+		return self::POST_TYPE === $post_type ? false : $use_block_editor;
+	}
+
 	public static function register(): void {
 		register_post_type(
 			self::POST_TYPE,
