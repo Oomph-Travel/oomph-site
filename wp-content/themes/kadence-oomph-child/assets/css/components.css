@@ -611,6 +611,17 @@
   padding: var(--space-9) var(--space-6);
 }
 
+/* Headings inherit the inverse text color. Kadence's theme.json heading
+ * color is near-ink, which made headlines on these dark sections all but
+ * invisible (1.1:1 — found by the 2026-07 audit). */
+.is-style-oomph-cabin-notes h1,
+.is-style-oomph-cabin-notes h2,
+.is-style-oomph-cabin-notes h3,
+.oomph-card--inverse h2,
+.oomph-card--inverse h3 {
+  color: inherit;
+}
+
 .is-style-oomph-quiet-premium {
   background: var(--surface-paper);
   color: var(--text-default);
@@ -1006,7 +1017,7 @@
 
 /* Sailing card — shore-event line (shared: /group-cruises/, homepage, cruise page). */
 .oomph-sailing-card__event {
-  color: var(--signal-accent);
+  color: var(--color-bronze); /* was --signal-accent (old brass): 3.0:1 on bone — under AA; bronze is 4.8:1 (2026-07 audit) */
   font-size: var(--text-body-sm);
   font-weight: 600;
   margin-bottom: var(--space-2);
