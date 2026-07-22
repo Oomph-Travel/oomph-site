@@ -260,6 +260,34 @@ while ( have_posts() ) :
 							</section>
 						<?php endif; ?>
 
+						<?php /* DAY BY DAY — renders once enrichment fills cruise_itinerary. */ ?>
+						<?php $dv_itin_rows = $get( 'cruise_itinerary' ); ?>
+						<?php if ( is_array( $dv_itin_rows ) && ! empty( $dv_itin_rows ) ) : ?>
+							<section class="oomph-dv-block">
+								<div class="oomph-cruise-itin">
+									<p class="oomph-dv-label">Day by day</p>
+									<h2>The itinerary.</h2>
+									<?php foreach ( $dv_itin_rows as $day ) : ?>
+										<?php
+										$d_num  = is_array( $day ) ? ( $day['day'] ?? '' ) : '';
+										$d_port = is_array( $day ) ? trim( (string) ( $day['port'] ?? '' ) ) : '';
+										$d_act  = is_array( $day ) ? trim( (string) ( $day['activity'] ?? '' ) ) : '';
+										if ( '' === $d_port && '' === $d_act ) {
+											continue;
+										}
+										?>
+										<details class="oomph-cruise-itin__day">
+											<summary><span class="oomph-cruise-itin__num"><?php echo esc_html( $d_num ? 'Day ' . $d_num : '—' ); ?></span> <?php echo esc_html( $d_port ); ?></summary>
+											<?php if ( $d_act ) : ?><div class="oomph-prose"><p><?php echo esc_html( $d_act ); ?></p></div><?php endif; ?>
+										</details>
+									<?php endforeach; ?>
+								</div>
+							</section>
+						<?php endif; ?>
+
+						<?php /* THE SHIP — Ship Library section (renders only when a ship record exists). */ ?>
+						<?php get_template_part( 'parts/ship-section', null, array( 'ship_name' => $ship ) ); ?>
+
 						<?php /* FAQ — program-level, sailing-agnostic. */ ?>
 						<section class="oomph-dv-block">
 							<p class="oomph-dv-label">Questions I get asked</p>
@@ -402,6 +430,9 @@ while ( have_posts() ) :
 								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>
+
+						<?php /* THE SHIP — Ship Library section (renders only when a ship record exists). */ ?>
+						<?php get_template_part( 'parts/ship-section', null, array( 'ship_name' => $ship ) ); ?>
 
 						<?php if ( '' !== $inclusions || '' !== $exclusions ) : ?>
 							<div class="oomph-cruise-incl">

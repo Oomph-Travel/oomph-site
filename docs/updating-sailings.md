@@ -101,3 +101,26 @@ You only publish the sailings you actually want on the site — you don't have t
 - [ ] Preview — numbers look sensible? (New/Updated believable, Skipped small, no warnings)
 - [ ] Import for real
 - [ ] Group Cruises → Drafts → write blurb + Publish each new sailing you want live
+
+---
+
+## Deepening a sailing page (optional, any time)
+
+A freshly imported sailing shows what the TLN file knows: ship, dates, route, amenities. Two things make the page match the big cruise-site experience, and both are one-time or prepared-for-you:
+
+### The ship section and photos — enter each ship once
+
+Admin → **Ships → Add New**. Title must exactly match the ship name that appears on sailings (e.g. "Silver Nova"). Add: a 2–4 sentence intro in the main editor (first person), the cruise line, 6–12 gallery photos from the supplier's media library (or your own), and 3–6 quick facts (Guests / Crew / Suites / Launched).
+
+**Every sailing of that ship — current and future — picks the section up automatically.** Nothing to do per sailing.
+
+Photos: use images you're licensed to run — the cruise line's trade/media portal or your own camera roll. Set the Photo credit field accordingly.
+
+### The day-by-day itinerary — prepared payloads
+
+The TLN file doesn't carry port-by-port days. An enrichment payload (a small JSON file prepared for each sailing, typically by Claude in a monthly working session) fills the itinerary, inclusions, and a draft "Why this sailing" blurb:
+
+    wp oomph enrich-sailing <post-id> --file=enrich-<post-id>.json --dry-run   # preview
+    wp oomph enrich-sailing <post-id> --file=enrich-<post-id>.json            # write
+
+Run via SSH on staging first, same as any change. The command never publishes anything and never overwrites a "Why this sailing" you've already written (a `--force-why` flag exists for deliberate overwrites). Review the draft in admin, adjust the blurb, publish.

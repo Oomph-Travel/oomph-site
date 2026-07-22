@@ -1,0 +1,163 @@
+{
+    "key": "group_oomph_ship",
+    "title": "Ship Library",
+    "fields": [
+        {
+            "key": "field_oomph_ship_line",
+            "label": "Cruise line",
+            "name": "ship_line",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Exactly as it appears on sailings — e.g. \"Silversea\". Shown as the eyebrow of the ship section.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 60,
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_ship_photo_credit",
+            "label": "Photo credit",
+            "name": "ship_photo_credit",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Where the gallery images came from — e.g. \"Photos courtesy of Silversea Cruises\" or leave empty when they are Eric's own. Rendered as a small caption under the gallery.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 120,
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_oomph_ship_gallery",
+            "label": "Gallery",
+            "name": "ship_gallery",
+            "aria-label": "",
+            "type": "gallery",
+            "instructions": "6–12 images. Licensed supplier media or Eric's own photos only — WebP, lowercase-hyphenated file names (R22). First image leads the band.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min": 0,
+            "max": 12,
+            "min_width": 800,
+            "min_height": 0,
+            "min_size": "",
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": "",
+            "mime_types": "jpg,jpeg,png,webp",
+            "insert": "append",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_oomph_ship_facts",
+            "label": "Quick facts",
+            "name": "ship_facts",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "3–6 rows — e.g. Guests \/ 728, Crew \/ 556, Suites \/ all-suite, Launched \/ 2023. Rendered as the facts table beside the ship intro.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 6,
+            "collapsed": "",
+            "button_label": "Add fact",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_oomph_ship_fact_label",
+                    "label": "Label",
+                    "name": "fact_label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": 40,
+                    "allow_in_bindings": 0,
+                    "placeholder": "Guests",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_oomph_ship_facts"
+                },
+                {
+                    "key": "field_oomph_ship_fact_value",
+                    "label": "Value",
+                    "name": "fact_value",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": 80,
+                    "allow_in_bindings": 0,
+                    "placeholder": "728",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_oomph_ship_facts"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "oomph_ship"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Per-ship content reused across every sailing of that ship. The cruise templates match a sailing's ship name to the Ship post title.",
+    "show_in_rest": 1
+}
