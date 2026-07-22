@@ -66,7 +66,7 @@ What was wrong and what changed (all in the 2026-07-21 commits):
 
 | Finding | Root cause | Fix |
 |---|---|---|
-| **#3 (high, FIXED): "invisible" headlines on dark sections** — the final-CTA headline on ~6 pages + the homepage "Hi, I'm Eric." heading rendered near-ink on ink (**1.1:1** — see `out/final-cta-live.png` vs `-fixed.png`) | Kadence `theme.json` heading color isn't overridden inside `.is-style-oomph-cabin-notes` | headings now `color: inherit` on inverse sections (`components.css`) |
+| **#3 (high, FIXED): "invisible" headlines on dark sections** — the final-CTA headline on ~6 pages + the homepage "Hi, I'm Eric." heading rendered near-ink on ink (**1.1:1** — see `images/2026-07-21-final-cta-before.png` vs `-after.png`) | Kadence `theme.json` heading color isn't overridden inside `.is-style-oomph-cabin-notes` | headings now `color: inherit` on inverse sections (`components.css`) |
 | **#4 (medium, FIXED): ~300 nodes of low-contrast muted text** (eyebrows, trust strip, microcopy, form privacy) | `--color-slate #7C786C` = 4.23:1 on bone, 3.69:1 on mist — under the 4.5:1 bar | token darkened to **#6B675B** (5.4:1 / 4.7:1); `docs/brand-tokens.md` updated |
 | **#5 (low, FIXED): sailing-card "Exclusive shore event" line** | old brass on bone = 3.0:1 | switched to bronze (4.8:1) |
 | **#6 (low, FIXED): Fluent Forms submit buttons** | FF per-form styles emit an **empty** `background-color` | theme override matches `.oomph-btn--primary` (brass + ink, 5.7:1) |
