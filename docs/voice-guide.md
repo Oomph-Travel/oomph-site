@@ -121,7 +121,7 @@ Itinerary cover anatomy: **Volume number · Place + season · Who prepared it.**
 - "Itinerary · March 2026 · Vol. III"
 - "Puglia, in spring."
 - "Eleven days between Lecce and Polignano a Mare, with a quiet stop in Locorotondo."
-- "— prepared by Megan Carlton, Travel Advisor, Oomph Travel LLC"
+- "— prepared by Eric Hempel, Travel Advisor, Oomph Travel LLC"
 
 Never "your trip" or "your getaway." Always the place and the season.
 
@@ -130,10 +130,10 @@ Never "your trip" or "your getaway." Always the place and the season.
 ## Email signature voice
 
 ```
-Megan Carlton
+Eric Hempel
 Travel advisor · Oomph Travel LLC
 
-megan@oomphtravel.com  ·  +1 (360) 775-4644
+eric@oomphtravel.com  ·  +1 (360) 775-4644
 Port Angeles, WA  ·  oomphtravel.com
 
 CLIA MEMBER · NEXION AFFILIATED · SILVERSEA ULTRA-LUXURY SPECIALIST · BRITAGENT PRO

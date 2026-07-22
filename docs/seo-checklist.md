@@ -124,7 +124,7 @@ URL `/discovery-call` (not `/contact`). Schema: ContactPage + Person. The single
 1. Headline names what the call is and what it costs (free)
 2. **Calendly embedded inline — never modal** (inline converts 20–40% better)
 3. Calendly inherits page typography (use URL parameter `primary_color=1f4e5f`)
-4. Fallback link below embed: "Calendar not loading? Email megan@oomphtravel.com"
+4. Fallback link below embed: "Calendar not loading? Email eric@oomphtravel.com"
 5. "What to expect" — 3–4 bullets, type-only (no decoration)
 6. "Who I work with / who I don't" pre-qualification block
 7. "If you're not ready" alternative: lead-magnet download
