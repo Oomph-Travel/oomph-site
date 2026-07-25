@@ -48,7 +48,7 @@ final class Admin_Import {
 		self::cleanup_old_temp();
 
 		echo '<div class="wrap"><h1>Import Sailings</h1>';
-		echo '<p style="max-width:70ch">Upload the Travel Leaders Network <strong>All Sailings</strong> file (the <code>.xlsx</code> works directly — no need to save it as CSV). Click <strong>Preview</strong> first to see what will change, then <strong>Import</strong>. New sailings are created as <strong>drafts</strong> for you to write copy and publish; existing ones are updated in place without touching your copy.</p>';
+		echo '<p style="max-width:70ch">Upload the Travel Leaders Network <strong>All Sailings</strong> file (the <code>.xlsx</code> works directly — no need to save it as CSV). Click <strong>Preview</strong> first to see what will change, then <strong>Import</strong>. New <strong>Distinctive Voyages</strong> are created as drafts for you to enrich and publish; new <strong>Amenity Departures</strong> go live immediately (they need no editorial). Existing sailings are updated in place without touching your copy.</p>';
 
 		$step = isset( $_POST['oomph_step'] ) ? sanitize_key( wp_unslash( $_POST['oomph_step'] ) ) : '';
 
@@ -56,14 +56,18 @@ final class Admin_Import {
 			check_admin_referer( self::NONCE );
 			$dry     = ( 'preview' === $step );
 			$retire  = ! empty( $_POST['retire_past'] );
+			$types   = isset( $_POST['sailing_types'] ) ? sanitize_key( wp_unslash( $_POST['sailing_types'] ) ) : 'all';
+			if ( ! in_array( $types, array( 'all', 'dv', 'add' ), true ) ) {
+				$types = 'all';
+			}
 
 			$csv = ( 'preview' === $step ) ? self::handle_upload() : self::resolve_token( isset( $_POST['oomph_token'] ) ? sanitize_file_name( wp_unslash( $_POST['oomph_token'] ) ) : '' );
 
 			if ( is_wp_error( $csv ) ) {
 				printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( $csv->get_error_message() ) );
 			} else {
-				$res = ( new Importer() )->run( $csv['path'], array( 'dry_run' => $dry, 'retire_past' => $retire ) );
-				self::render_results( $res, $dry, $csv['token'], $retire );
+				$res = ( new Importer() )->run( $csv['path'], array( 'dry_run' => $dry, 'retire_past' => $retire, 'type' => $types ) );
+				self::render_results( $res, $dry, $csv['token'], $retire, $types );
 				if ( ! $dry ) {
 					wp_delete_file( $csv['path'] );
 				}
@@ -197,6 +201,14 @@ final class Admin_Import {
 					</td>
 				</tr>
 				<tr>
+					<th scope="row">Sailing types</th>
+					<td>
+						<label style="display:block;margin-bottom:4px"><input type="radio" name="sailing_types" value="all" checked> Both — Distinctive Voyages <em>and</em> Amenity Departures</label>
+						<label style="display:block;margin-bottom:4px"><input type="radio" name="sailing_types" value="dv"> Distinctive Voyages only</label>
+						<label style="display:block"><input type="radio" name="sailing_types" value="add"> Amenity Departures only</label>
+					</td>
+				</tr>
+				<tr>
 					<th scope="row">Past sailings</th>
 					<td>
 						<label><input type="checkbox" name="retire_past" value="1" checked> Move sailings that have already departed back to draft</label>
@@ -212,7 +224,7 @@ final class Admin_Import {
 	/**
 	 * @param array<string,mixed> $res
 	 */
-	private static function render_results( array $res, bool $dry, string $token, bool $retire ): void {
+	private static function render_results( array $res, bool $dry, string $token, bool $retire, string $types = 'all' ): void {
 		if ( ! empty( $res['error'] ) ) {
 			printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( (string) $res['error'] ) );
 			return;
@@ -222,6 +234,16 @@ final class Admin_Import {
 		$order  = $dry ? array( 'would-create' => 'New sailings', 'would-update' => 'Updated', 'skipped' => 'Skipped' )
 						: array( 'created' => 'New sailings', 'updated' => 'Updated', 'skipped' => 'Skipped' );
 
+		// Per-type breakdown of the "new" rows, so the counts make sense when
+		// importing Both (DVs land as drafts, Amenity Departures publish).
+		$new_key  = $dry ? 'would-create' : 'created';
+		$by_type  = array( 'distinctive_voyage' => 0, 'amenity_departure' => 0 );
+		foreach ( (array) $res['results'] as $r ) {
+			if ( ( $r['action'] ?? '' ) === $new_key && isset( $by_type[ $r['type'] ?? '' ] ) ) {
+				++$by_type[ $r['type'] ];
+			}
+		}
+
 		echo '<div class="notice ' . ( $dry ? 'notice-info' : 'notice-success' ) . '"><p><strong>';
 		echo $dry ? 'Preview only — nothing was changed.' : 'Import complete.';
 		echo '</strong></p></div>';
@@ -229,6 +251,10 @@ final class Admin_Import {
 		echo '<table class="widefat striped" style="max-width:640px;margin-bottom:16px"><tbody>';
 		foreach ( $order as $key => $label ) {
 			printf( '<tr><td style="width:60%%">%s</td><td><strong>%d</strong></td></tr>', esc_html( $label ), (int) ( $counts[ $key ] ?? 0 ) );
+			if ( $key === $new_key && array_sum( $by_type ) > 0 ) {
+				printf( '<tr><td style="padding-left:24px">&mdash; Distinctive Voyages (as drafts)</td><td>%d</td></tr>', (int) $by_type['distinctive_voyage'] );
+				printf( '<tr><td style="padding-left:24px">&mdash; Amenity Departures (published)</td><td>%d</td></tr>', (int) $by_type['amenity_departure'] );
+			}
 		}
 		if ( $retire ) {
 			printf( '<tr><td>Past sailings %s to draft</td><td><strong>%d</strong></td></tr>', $dry ? esc_html( 'that would be moved' ) : esc_html( 'moved' ), (int) $res['retired'] );
@@ -273,12 +299,13 @@ final class Admin_Import {
 				<input type="hidden" name="oomph_step" value="import">
 				<input type="hidden" name="oomph_token" value="<?php echo esc_attr( $token ); ?>">
 				<input type="hidden" name="retire_past" value="<?php echo $retire ? '1' : '0'; ?>">
+				<input type="hidden" name="sailing_types" value="<?php echo esc_attr( $types ); ?>">
 				<p><strong>Looks right?</strong> Run the real import of this same file:</p>
 				<?php submit_button( 'Import for real', 'primary', 'submit', false ); ?>
 			</form>
 			<?php
 		} else {
-			echo '<div class="notice notice-info" style="margin-top:16px"><p><strong>Next:</strong> new sailings were added as <strong>drafts</strong>. Go to <a href="' . esc_url( admin_url( 'edit.php?post_type=' . CPT_Cruise::POST_TYPE . '&post_status=draft' ) ) . '">Group Cruises &rarr; Drafts</a> to write each one\'s short "Why this sailing" line and publish it.</p></div>';
+			echo '<div class="notice notice-info" style="margin-top:16px"><p><strong>Next:</strong> new <strong>Distinctive Voyages</strong> were added as drafts — go to <a href="' . esc_url( admin_url( 'edit.php?post_type=' . CPT_Cruise::POST_TYPE . '&post_status=draft' ) ) . '">Group Cruises &rarr; Drafts</a> to write each one\'s short "Why this sailing" line and publish it. New <strong>Amenity Departures</strong> are already live on <a href="' . esc_url( home_url( '/group-cruises/' ) ) . '">/group-cruises/</a>.</p></div>';
 		}
 	}
 }

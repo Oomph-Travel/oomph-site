@@ -87,7 +87,7 @@ export const ROUTES: RouteFixture[] = [
   {
     path: '/group-cruises/',
     name: 'Group Cruises (archive)',
-    h1: /sailings I.m hosting/i,
+    h1: /sailings worth booking/i,
     types: [], // CPT archive — no BreadcrumbList
   },
 ];

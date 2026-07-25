@@ -29,8 +29,11 @@ In the left-hand menu, click **Group Cruises**, then **Import Sailings**.
 ## Step 3 — Upload the file and Preview
 
 1. Click **Choose File** and select the TLN **All Sailings** file (the `.xlsx` is fine exactly as it arrived — no need to save it as anything else).
-2. Leave **"Move sailings that have already departed back to draft"** checked. (This quietly tidies up cruises that have already sailed.)
-3. Click **Preview**.
+2. Leave **Sailing types** on **"Both"** — that keeps both kinds of sailing up to date in one pass.
+3. Leave **"Move sailings that have already departed back to draft"** checked. (This quietly tidies up cruises that have already sailed.)
+4. Click **Preview**.
+
+> **The two sailing types.** *Distinctive Voyages* are the hosted sailings with a private shore event — they arrive as **drafts** so Eric can write the "Why this sailing" line before they go live. *Amenity Departures* are ordinary sailings carrying an amenity (onboard credit and the like) — they need no write-up, so they **publish automatically**.
 
 > **Preview never changes anything.** It just reads the file and shows you what a real import *would* do.
 
@@ -41,6 +44,8 @@ You'll see a small summary like:
 | | |
 |---|---|
 | New sailings | e.g. 40 |
+| — Distinctive Voyages (as drafts) | e.g. 8 |
+| — Amenity Departures (published) | e.g. 32 |
 | Updated | e.g. 380 |
 | Skipped | e.g. 3 |
 | Past sailings that would be moved to draft | e.g. 12 |
@@ -59,6 +64,7 @@ Click **Import for real**. You'll get a confirmation summary showing what was ad
 **What happens automatically — you don't need to do anything for these:**
 - **Existing sailings** are refreshed with the latest dates and details. **Their write-ups are never touched.**
 - **Sailings that already departed** are moved to draft, so they drop off the site.
+- **New Amenity Departures go live immediately** on `/group-cruises/`, where visitors can filter to them with the **Sailing type** dropdown. Only Distinctive Voyages wait for a write-up.
 
 ## Step 6 — Write blurbs and publish the new sailings
 
