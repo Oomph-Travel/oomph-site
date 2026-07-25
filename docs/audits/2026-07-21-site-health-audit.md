@@ -98,7 +98,16 @@ Reading it: **CLS is excellent everywhere** (≤0.035 vs the 0.1 bar) and TBT is
 fine. The story is **LCP: pages with big hero images take 7.6–10.3s** on
 throttled mobile (bar: 2.5s); pages without heavy heroes hit ~1.3–2.2s.
 
-**Finding #9 (medium, OPEN): hero-image LCP.** Root causes measured on `/`:
+**Finding #9 (medium, PARTLY RESOLVED 2026-07-25 — see
+[`2026-07-25-lcp-workstream.md`](2026-07-25-lcp-workstream.md)).** The root
+cause below was misdiagnosed: measuring showed the *fonts* (761KB of
+unsubsetted variable faces) dominated, not the hero JPEGs —
+`/group-cruises/` scored 9.9s LCP on a text element with no images on the
+page at all. Fonts subsetted, theme images converted to responsive WebP, hero
+and body font preloaded: perf 52→92, LCP 10.3s→3.1s on `/`. Still open, and
+no longer in the theme: SG Optimizer critical-CSS (~610ms) and TTFB (~400ms).
+
+Original diagnosis, retained for the record: Root causes measured on `/`:
 hero JPEGs of 250–400KB (no WebP/AVIF, no responsive `srcset` — Lighthouse
 projects ~50–70% savings) + ~2.9s of render-blocking combined CSS (SG
 Optimizer). **Recommended workstream (theme + SG Optimizer settings, ~half a
@@ -116,7 +125,10 @@ inherent to running Clarity, not a defect. Accept (or drop Clarity someday).
 ## Recommendations (priority order)
 
 1. **HTTPS Enforce** in SiteGround (Finding #1) — 1 minute, Eric.
-2. **Hero-image/LCP workstream** (Finding #9) — biggest UX + ranking upside.
+2. ~~**Hero-image/LCP workstream** (Finding #9)~~ — code half done 2026-07-25,
+   see [`2026-07-25-lcp-workstream.md`](2026-07-25-lcp-workstream.md). Remaining:
+   SG Optimizer critical-CSS (Eric, staging first) and the Calendly payload on
+   `/discovery-call/`.
 3. **Meta descriptions** (Finding #10) — Rank Math per page + plugin default for sailings.
 4. FF progress bar a11y (Finding #8) — low, revisit opportunistically.
 
