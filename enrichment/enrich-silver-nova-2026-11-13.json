@@ -1,0 +1,16 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Fusina (Venice), Italy", "activity": "Embarkation, sailing at 19:00. Venice deserves a night or two before you board — the city empties after the day-trippers leave, and that is when it is worth walking." },
+    { "day": 2, "port": "Trieste, Italy", "activity": "Italy's most Central-European city — Habsburg coffee houses, the vast Piazza Unità opening onto the water, and Miramare Castle on its promontory. In port 08:00–23:00, so the evening is yours ashore." },
+    { "day": 3, "port": "At sea", "activity": "South through the Adriatic. A settling-in day before the ports come thick and fast." },
+    { "day": 4, "port": "Kotor, Montenegro", "activity": "The approach is the event: an hour winding down a flooded river canyon between mountains before the walled town appears. Climb toward St John's Fortress early if you want the view without the heat. In port 08:00–18:00." },
+    { "day": 5, "port": "Bari, Italy", "activity": "Puglia's capital — the Basilica di San Nicola holds the saint's relics, and the old town's lanes are where you find orecchiette drying on tables outside front doors. Alberobello's trulli are a short drive inland. In port 08:00–18:00." },
+    { "day": 6, "port": "At sea", "activity": "Crossing to Malta. A good day for the spa deck before the run of Mediterranean ports." },
+    { "day": 7, "port": "Valletta, Malta", "activity": "A city built by knights and barely altered since — St John's Co-Cathedral holds the Caravaggio, and the Upper Barrakka Gardens look down over the Grand Harbour. This is the day of my Knights of Malta shore event for guests on this sailing. In port 08:00–19:00." },
+    { "day": 8, "port": "Giardini Naxos (Sicily), Italy", "activity": "The base for Taormina, on the terrace above with its Greek theatre framing Etna. Go up early; the town fills by midday. In port 08:00–18:00." },
+    { "day": 9, "port": "Palermo, Sicily, Italy", "activity": "Norman-Arab mosaics at the Cappella Palatina, the Ballarò street market, and a granita in the morning the way Sicilians actually take it. In port 08:00–19:00." },
+    { "day": 10, "port": "Naples, Italy", "activity": "Pompeii and the Amalfi coast are both within reach, but Naples itself rewards staying put — the archaeological museum holds what was carried out of Pompeii. In port 08:00–19:00." },
+    { "day": 11, "port": "Rome (Civitavecchia), Italy", "activity": "Early arrival and disembarkation. Build in post-cruise Rome days if your flights allow — I map that out with you." }
+  ],
+  "why": "Ten days from the top of the Adriatic to the mouth of the Tyrrhenian, and the ship never repeats a coastline: Trieste and Kotor, then Bari, then Malta and two very different sides of Sicily before Naples. The Knights of Malta afternoon in Valletta is reserved for guests on this departure, and Valletta is the right city for it — the whole place is the story. If you have done the Greek islands and want the Mediterranean's other half, this is the one I would put you on."
+}
