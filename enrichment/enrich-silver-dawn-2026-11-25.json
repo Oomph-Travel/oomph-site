@@ -1,0 +1,20 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Rome (Civitavecchia), Italy", "activity": "Embarkation; the ship sails at 19:00. Come in a day or two early — the port is well over an hour from the city, and Rome is not a place to see in a morning." },
+    { "day": 2, "port": "Naples, Italy", "activity": "Pompeii, Herculaneum and the Amalfi coast all sit within an hour, but the archaeological museum in the city holds what was actually carried out of those sites. In port 08:00–19:00." },
+    { "day": 3, "port": "At sea", "activity": "South toward Malta." },
+    { "day": 4, "port": "Valletta, Malta", "activity": "A fortress city built by the Knights of St John — St John's Co-Cathedral and its Caravaggio, and the Grand Harbour laid out below the Upper Barrakka Gardens. This is the day of my Knights of Malta shore event for guests on this departure. Alongside overnight." },
+    { "day": 5, "port": "Valletta, Malta", "activity": "The second day is the one most itineraries do not give you: Mdina's silent streets, the Three Cities across the water, or the megalithic temples on the south coast. Sailing at 18:00." },
+    { "day": 6, "port": "Trapani, Sicily, Italy", "activity": "Salt pans and windmills along the shore, with Erice's walled medieval town on the mountain above — often in cloud while the coast is in sun. In port 08:00–19:00." },
+    { "day": 7, "port": "Tunis (La Goulette), Tunisia", "activity": "Carthage, Sidi Bou Said on its cliff, and the Bardo Museum's Roman mosaics — the best collection of them anywhere. In port 08:00–18:00." },
+    { "day": 8, "port": "Cagliari (Sardinia), Italy", "activity": "Limestone terraces climbing to the Castello quarter, Roman remains beneath, and flamingos in the lagoon at the city's edge. In port 08:00–18:00." },
+    { "day": 9, "port": "At sea", "activity": "West toward Spain." },
+    { "day": 10, "port": "Cartagena, Spain", "activity": "A Roman theatre only found under the town in 1988, and three thousand years of naval harbour around it. In port 08:00–18:00." },
+    { "day": 11, "port": "Málaga (Costa del Sol), Spain", "activity": "Overnight alongside from mid-morning — the Alcazaba above the Roman theatre, the Picasso museum, and an evening ashore in a city that eats late. In port from 09:00." },
+    { "day": 12, "port": "Málaga (Costa del Sol), Spain", "activity": "A second full day, which is what makes Granada and the Alhambra realistic — book the palace slot well ahead. Sailing at 18:00." },
+    { "day": 13, "port": "Cádiz, Spain", "activity": "The oldest continuously inhabited city in Europe, nearly surrounded by Atlantic, with Jerez and the sherry bodegas half an hour inland. In port 08:00–19:00." },
+    { "day": 14, "port": "At sea", "activity": "North along the Portuguese coast — the last day aboard." },
+    { "day": 15, "port": "Lisbon, Portugal", "activity": "Early arrival and disembarkation. Lisbon rewards staying on for a few days; I build that end of the trip with you." }
+  ],
+  "why": "Fourteen days running the Mediterranean west from Rome to Lisbon, with two nights in Malta and two in Málaga — the overnights are the difference between seeing a port and actually getting inland to Mdina or the Alhambra. Tunisia in the middle is the part most people do not expect and come back talking about. My Knights of Malta afternoon is reserved for guests on this departure, on the first of the two Valletta days."
+}

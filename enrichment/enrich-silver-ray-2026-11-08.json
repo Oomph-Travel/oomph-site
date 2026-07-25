@@ -1,0 +1,16 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Barcelona, Spain", "activity": "Embarkation; the ship sails at 18:00. Barcelona earns a pre-cruise night — the Gothic Quarter early, a long lunch, and aboard without rushing." },
+    { "day": 2, "port": "Marseille, France", "activity": "France's oldest city and its most argued-over — the Vieux Port at dawn when the fish are landed, Le Panier's lanes above it, and the calanques cut into white rock east of town. In port 08:00–18:00." },
+    { "day": 3, "port": "At sea", "activity": "A Nova-class sea day is the point of the class: the pool deck opens sideways to the water rather than facing a wall of cabins." },
+    { "day": 4, "port": "Palma de Mallorca, Spain", "activity": "The cathedral stands straight up from the marina, and the old town's courtyards stay cool through the middle of the day. This is the day of my Insider Gastronomical Tour for guests on this departure. Alongside overnight." },
+    { "day": 5, "port": "Palma de Mallorca, Spain", "activity": "A full second day, which is what Mallorca actually needs — the Tramuntana villages of Deià and Valldemossa, or Miró's studio in the hills above town. Sailing at 18:00." },
+    { "day": 6, "port": "At sea", "activity": "West toward the strait. The quiet day in the middle of the voyage." },
+    { "day": 7, "port": "Gibraltar", "activity": "A piece of Britain bolted to the tip of Spain — the cable car to the top, the Barbary macaques, and St Michael's Cave inside the rock. In port 08:00–19:00." },
+    { "day": 8, "port": "Málaga (Costa del Sol), Spain", "activity": "Picasso's birthplace and a far better city than its coastline's reputation — the Alcazaba fortress, the Roman theatre below it, and Andalusian food done properly. In port 08:00–18:00." },
+    { "day": 9, "port": "Cartagena, Spain", "activity": "Three thousand years of naval history stacked in one harbour, with a Roman theatre only rediscovered in 1988 sitting under the modern town. In port 09:00–18:00." },
+    { "day": 10, "port": "Valencia, Spain", "activity": "Where paella comes from, and where it is still made over orange wood on a Sunday. The old town and Calatrava's science city are twenty minutes apart. In port 08:00–18:00." },
+    { "day": 11, "port": "Barcelona, Spain", "activity": "Early arrival and disembarkation. If you can, stay on — Barcelona is a poor city to leave at 7am." }
+  ],
+  "why": "Ten days that stay in the western Mediterranean and take it seriously: Marseille, two full days in Mallorca, then Gibraltar and the Andalusian coast before Valencia. The overnight in Palma is what makes it — you get the Tramuntana villages as well as the city, which a single port day never allows. My Insider Gastronomical Tour is reserved for guests on this departure, and Palma is the right island to spend it on."
+}

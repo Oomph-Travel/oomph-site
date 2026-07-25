@@ -1,0 +1,21 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Athens (Piraeus), Greece", "activity": "Embarkation; the ship sails at 19:00. The Acropolis Museum is the better call the afternoon you board — cool, uncrowded, and it makes sense of everything on the hill above." },
+    { "day": 2, "port": "Nafplion, Greece", "activity": "Greece's first capital and still its most handsome small town — Venetian houses, the Palamidi fortress up 900 steps above it, and Mycenae and Epidaurus both within reach. In port 08:00–18:30." },
+    { "day": 3, "port": "Souda Bay (Crete), Greece", "activity": "The gateway to Chania, whose Venetian harbour is the prettiest in the Greek islands, and to the Allied war cemetery above the bay. In port 08:00–19:00." },
+    { "day": 4, "port": "At sea", "activity": "West across the Ionian toward Malta." },
+    { "day": 5, "port": "Valletta, Malta", "activity": "Built by the Knights of St John and barely touched since — St John's Co-Cathedral, the Grand Harbour from the Upper Barrakka, and the silent city of Mdina inland. Alongside overnight." },
+    { "day": 6, "port": "Valletta, Malta", "activity": "A second day, which Malta repays: the megalithic temples at Ħaġar Qim are older than the pyramids, and the Three Cities across the harbour see a fraction of the visitors. Sailing at 17:30." },
+    { "day": 7, "port": "Trapani, Sicily, Italy", "activity": "Salt pans and windmills along the coast, and Erice on the mountain above — a walled medieval town that is often in cloud while the sea below is in sun. This is the day of my Erice & Trapani shore event for guests on this sailing. In port 08:00–18:00." },
+    { "day": 8, "port": "Tunis (La Goulette), Tunisia", "activity": "Carthage is twenty minutes away, and Sidi Bou Said's blue-and-white lanes sit on the cliff above the bay. The Bardo Museum holds the finest Roman mosaics anywhere. In port 08:00–18:00." },
+    { "day": 9, "port": "Cagliari (Sardinia), Italy", "activity": "Sardinia's capital climbs in limestone terraces to the Castello quarter, with flamingos in the lagoon at the edge of town. In port 08:00–18:00." },
+    { "day": 10, "port": "At sea", "activity": "Toward the Spanish coast. The last long stretch of open water." },
+    { "day": 11, "port": "Cartagena, Spain", "activity": "A Roman theatre rediscovered under the town in 1988, and a naval harbour that has mattered for three thousand years. In port 08:00–18:00." },
+    { "day": 12, "port": "Málaga (Costa del Sol), Spain", "activity": "Afternoon arrival and overnight alongside — the Alcazaba, the Picasso museum, and dinner ashore without watching the clock. In port from 12:30." },
+    { "day": 13, "port": "Málaga (Costa del Sol), Spain", "activity": "The full day that puts Granada and the Alhambra genuinely within reach, if you book it early. Sailing at 18:00." },
+    { "day": 14, "port": "Cádiz, Spain", "activity": "Europe's oldest continuously inhabited city, on a spit of land almost surrounded by Atlantic — and the gateway to Jerez and the sherry houses. In port 08:00–22:15." },
+    { "day": 15, "port": "At sea", "activity": "North along the Portuguese coast." },
+    { "day": 16, "port": "Lisbon, Portugal", "activity": "Early arrival and disembarkation. Lisbon is worth two or three days on the back of this — I plan that with you." }
+  ],
+  "why": "Fifteen days is what the Mediterranean actually takes if you want it end to end — Greek mainland and Crete, two nights in Malta, Sicily and Tunisia, then the Spanish coast to Cádiz before Lisbon. Six countries, and almost no repetition. The Erice and Trapani afternoon is reserved for guests on this departure, and it lands on the right day: the salt coast below and a walled medieval town in the clouds above it."
+}
