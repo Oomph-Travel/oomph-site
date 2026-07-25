@@ -47,7 +47,21 @@ function oomph_sailing_date_range( string $start, string $end ): string {
 }
 
 /**
- * Base WP_Query args for published, upcoming sailings, soonest first.
+ * Earliest departure date a sailing may be shown for.
+ *
+ * Departures inside the lead window (final payment / group-space release) are
+ * not realistically bookable, so they drop off the site. The plugin owns the
+ * canonical window; this falls back to the same default if it is unavailable.
+ */
+function oomph_sailing_earliest_date(): string {
+	if ( class_exists( '\OomphTravel\Core\CPT_Cruise' ) ) {
+		return \OomphTravel\Core\CPT_Cruise::earliest_publish_date();
+	}
+	return gmdate( 'Y-m-d', strtotime( '+3 months' ) );
+}
+
+/**
+ * Base WP_Query args for published, bookable sailings, soonest first.
  *
  * @param array<string,mixed> $extra Merged over the defaults.
  * @return array<string,mixed>
@@ -60,7 +74,7 @@ function oomph_sailings_query_args( array $extra = array() ): array {
 		'meta_query'     => array(
 			'upcoming' => array(
 				'key'     => 'cruise_dates_start',
-				'value'   => current_time( 'Y-m-d' ),
+				'value'   => oomph_sailing_earliest_date(),
 				'compare' => '>=',
 				'type'    => 'DATE',
 			),
@@ -115,14 +129,14 @@ function oomph_get_upcoming_sailings( int $limit = 3 ): array {
 }
 
 /**
- * Distinct cruise lines among published upcoming sailings (filter dropdown).
+ * Distinct cruise lines among published, bookable sailings (filter dropdown).
  *
  * @return string[]
  */
 function oomph_sailing_lines(): array {
 	global $wpdb;
-	$today = current_time( 'Y-m-d' );
-	// Lines that have at least one published, upcoming sailing.
+	$today = oomph_sailing_earliest_date();
+	// Lines that have at least one published, bookable sailing.
 	$rows = $wpdb->get_col(
 		$wpdb->prepare(
 			"SELECT DISTINCT line.meta_value
@@ -140,13 +154,13 @@ function oomph_sailing_lines(): array {
 }
 
 /**
- * Region terms actually used by published upcoming sailings (filter dropdown).
+ * Region terms actually used by published, bookable sailings (filter dropdown).
  *
  * @return array<int,object> Rows with ->name and ->slug.
  */
 function oomph_sailing_regions(): array {
 	global $wpdb;
-	$today = current_time( 'Y-m-d' );
+	$today = oomph_sailing_earliest_date();
 	return $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT DISTINCT t.name, t.slug
@@ -163,7 +177,7 @@ function oomph_sailing_regions(): array {
 }
 
 /**
- * Shape the archive's main query: upcoming only, soonest first, GET filters,
+ * Shape the archive's main query: bookable only, soonest first, GET filters,
  * paginated. Ordering by the named 'upcoming' meta clause avoids meta_key /
  * meta_query JOIN ambiguity.
  */
@@ -175,7 +189,7 @@ function oomph_cruise_archive_query( WP_Query $q ): void {
 	$meta_query = array(
 		'upcoming' => array(
 			'key'     => 'cruise_dates_start',
-			'value'   => current_time( 'Y-m-d' ),
+			'value'   => oomph_sailing_earliest_date(),
 			'compare' => '>=',
 			'type'    => 'DATE',
 		),

@@ -209,9 +209,9 @@ final class Admin_Import {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row">Past sailings</th>
+					<th scope="row">Departed &amp; near-term</th>
 					<td>
-						<label><input type="checkbox" name="retire_past" value="1" checked> Move sailings that have already departed back to draft</label>
+						<label><input type="checkbox" name="retire_past" value="1" checked> Unpublish sailings that have departed or are less than 3 months away (too close to book)</label>
 					</td>
 				</tr>
 			</table>
@@ -257,7 +257,7 @@ final class Admin_Import {
 			}
 		}
 		if ( $retire ) {
-			printf( '<tr><td>Past sailings %s to draft</td><td><strong>%d</strong></td></tr>', $dry ? esc_html( 'that would be moved' ) : esc_html( 'moved' ), (int) $res['retired'] );
+			printf( '<tr><td>Departed / near-term sailings %s to draft</td><td><strong>%d</strong></td></tr>', $dry ? esc_html( 'that would be moved' ) : esc_html( 'moved' ), (int) $res['retired'] );
 		}
 		printf( '<tr><td>Rows read from the file</td><td>%d</td></tr>', (int) $res['total_rows'] );
 		echo '</tbody></table>';
