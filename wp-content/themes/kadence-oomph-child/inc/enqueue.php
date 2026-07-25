@@ -72,6 +72,54 @@ function oomph_child_enqueue_styles(): void {
 add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_styles', 20 );
 
 /**
+ * Resource hints — font preload + third-party preconnect.
+ *
+ * Both fix things the 2026-07-25 LCP measurement turned up.
+ *
+ * **Font preload.** The @font-face rules live inside the combined stylesheet,
+ * so the browser can't discover a font until that CSS has downloaded AND
+ * parsed — measured at 4.5–5.3s FCP on throttled mobile. Only Inter is
+ * preloaded: it's the body face, so it renders every above-the-fold text
+ * element on every template, including `.oomph-dv-hero__ship`, which is the
+ * actual LCP element on /group-cruises/. Fraunces is deliberately NOT
+ * preloaded — it only sets headlines, `font-display: swap` paints those in the
+ * fallback immediately, and preloading another ~100KB would compete with the
+ * hero image for bandwidth on the pages where the hero *is* the LCP.
+ *
+ * `crossorigin` is required even though the font is same-origin: fonts are
+ * always fetched in CORS mode, and a preload without it is fetched twice.
+ *
+ * **Preconnect.** Lighthouse measured ~450ms of connection setup to the
+ * analytics origins. Clarity is production-only (see Clarity_Guard), so its
+ * hints are gated the same way rather than costing staging a wasted handshake.
+ *
+ * @return void
+ */
+function oomph_child_resource_hints(): void {
+	$font = get_stylesheet_directory() . '/assets/fonts/inter-variable-latin.woff2';
+	if ( file_exists( $font ) ) {
+		printf(
+			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( get_stylesheet_directory_uri() . '/assets/fonts/inter-variable-latin.woff2' )
+		);
+	}
+
+	$origins = array( 'https://www.googletagmanager.com' );
+
+	$is_production = ! class_exists( '\OomphTravel\Core\Environment' )
+		|| \OomphTravel\Core\Environment::is_production();
+	if ( $is_production ) {
+		$origins[] = 'https://scripts.clarity.ms';
+		$origins[] = 'https://o.clarity.ms';
+	}
+
+	foreach ( $origins as $origin ) {
+		printf( '<link rel="preconnect" href="%s" crossorigin>' . "\n", esc_url( $origin ) );
+	}
+}
+add_action( 'wp_head', 'oomph_child_resource_hints', 1 );
+
+/**
  * Group Cruise single stylesheet — only on single oomph_cruise views.
  *
  * @return void

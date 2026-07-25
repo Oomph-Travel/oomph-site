@@ -10,11 +10,14 @@
     "test:e2e:report": "playwright show-report",
     "audit:lh": "node scripts/audit/lighthouse-audit.mjs",
     "audit:links": "node scripts/audit/link-audit.mjs",
-    "audit:a11y": "playwright test -c playwright.audit.config.ts"
+    "audit:a11y": "playwright test -c playwright.audit.config.ts",
+    "images": "node scripts/images/optimize.mjs",
+    "fonts": "bash scripts/fonts/subset.sh"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.49.0",
-    "lighthouse": "^12.8.2"
+    "lighthouse": "^12.8.2",
+    "sharp": "^0.35.3"
   }
 }
