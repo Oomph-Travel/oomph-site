@@ -95,7 +95,8 @@ final class Importer {
 	 * : Parse and report what would happen without writing anything.
 	 *
 	 * [--retire-past]
-	 * : Also set any published oomph_cruise with a past sail date back to draft.
+	 * : Also return any published oomph_cruise back to draft once it departs
+	 * or comes within the publish lead window (3 months).
 	 *
 	 * ## EXAMPLES
 	 *
@@ -147,7 +148,7 @@ final class Importer {
 			\WP_CLI\Utils\format_items( 'table', $res['results'], array( 'action', 'title', 'ship', 'sail', 'type', 'reason' ) );
 		}
 		if ( $res['retired'] > 0 ) {
-			\WP_CLI::log( sprintf( 'Retire-past: %d past sailing(s) %s to draft.', $res['retired'], $f['dry_run'] ? 'would be set' : 'set' ) );
+			\WP_CLI::log( sprintf( 'Retire: %d departed or too-soon sailing(s) %s to draft.', $res['retired'], $f['dry_run'] ? 'would be set' : 'set' ) );
 		}
 
 		$parts = array();
@@ -252,7 +253,7 @@ final class Importer {
 			$results[] = $this->handle_row( $row, $ship, $sail, $lane, $cruise_line, $status, $dry_run );
 		}
 
-		$retired = ! empty( $opts['retire_past'] ) ? $this->retire_past( $dry_run ) : 0;
+		$retired = ! empty( $opts['retire_past'] ) ? self::retire_unbookable( $dry_run ) : 0;
 
 		$counts = array();
 		foreach ( $results as $r ) {
@@ -298,11 +299,14 @@ final class Importer {
 			);
 		}
 
-		// Explicit --status wins; otherwise per-type default: DVs are drafts
-		// until enriched, Amenity Departures publish immediately.
-		$row_status = in_array( $status, array( 'draft', 'publish' ), true )
+		// Explicit --status wins. Otherwise: Amenity Departures publish on
+		// import, DVs stay drafts until enriched — but nothing publishes inside
+		// the lead window, since a departure that close cannot realistically be
+		// booked (see CPT_Cruise::PUBLISH_LEAD_MONTHS).
+		$publishable = $sail >= CPT_Cruise::earliest_publish_date();
+		$row_status  = in_array( $status, array( 'draft', 'publish' ), true )
 			? $status
-			: ( 'amenity' === $lane ? 'publish' : 'draft' );
+			: ( ( 'amenity' === $lane && $publishable ) ? 'publish' : 'draft' );
 
 		if ( $existing ) {
 			$post_id = $existing;
@@ -442,19 +446,25 @@ final class Importer {
 	}
 
 	/**
-	 * Set published sailings whose sail date has passed back to draft.
-	 * Returns how many were (or would be) retired.
+	 * Return published sailings to draft once they depart or fall inside the
+	 * publish lead window. Returns how many were (or would be) retired.
+	 *
+	 * Static and public so the daily cron sweep can call it too — otherwise a
+	 * sailing that crosses the lead threshold between monthly imports would
+	 * stay live until the next upload.
 	 */
-	private function retire_past( bool $dry_run ): int {
-		$today = gmdate( 'Y-m-d' );
-		$ids   = get_posts(
+	public static function retire_unbookable( bool $dry_run = false ): int {
+		// Anything departing before the lead window — already sailed, or too
+		// soon to book — comes off the live site and back to draft.
+		$cutoff = CPT_Cruise::earliest_publish_date();
+		$ids    = get_posts(
 			array(
 				'post_type'      => CPT_Cruise::POST_TYPE,
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'meta_query'     => array(
-					array( 'key' => 'cruise_dates_start', 'value' => $today, 'compare' => '<', 'type' => 'DATE' ),
+					array( 'key' => 'cruise_dates_start', 'value' => $cutoff, 'compare' => '<', 'type' => 'DATE' ),
 				),
 			)
 		);

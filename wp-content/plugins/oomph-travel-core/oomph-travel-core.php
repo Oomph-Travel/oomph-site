@@ -84,4 +84,7 @@ register_activation_hook( __FILE__, function (): void {
 	flush_rewrite_rules();
 } );
 
-register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+register_deactivation_hook( __FILE__, function (): void {
+	wp_clear_scheduled_hook( \OomphTravel\Core\CPT_Cruise::RETIRE_HOOK );
+	flush_rewrite_rules();
+} );
