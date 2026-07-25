@@ -86,12 +86,31 @@ function oomph_has_published_sailings(): bool {
 }
 
 /**
+ * Meta clause limiting a query to the sailings Eric personally hosts.
+ *
+ * The curated surfaces ("Sailings I'm hosting" on the homepage and the cruise
+ * page) must never show Amenity Departures — those are commodity listings that
+ * exist in the hundreds and would swamp a hand-picked section.
+ *
+ * @return array<string,mixed>
+ */
+function oomph_hosted_meta_clause(): array {
+	return array(
+		'key'     => 'sailing_type',
+		'value'   => array( 'hosted_group', 'distinctive_voyage' ),
+		'compare' => 'IN',
+	);
+}
+
+/**
  * The next N upcoming published sailings (for the homepage / cruise-page teasers).
  *
  * @return int[] Post IDs.
  */
 function oomph_get_upcoming_sailings( int $limit = 3 ): array {
-	$q = new WP_Query( oomph_sailings_query_args( array( 'posts_per_page' => $limit, 'fields' => 'ids' ) ) );
+	$args               = oomph_sailings_query_args( array( 'posts_per_page' => $limit, 'fields' => 'ids' ) );
+	$args['meta_query'] = array_merge( $args['meta_query'], array( 'hosted' => oomph_hosted_meta_clause() ) );
+	$q                  = new WP_Query( $args );
 	return array_map( 'intval', $q->posts );
 }
 
@@ -170,9 +189,33 @@ function oomph_cruise_archive_query( WP_Query $q ): void {
 		);
 	}
 
+	// Sailing type filter: 'hosted' = the ones Eric hosts (hosted_group +
+	// distinctive_voyage), 'amenity' = the amenity-only departures.
+	$type = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
+	if ( 'hosted' === $type ) {
+		$meta_query[] = array(
+			'key'     => 'sailing_type',
+			'value'   => array( 'hosted_group', 'distinctive_voyage' ),
+			'compare' => 'IN',
+		);
+	} elseif ( 'amenity' === $type ) {
+		$meta_query[] = array(
+			'key'   => 'sailing_type',
+			'value' => 'amenity_departure',
+		);
+	}
+
+	// Hosted/DV sailings lead, amenity departures follow, each soonest-first.
+	// The stored values sort that way descending: hosted_group >
+	// distinctive_voyage > amenity_departure.
+	$meta_query['lane'] = array(
+		'key'     => 'sailing_type',
+		'compare' => 'EXISTS',
+	);
+
 	$q->set( 'posts_per_page', 12 );
 	$q->set( 'meta_query', $meta_query );
-	$q->set( 'orderby', array( 'upcoming' => 'ASC' ) );
+	$q->set( 'orderby', array( 'lane' => 'DESC', 'upcoming' => 'ASC' ) );
 
 	$region = isset( $_GET['region'] ) ? sanitize_title( wp_unslash( $_GET['region'] ) ) : '';
 	if ( '' !== $region ) {
@@ -229,6 +272,7 @@ function oomph_render_sailing_card( $post ): void {
 	$end    = (string) $f( 'cruise_dates_end' );
 	$range  = oomph_sailing_date_range( $start, $end );
 	$event  = trim( (string) $f( 'shore_event_1_name' ) );
+	$perk   = trim( (string) $f( 'amenity_summary' ) );
 
 	$terms  = get_the_terms( $id, 'oomph_region' );
 	$region = ( is_array( $terms ) && $terms ) ? $terms[0]->name : '';
@@ -241,11 +285,13 @@ function oomph_render_sailing_card( $post ): void {
 	$eyebrow = oomph_sailing_type_label( $type ) . ( $region ? ' · ' . $region : '' );
 	$meta    = implode( ' · ', array_filter( array( $ship, $line, $range ) ) );
 	?>
-	<a class="oomph-card oomph-card--clickable oomph-sailing-card" href="<?php echo esc_url( (string) get_permalink( $id ) ); ?>">
+	<a class="oomph-card oomph-card--clickable oomph-sailing-card<?php echo 'amenity_departure' === $type ? ' oomph-sailing-card--amenity' : ''; ?>" href="<?php echo esc_url( (string) get_permalink( $id ) ); ?>">
 		<p class="oomph-eyebrow oomph-card__eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 		<h3 class="oomph-card__headline"><?php echo esc_html( $itin ); ?></h3>
 		<?php if ( 'distinctive_voyage' === $type && '' !== $event ) : ?>
 			<p class="oomph-sailing-card__event">Exclusive shore event: <?php echo esc_html( $event ); ?></p>
+		<?php elseif ( 'amenity_departure' === $type && '' !== $perk ) : ?>
+			<p class="oomph-sailing-card__perk"><?php echo esc_html( $perk ); ?></p>
 		<?php endif; ?>
 		<?php if ( '' !== $meta ) : ?>
 			<p class="oomph-card__meta"><?php echo esc_html( $meta ); ?></p>

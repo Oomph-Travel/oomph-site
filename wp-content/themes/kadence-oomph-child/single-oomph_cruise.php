@@ -379,6 +379,22 @@ while ( have_posts() ) :
 		$region_name  = ( is_array( $region_terms ) && $region_terms ) ? $region_terms[0]->name : '';
 		$eyebrow_lead = ( 'amenity_departure' === $sailing_type ) ? 'Amenity Departure' : 'Hosted Group Cruise';
 		$has_thumb    = has_post_thumbnail();
+
+		// The amenity IS the offer on an amenity departure — surface it as a
+		// lead block (detail lines when present, else the one-line summary).
+		$amenity_details_h = trim( (string) $get( 'amenity_details' ) );
+		$amenity_summary_h = trim( (string) $get( 'amenity_summary' ) );
+		$amenity_rows_h    = array();
+		if ( '' !== $amenity_details_h ) {
+			foreach ( preg_split( '/\r\n|\r|\n/', $amenity_details_h ) as $line_txt ) {
+				$line_txt = trim( (string) $line_txt );
+				if ( '' !== $line_txt ) {
+					$amenity_rows_h[] = $line_txt;
+				}
+			}
+		} elseif ( '' !== $amenity_summary_h ) {
+			$amenity_rows_h[] = $amenity_summary_h;
+		}
 		?>
 
 		<main id="primary" class="oomph-cruise" role="main">
@@ -408,6 +424,19 @@ while ( have_posts() ) :
 
 						<?php if ( ! $why_is_stub ) : ?>
 							<div class="oomph-prose"><?php the_content(); ?></div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $amenity_rows_h ) ) : ?>
+							<div class="oomph-cruise-amenity">
+								<p class="oomph-eyebrow">What's added on this sailing</p>
+								<h2><?php echo 'amenity_departure' === $sailing_type ? 'The amenities I can add.' : 'What I&rsquo;ve added.'; ?></h2>
+								<ul class="oomph-cruise-amenity__list">
+									<?php foreach ( $amenity_rows_h as $row_txt ) : ?>
+										<li><?php echo esc_html( $row_txt ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+								<p class="oomph-cruise-amenity__note">Added through my Travel Leaders Network membership &mdash; the same fare you&rsquo;d pay booking direct.</p>
+							</div>
 						<?php endif; ?>
 
 						<?php if ( is_array( $itinerary_rows ) && ! empty( $itinerary_rows ) ) : ?>

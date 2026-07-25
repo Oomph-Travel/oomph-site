@@ -21,7 +21,9 @@ $lines       = oomph_sailing_lines();
 $regions     = oomph_sailing_regions();
 $sel_line    = isset( $_GET['line'] ) ? sanitize_text_field( wp_unslash( $_GET['line'] ) ) : '';
 $sel_region  = isset( $_GET['region'] ) ? sanitize_title( wp_unslash( $_GET['region'] ) ) : '';
-$has_filters = ( '' !== $sel_line || '' !== $sel_region );
+$sel_type    = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
+$sel_type    = in_array( $sel_type, array( 'hosted', 'amenity' ), true ) ? $sel_type : '';
+$has_filters = ( '' !== $sel_line || '' !== $sel_region || '' !== $sel_type );
 $archive_url = get_post_type_archive_link( 'oomph_cruise' );
 ?>
 
@@ -31,15 +33,15 @@ $archive_url = get_post_type_archive_link( 'oomph_cruise' );
 
 	<section class="oomph-dv-hero oomph-cruise-archive__hero">
 		<div class="oomph-dv-hero__inner">
-			<p class="oomph-eyebrow oomph-dv-hero__eyebrow">Group Cruises · Distinctive Voyages</p>
-			<h1 class="oomph-dv-hero__title oomph-italic-display">The sailings I'm hosting.</h1>
-			<p class="oomph-dv-hero__ship">Hosted departures and Distinctive Voyages sailings, each carrying amenities I've arranged through my Travel Leaders Network membership — the same fare you'd pay booking direct, with more included.</p>
+			<p class="oomph-eyebrow oomph-dv-hero__eyebrow">Group Cruises · Distinctive Voyages · Amenity departures</p>
+			<h1 class="oomph-dv-hero__title oomph-italic-display">Sailings worth booking with me.</h1>
+			<p class="oomph-dv-hero__ship">The departures I host myself, the Distinctive Voyages sailings with a private shore event, and the wider list of sailings carrying amenities I've arranged through my Travel Leaders Network membership — all at the same fare you'd pay booking direct, with more included.</p>
 		</div>
 	</section>
 
 	<div class="oomph-container oomph-cruise-archive__body">
 
-		<?php if ( ! empty( $lines ) || ! empty( $regions ) ) : ?>
+		<?php /* Filters always render — the sailing-type select is always useful. */ ?>
 		<form class="oomph-cruise-filters" method="get" action="<?php echo esc_url( (string) $archive_url ); ?>" aria-label="Filter sailings">
 			<?php if ( ! empty( $lines ) ) : ?>
 			<label class="oomph-cruise-filters__field">
@@ -65,12 +67,20 @@ $archive_url = get_post_type_archive_link( 'oomph_cruise' );
 			</label>
 			<?php endif; ?>
 
+			<label class="oomph-cruise-filters__field">
+				<span>Sailing type</span>
+				<select name="type">
+					<option value="">All sailings</option>
+					<option value="hosted" <?php selected( $sel_type, 'hosted' ); ?>>Hosted &amp; Distinctive Voyages</option>
+					<option value="amenity" <?php selected( $sel_type, 'amenity' ); ?>>Amenity departures</option>
+				</select>
+			</label>
+
 			<button type="submit" class="oomph-btn oomph-btn--primary">Show sailings</button>
 			<?php if ( $has_filters ) : ?>
 				<a class="oomph-cruise-filters__clear" href="<?php echo esc_url( (string) $archive_url ); ?>">Clear</a>
 			<?php endif; ?>
 		</form>
-		<?php endif; ?>
 
 		<?php if ( have_posts() ) : ?>
 			<div class="oomph-grid oomph-grid--3 oomph-cruise-archive__grid">

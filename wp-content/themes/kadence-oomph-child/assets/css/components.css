@@ -1022,3 +1022,41 @@
   font-weight: 600;
   margin-bottom: var(--space-2);
 }
+
+/* Sailing card — amenity-departure variant. Lighter than a hosted/DV card:
+ * these are commodity listings, so the perk line reads as supporting detail
+ * rather than the headline event a Distinctive Voyage carries. */
+.oomph-sailing-card__perk {
+  color: var(--text-muted);
+  font-size: var(--text-body-sm);
+  margin-bottom: var(--space-2);
+}
+
+.oomph-sailing-card--amenity .oomph-card__eyebrow {
+  color: var(--text-muted);
+}
+
+/* Amenity block on a sailing single — the offer itself on an amenity
+ * departure, a supporting list on a hosted sailing. */
+.oomph-cruise-amenity {
+  margin-bottom: var(--space-8);
+  padding: var(--space-6);
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+}
+
+.oomph-cruise-amenity__list {
+  margin: var(--space-4) 0 var(--space-4);
+  padding-left: var(--space-5);
+}
+
+.oomph-cruise-amenity__list li {
+  margin-bottom: var(--space-2);
+}
+
+.oomph-cruise-amenity__note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-body-sm);
+}

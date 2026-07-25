@@ -22,6 +22,29 @@ test.describe('/group-cruises/ archive', () => {
     }
     await expect(cards.first()).toBeVisible();
   });
+
+  test('sailing-type filter separates hosted from amenity departures', async ({ page }) => {
+    await page.goto('/group-cruises/', { waitUntil: 'domcontentloaded' });
+
+    const typeSelect = page.locator('form.oomph-cruise-filters select[name="type"]');
+    await expect(typeSelect).toBeVisible();
+
+    // Hosted view: every card shown must be a hosted/DV card.
+    await page.goto('/group-cruises/?type=hosted', { waitUntil: 'domcontentloaded' });
+    const hosted = page.locator('a.oomph-sailing-card');
+    if ((await hosted.count()) > 0) {
+      await expect(page.locator('a.oomph-sailing-card--amenity')).toHaveCount(0);
+    }
+
+    // Amenity view: every card shown must be an amenity card.
+    await page.goto('/group-cruises/?type=amenity', { waitUntil: 'domcontentloaded' });
+    const amenity = page.locator('a.oomph-sailing-card');
+    const amenityCount = await amenity.count();
+    if (amenityCount === 0) {
+      test.skip(true, 'No amenity departures published yet.');
+    }
+    await expect(page.locator('a.oomph-sailing-card--amenity')).toHaveCount(amenityCount);
+  });
 });
 
 test.describe('single DV sailing', () => {

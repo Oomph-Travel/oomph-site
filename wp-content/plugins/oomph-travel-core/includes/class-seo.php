@@ -27,6 +27,81 @@ final class SEO {
 		// served early — before WordPress's canonical trailing-slash redirect
 		// would fire on the .txt request.
 		add_action( 'init', array( __CLASS__, 'serve_llms' ), 0 );
+
+		// Sailings are imported in the hundreds and nobody hand-writes a meta
+		// description for each; generate one from the sailing's own fields.
+		// A description typed in the editor always wins.
+		add_filter( 'rank_math/frontend/description', array( __CLASS__, 'sailing_description' ), 10, 1 );
+	}
+
+	/**
+	 * Auto meta description for a Group Cruise, built from its own data.
+	 *
+	 * Distinctive Voyages lead with the private shore event; amenity
+	 * departures lead with the amenity. Falls through untouched for every
+	 * other post type and for sailings with a hand-written description.
+	 *
+	 * @param string $description Rank Math's value.
+	 * @return string
+	 */
+	public static function sailing_description( $description ) {
+		if ( ! is_singular( CPT_Cruise::POST_TYPE ) || ! function_exists( 'get_field' ) ) {
+			return $description;
+		}
+
+		$post_id = get_queried_object_id();
+		if ( ! $post_id ) {
+			return $description;
+		}
+
+		$manual = get_post_meta( $post_id, 'rank_math_description', true );
+		if ( is_string( $manual ) && '' !== trim( $manual ) ) {
+			return $description;
+		}
+
+		$f         = static function ( string $k ) use ( $post_id ): string {
+			return trim( (string) get_field( $k, $post_id ) );
+		};
+		$ship      = $f( 'cruise_ship_name' );
+		$line      = $f( 'cruise_line' );
+		$start     = $f( 'cruise_dates_start' );
+		$type      = $f( 'sailing_type' );
+		$perk      = $f( 'amenity_summary' );
+		$event     = $f( 'shore_event_1_name' );
+		$embark    = $f( 'embark_city' );
+		$disembark = $f( 'disembark_city' );
+
+		// "{Itinerary} — {Ship}, {Month Year}" is the imported title shape.
+		$itin = explode( ' — ', (string) get_the_title( $post_id ) )[0];
+		$when = $start ? date_i18n( 'F Y', (int) strtotime( $start ) ) : '';
+
+		$parts   = array();
+		$parts[] = sprintf( '%s aboard %s%s.', $itin, $ship ?: 'ship', $when ? ", {$when}" : '' );
+
+		if ( $embark && $disembark ) {
+			$parts[] = $embark === $disembark
+				? "Round-trip from {$embark}."
+				: "{$embark} to {$disembark}.";
+		}
+
+		if ( 'distinctive_voyage' === $type && $event ) {
+			$parts[] = "Includes a private shore event: {$event}.";
+		} elseif ( $perk ) {
+			$parts[] = rtrim( $perk, '.' ) . '.';
+		}
+
+		$parts[] = $line
+			? "Planned with Eric Hempel — same {$line} fare, more included."
+			: 'Planned with Eric Hempel.';
+
+		$out = trim( (string) preg_replace( '/\s+/', ' ', implode( ' ', $parts ) ) );
+
+		// Meta descriptions truncate around 160 chars; cut on a word boundary.
+		if ( mb_strlen( $out ) > 158 ) {
+			$out = rtrim( mb_substr( $out, 0, 155 ), " .,;:—-" ) . '…';
+		}
+
+		return $out;
 	}
 
 	public static function serve_llms(): void {

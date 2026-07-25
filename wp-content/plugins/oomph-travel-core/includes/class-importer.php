@@ -83,13 +83,10 @@ final class Importer {
 	 * : Only sailings on or before this date (Y-m-d). Defaults to today + 15 months.
 	 *
 	 * [--status=<status>]
-	 * : Post status for newly created posts.
-	 * ---
-	 * default: draft
-	 * options:
-	 *   - draft
-	 *   - publish
-	 * ---
+	 * : Post status for newly created posts. Default is per sailing type:
+	 * Distinctive Voyages -> draft (they get enriched before publishing),
+	 * Amenity Departures -> publish (commodity listings, live immediately).
+	 * Pass draft or publish to force one status for everything.
 	 *
 	 * [--limit=<n>]
 	 * : Stop after this many rows have passed the filters.
@@ -113,7 +110,7 @@ final class Importer {
 			(string) ( $args[0] ?? '' ),
 			array(
 				'type'        => (string) ( $assoc_args['type'] ?? 'dv' ),
-				'status'      => (string) ( $assoc_args['status'] ?? 'draft' ),
+				'status'      => (string) ( $assoc_args['status'] ?? '' ), // '' = per-type default.
 				'dry_run'     => isset( $assoc_args['dry-run'] ),
 				'retire_past' => isset( $assoc_args['retire-past'] ),
 				'limit'       => isset( $assoc_args['limit'] ) ? (int) $assoc_args['limit'] : 0,
@@ -195,7 +192,8 @@ final class Importer {
 		}
 
 		$type    = (string) ( $opts['type'] ?? 'dv' );
-		$status  = (string) ( $opts['status'] ?? 'draft' );
+		// '' = per-type default (DV -> draft, amenity -> publish), resolved per row.
+		$status  = (string) ( $opts['status'] ?? '' );
 		$dry_run = ! empty( $opts['dry_run'] );
 		$limit   = isset( $opts['limit'] ) ? max( 0, (int) $opts['limit'] ) : 0;
 
@@ -287,7 +285,7 @@ final class Importer {
 		$title_lead = '' !== $itinerary ? $itinerary : ( ( '' !== $embark && '' !== $disembark ) ? "{$embark} to {$disembark}" : $ship );
 		$title      = sprintf( '%s — %s, %s', $title_lead, $ship, gmdate( 'F Y', strtotime( $sail ) ) );
 
-		$existing = $this->find_existing( $voyage, $ship, $sail );
+		$existing = $this->find_existing( $voyage, $ship, $sail, $lane );
 
 		if ( $dry_run ) {
 			return array(
@@ -300,6 +298,12 @@ final class Importer {
 			);
 		}
 
+		// Explicit --status wins; otherwise per-type default: DVs are drafts
+		// until enriched, Amenity Departures publish immediately.
+		$row_status = in_array( $status, array( 'draft', 'publish' ), true )
+			? $status
+			: ( 'amenity' === $lane ? 'publish' : 'draft' );
+
 		if ( $existing ) {
 			$post_id = $existing;
 			// Never overwrite post_content on update — that's editorial copy.
@@ -307,7 +311,7 @@ final class Importer {
 			$post_id = wp_insert_post(
 				array(
 					'post_type'    => CPT_Cruise::POST_TYPE,
-					'post_status'  => in_array( $status, array( 'draft', 'publish' ), true ) ? $status : 'draft',
+					'post_status'  => $row_status,
 					'post_title'   => $title,
 					'post_name'    => sanitize_title( $ship . '-' . $sail ),
 					'post_content' => self::WHY_PLACEHOLDER,
@@ -402,7 +406,7 @@ final class Importer {
 	 * Find an existing post: by Voyage # meta when it's a real reference,
 	 * otherwise by Ship + Sail Date. Returns the post ID or 0.
 	 */
-	private function find_existing( string $voyage, string $ship, string $sail ): int {
+	private function find_existing( string $voyage, string $ship, string $sail, string $lane ): int {
 		if ( '' !== $voyage && 0 !== strcasecmp( $voyage, 'Not Applicable' ) ) {
 			$ids = get_posts(
 				array(
@@ -427,6 +431,10 @@ final class Importer {
 					'relation' => 'AND',
 					array( 'key' => 'cruise_ship_name', 'value' => $ship ),
 					array( 'key' => 'cruise_dates_start', 'value' => $sail ),
+					// Same ship + date can exist as BOTH a DV and an Amenity
+					// Departure row — never cross-match them, or the update
+					// would flip the other record's sailing_type.
+					array( 'key' => 'sailing_type', 'value' => $this->sailing_type( $lane ) ),
 				),
 			)
 		);
