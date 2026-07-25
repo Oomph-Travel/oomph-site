@@ -39,7 +39,23 @@ const WIDTHS = {
   '.': [480, 768, 1000],       // root — homepage hero, portrait, guide cover
   default: [480, 960],
 };
-const QUALITY = 72;   // above this, WebP loses to the already-tight source JPEGs
+// Quality by folder. Heroes and the images/ root run higher: they hold the
+// full-bleed photography that carries the brand, and it's the one image every
+// visitor sees at full width. Measured on the homepage hero, q72 lands at
+// 37.3 dB PSNR / 31KB and q85 at 40.1 dB / 51KB — 20KB, roughly 100ms on
+// throttled mobile, for visible headroom on the LCP image. Cards and journal
+// thumbnails render at a third of the width below the fold, where q72 is
+// already indistinguishable.
+const QUALITY = { heroes: 85, '.': 85, default: 72 };
+
+// R3 caps a hero LCP image at 250KB. Detailed photographs (the Puglia and
+// discovery heroes especially) blow straight past that at q85 — 286KB and
+// 248KB at 1200px — which is both a rule violation and barely an improvement
+// on the source JPEG. So quality is a ceiling, not a promise: step down until
+// the variant fits the budget. Smooth images keep q85; noisy ones settle where
+// they have to, and the script reports where that landed.
+const MAX_BYTES = 250 * 1024;
+const QUALITY_FLOOR = 60;
 
 // WebP sources count too. hero-background.webp is the homepage LCP element and
 // was shipping a single 180KB/1000px file to every phone — already WebP, so
@@ -61,6 +77,8 @@ async function walk(dir) {
 
 const files = await walk(IMG_DIR);
 let made = 0, skipped = 0, savedBytes = 0;
+const downgraded = [];
+const overBudget = [];
 
 for (const file of files) {
   const folder = path.relative(IMG_DIR, path.dirname(file)) || '.';
@@ -76,8 +94,26 @@ for (const file of files) {
       skipped++;
       continue;
     }
-    await sharp(file).resize({ width: w, withoutEnlargement: true })
-      .webp({ quality: QUALITY, effort: 6 }).toFile(out);
+    let quality = QUALITY[folder] ?? QUALITY.default;
+    for (;;) {
+      await sharp(file).resize({ width: w, withoutEnlargement: true })
+        .webp({ quality, effort: 6 }).toFile(out);
+      if (statSync(out).size <= MAX_BYTES || quality <= QUALITY_FLOOR) break;
+      quality -= 5;
+    }
+    // Still over budget at the floor: this width cannot be shipped at all.
+    // Dropping it leaves the next size down as the widest candidate, which
+    // keeps R3 intact — a slightly soft upscale beats a rule violation on the
+    // LCP image. The real fix is a leaner source crop, so say so loudly.
+    if (statSync(out).size > MAX_BYTES) {
+      overBudget.push(`${path.basename(out)} — ${Math.round(statSync(out).size / 1024)}KB at q${quality}, dropped`);
+      await fs.unlink(out);
+      skipped++;
+      continue;
+    }
+    if (quality !== (QUALITY[folder] ?? QUALITY.default)) {
+      downgraded.push(`${path.basename(out)} @ q${quality} (${Math.round(statSync(out).size / 1024)}KB)`);
+    }
 
     // Never ship a "variant" that is bigger than the original — that only
     // happens at full width on already-optimised photos, and the <picture>
@@ -96,3 +132,13 @@ console.log(
   `${files.length} sources · ${made} variants written, ${skipped} up to date` +
   (savedBytes > 0 ? ` · largest-variant saving ≈ ${(savedBytes / 1048576).toFixed(1)} MB` : '')
 );
+// Never silently downgrade — if a photo could not hold its target quality
+// inside the R3 budget, say so, because the fix is a better source crop.
+if (downgraded.length) {
+  console.log(`\n  quality stepped down to fit the ${Math.round(MAX_BYTES / 1024)}KB hero budget (R3):`);
+  for (const d of downgraded) console.log(`    ${d}`);
+}
+if (overBudget.length) {
+  console.log(`\n  OVER BUDGET even at q${QUALITY_FLOOR} — not shipped, use a leaner source crop:`);
+  for (const d of overBudget) console.log(`    ${d}`);
+}
