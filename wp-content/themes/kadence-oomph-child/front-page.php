@@ -22,10 +22,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/*
+ * Hero image is resolved BEFORE get_header() so oomph_preload_hero() can add
+ * its <link rel=preload> while wp_head is still ahead of us. Move this below
+ * get_header() and the preload silently stops emitting.
+ *
+ * ACF returns array(ID, url, alt, width, height, sizes, …) or false when no
+ * image is selected; fall back to the bundled theme asset.
+ */
+$hero_image_acf     = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
+$hero_image_bundled = '';
+$hero_image_srcset  = '';
+
+if ( is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] ) ) {
+	$hero_image_url    = $hero_image_acf['url'];
+	$hero_image_alt    = $hero_image_acf['alt'] ?? '';
+	$hero_image_width  = $hero_image_acf['width'] ?? 1000;
+	$hero_image_height = $hero_image_acf['height'] ?? 667;
+
+	// An uploaded hero goes through the Media Library, so WordPress already
+	// has the resized files — but this template hand-builds its <img> from
+	// ['url'], which is always the full-size original. Ask WP for the srcset
+	// explicitly, otherwise a 3000px upload ships whole to a phone.
+	if ( ! empty( $hero_image_acf['ID'] ) ) {
+		$hero_image_srcset = (string) wp_get_attachment_image_srcset( (int) $hero_image_acf['ID'], 'full' );
+	}
+} else {
+	$hero_image_bundled = 'hero-background.webp';
+	$hero_image_url     = get_stylesheet_directory_uri() . '/assets/images/' . $hero_image_bundled;
+	$hero_image_alt     = '';
+	$hero_image_width   = 1000;
+	$hero_image_height  = 667;
+	oomph_preload_hero( $hero_image_bundled );
+}
+
 get_header();
 
 /*
- * Hero — read from ACF Page Hero with fallbacks to the original
+ * Hero copy — read from ACF Page Hero with fallbacks to the original
  * hardcoded copy. Fallbacks ensure the page never renders blank
  * if ACF is absent or the post hasn't been populated in admin yet.
  */
@@ -42,21 +76,6 @@ $hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
 // an aria-hidden span, keeping the arrow out of the accessible name.
 $hero_cta_text = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
 
-// Hero image: ACF returns array(url, alt, width, height, sizes, …) or
-// false when no image is selected. Fall back to the bundled theme asset.
-$hero_image_acf = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
-if ( is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] ) ) {
-	$hero_image_url    = $hero_image_acf['url'];
-	$hero_image_alt    = $hero_image_acf['alt'] ?? '';
-	$hero_image_width  = $hero_image_acf['width'] ?? 1000;
-	$hero_image_height = $hero_image_acf['height'] ?? 667;
-} else {
-	$hero_image_url    = get_stylesheet_directory_uri() . '/assets/images/hero-background.webp';
-	$hero_image_alt    = '';
-	$hero_image_width  = 1000;
-	$hero_image_height = 667;
-}
-
 // Trust strip defaults to on; explicit false from ACF hides it.
 $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 ?>
@@ -68,16 +87,36 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 
 	<?php /* 1. HERO ---------------------------------------------------- */ ?>
 	<section class="oomph-hero oomph-hero--imaged" aria-label="Welcome">
-		<picture class="oomph-hero__media">
-			<img
-				src="<?php echo esc_url( $hero_image_url ); ?>"
-				alt="<?php echo esc_attr( $hero_image_alt ); ?>"
-				width="<?php echo esc_attr( $hero_image_width ); ?>"
-				height="<?php echo esc_attr( $hero_image_height ); ?>"
-				fetchpriority="high"
-				decoding="async"
-			>
-		</picture>
+		<?php if ( $hero_image_bundled ) : ?>
+			<?php
+			// LCP element. oomph_picture() serves the 480/768/1000 WebP variants
+			// instead of the single 180KB original; oomph_preload_hero() above
+			// starts the download from <head> with a matching srcset.
+			echo oomph_picture(
+				$hero_image_bundled,
+				array(
+					'alt'    => $hero_image_alt,
+					'width'  => $hero_image_width,
+					'height' => $hero_image_height,
+					'class'  => 'oomph-hero__media',
+					'lcp'    => true,
+				)
+			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+			?>
+		<?php else : ?>
+			<picture class="oomph-hero__media">
+				<img
+					src="<?php echo esc_url( $hero_image_url ); ?>"
+					alt="<?php echo esc_attr( $hero_image_alt ); ?>"
+					width="<?php echo esc_attr( $hero_image_width ); ?>"
+					height="<?php echo esc_attr( $hero_image_height ); ?>"
+					srcset="<?php echo esc_attr( $hero_image_srcset ); ?>"
+					sizes="100vw"
+					fetchpriority="high"
+					decoding="async"
+				>
+			</picture>
+		<?php endif; ?>
 		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow"><?php echo esc_html( $hero_eyebrow ); ?></p>
 			<h1 class="oomph-hero__headline"><?php echo esc_html( $hero_headline ); ?></h1>
@@ -135,21 +174,21 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/luxury-cruise-planning/">
-					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-cruise.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-cruise.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Luxury cruise planning.</h3>
 					<p>Silversea, Regent, Seabourn, Crystal, Cunard Grills, Viking Ocean. Cabin selection by deck and wave-zone, onboard credit, pre- and post-cruise extensions.</p>
 					<p class="oomph-card__meta">See cruise planning →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/custom-italy-travel/">
-					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-italy.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-italy.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Custom Italy travel.</h3>
 					<p>Hand-built itineraries by region — Puglia, Sicily, the Lakes, the Dolomites. Private drivers, vetted guides, the villa rentals that actually deliver.</p>
 					<p class="oomph-card__meta">See custom Italy →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/multi-generational-travel-planning/">
-					<figure class="oomph-card__media"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cards/card-multigen.jpg' ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-multigen.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Multi-generational travel.</h3>
 					<p>The trip that works for grandparents, parents, teens, and the toddler. Pace, mobility, dietary, special-occasion choreography — planned around the slowest walker.</p>
 					<p class="oomph-card__meta">See multi-gen planning →</p>
@@ -184,14 +223,17 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 		<div class="oomph-container">
 			<div class="oomph-grid oomph-grid--2 oomph-founder">
 				<figure class="oomph-portrait oomph-founder__portrait">
-					<img
-						src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/eric-hempel-portrait.webp' ); ?>"
-						alt="Eric Hempel, travel advisor at Oomph Travel"
-						width="735"
-						height="564"
-						loading="lazy"
-						decoding="async"
-					>
+					<?php
+					echo oomph_picture(
+						'eric-hempel-portrait.webp',
+						array(
+							'alt'    => 'Eric Hempel, travel advisor at Oomph Travel',
+							'width'  => 735,
+							'height' => 564,
+							'sizes'  => '(min-width: 768px) 50vw, 100vw',
+						)
+					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+					?>
 				</figure>
 				<div class="oomph-founder__copy">
 					<p class="oomph-eyebrow" style="color: var(--color-champagne);">One Advisor</p>
@@ -239,14 +281,17 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 		<div class="oomph-container">
 			<div class="oomph-grid oomph-grid--2 oomph-leadmagnet">
 				<figure class="oomph-cover oomph-leadmagnet__cover">
-					<img
-						src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/cabin-guide-cover.webp' ); ?>"
-						alt="Cover of the Silversea cabin selection guide"
-						width="900"
-						height="1443"
-						loading="lazy"
-						decoding="async"
-					>
+					<?php
+						echo oomph_picture(
+							'cabin-guide-cover.webp',
+							array(
+								'alt'    => 'Cover of the Silversea cabin selection guide',
+								'width'  => 900,
+								'height' => 1443,
+								'sizes'  => '(min-width: 768px) 50vw, 100vw',
+							)
+						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+						?>
 				</figure>
 				<div class="oomph-leadmagnet__copy">
 					<p class="oomph-eyebrow">Cruise · Cabin Note</p>

@@ -159,6 +159,21 @@ add_filter(
 );
 
 /**
+ * Preload a service hub page's hero.
+ *
+ * The thin page-{slug}.php templates call get_header() before the renderer
+ * runs, so the renderer itself is too late to add anything to <head>. This
+ * reads the same data array and registers the preload while wp_head is still
+ * ahead of us. Call it *before* get_header().
+ */
+function oomph_preload_service_hero( string $slug ): void {
+	$d = oomph_service_page_data( $slug );
+	if ( ! empty( $d['hero_img'] ) ) {
+		oomph_preload_hero( 'heroes/' . $d['hero_img'] );
+	}
+}
+
+/**
  * Render a full service hub page from its data array.
  */
 function oomph_render_service_page( string $slug ): void {
@@ -173,12 +188,20 @@ function oomph_render_service_page( string $slug ): void {
 		<div id="oomph-content"></div>
 
 		<?php /* 1. HERO */ ?>
-		<?php $hero_img = ! empty( $d['hero_img'] ) ? get_stylesheet_directory_uri() . '/assets/images/heroes/' . $d['hero_img'] : ''; ?>
+		<?php $hero_img = ! empty( $d['hero_img'] ) ? 'heroes/' . $d['hero_img'] : ''; ?>
 		<section class="<?php echo $hero_img ? 'oomph-hero oomph-hero--imaged' : 'oomph-section oomph-hero'; ?>" aria-label="<?php echo esc_attr( wp_strip_all_tags( $d['headline'] ) ); ?>">
 			<?php if ( $hero_img ) : ?>
-				<picture class="oomph-hero__media">
-					<img src="<?php echo esc_url( $hero_img ); ?>" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
-				</picture>
+				<?php
+				echo oomph_picture(
+					$hero_img,
+					array(
+						'width'  => 1600,
+						'height' => 1067,
+						'class'  => 'oomph-hero__media',
+						'lcp'    => true,
+					)
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+				?>
 			<?php endif; ?>
 			<div class="oomph-container oomph-hero__inner">
 				<p class="oomph-eyebrow"><?php echo esc_html( strtoupper( $d['eyebrow'] ) ); ?></p>
@@ -270,10 +293,10 @@ function oomph_render_service_page( string $slug ): void {
 				</div>
 				<div class="oomph-grid oomph-grid--<?php echo count( $d['coverage'] ) % 3 === 0 ? '3' : '2'; ?>">
 					<?php foreach ( $d['coverage'] as $row ) : ?>
-						<?php $cov_img = ! empty( $row[2] ) ? get_stylesheet_directory_uri() . '/assets/images/cards/' . $row[2] : ''; ?>
+						<?php $cov_img = ! empty( $row[2] ) ? 'cards/' . $row[2] : ''; ?>
 						<article class="oomph-card oomph-card--bordered<?php echo $cov_img ? ' oomph-card--media' : ''; ?>">
 							<?php if ( $cov_img ) : ?>
-								<figure class="oomph-card__media"><img src="<?php echo esc_url( $cov_img ); ?>" alt="" width="900" height="600" loading="lazy" decoding="async"></figure>
+								<figure class="oomph-card__media"><?php echo oomph_picture( $cov_img, array( 'width' => 900, 'height' => 600 ) ); ?></figure>
 							<?php endif; ?>
 							<h3 class="oomph-card__headline"><?php echo wp_kses_post( $row[0] ); ?></h3>
 							<p><?php echo wp_kses_post( $row[1] ); ?></p>

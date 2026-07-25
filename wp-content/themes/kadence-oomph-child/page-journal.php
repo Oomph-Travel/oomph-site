@@ -12,6 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Registered before get_header() so the <link rel=preload> still makes it
+// into <head> — this hero is the LCP element on the page.
+oomph_preload_hero( 'heroes/journal-hero.jpg' );
+
 get_header();
 
 $paged = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
@@ -28,9 +32,17 @@ $posts_q = new WP_Query( array(
 	<div id="oomph-content"></div>
 
 	<section class="oomph-hero oomph-hero--imaged" aria-labelledby="journal-title">
-		<picture class="oomph-hero__media">
-			<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/heroes/journal-hero.jpg' ); ?>" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
-		</picture>
+		<?php
+		echo oomph_picture(
+			'heroes/journal-hero.jpg',
+			array(
+				'width'  => 1600,
+				'height' => 1067,
+				'class'  => 'oomph-hero__media',
+				'lcp'    => true,
+			)
+		); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+		?>
 		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow">From the Journal</p>
 			<h1 id="journal-title" class="oomph-hero__headline oomph-italic-display">Field notes from the road and the rail.</h1>

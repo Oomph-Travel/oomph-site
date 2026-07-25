@@ -30,6 +30,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/*
+ * Hero image is resolved before get_header() so oomph_preload_hero() can still
+ * reach wp_head. ACF image array, or the bundled cruise photo when unset.
+ */
+$hero_image_acf     = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
+$hero_has_image     = is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] );
+$hero_image_bundled = $hero_has_image ? '' : 'heroes/cruise-hero.jpg';
+$hero_image_srcset  = '';
+$hero_url           = $hero_has_image
+	? $hero_image_acf['url']
+	: get_stylesheet_directory_uri() . '/assets/images/' . $hero_image_bundled;
+
+if ( $hero_has_image ) {
+	// ACF hands back the full-size URL; ask WordPress for the resized set it
+	// already generated, or a large upload ships whole to every phone.
+	if ( ! empty( $hero_image_acf['ID'] ) ) {
+		$hero_image_srcset = (string) wp_get_attachment_image_srcset( (int) $hero_image_acf['ID'], 'full' );
+	}
+} else {
+	oomph_preload_hero( $hero_image_bundled );
+}
+
 get_header();
 
 /*
@@ -46,12 +68,6 @@ $hero_cta_url   = oomph_acf_field( 'hero_cta_url', '/discovery-call/' );
 $hero_cta_text  = trim( preg_replace( '/\s*→\s*$/u', '', $hero_cta_label ) );
 
 $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
-
-// Hero background image: ACF image array or no image (Bone canvas).
-$hero_image_acf = function_exists( 'get_field' ) ? get_field( 'hero_image' ) : null;
-$hero_has_image = is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] );
-// Fall back to a bundled cruise hero photo when no ACF image is set.
-$hero_url = $hero_has_image ? $hero_image_acf['url'] : get_stylesheet_directory_uri() . '/assets/images/heroes/cruise-hero.jpg';
 
 /*
  * Service Page ACF fields with voice-aligned fallbacks. Fallbacks
@@ -143,16 +159,32 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 
 	<?php /* 1. HERO ---------------------------------------------------- */ ?>
 	<section class="oomph-hero oomph-hero--imaged" aria-label="Luxury cruise planning">
-		<picture class="oomph-hero__media">
-			<img
-				src="<?php echo esc_url( $hero_url ); ?>"
-				alt="<?php echo esc_attr( $hero_has_image ? ( $hero_image_acf['alt'] ?? '' ) : '' ); ?>"
-				width="1600"
-				height="1067"
-				fetchpriority="high"
-				decoding="async"
-			>
-		</picture>
+		<?php if ( $hero_image_bundled ) : ?>
+			<?php
+			echo oomph_picture(
+				$hero_image_bundled,
+				array(
+					'width'  => 1600,
+					'height' => 1067,
+					'class'  => 'oomph-hero__media',
+					'lcp'    => true,
+				)
+			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped in helper.
+			?>
+		<?php else : ?>
+			<picture class="oomph-hero__media">
+				<img
+					src="<?php echo esc_url( $hero_url ); ?>"
+					alt="<?php echo esc_attr( $hero_image_acf['alt'] ?? '' ); ?>"
+					width="1600"
+					height="1067"
+					srcset="<?php echo esc_attr( $hero_image_srcset ); ?>"
+					sizes="100vw"
+					fetchpriority="high"
+					decoding="async"
+				>
+			</picture>
+		<?php endif; ?>
 		<div class="oomph-container oomph-hero__inner">
 			<p class="oomph-eyebrow"><?php echo esc_html( strtoupper( $hero_eyebrow ) ); ?></p>
 			<h1 class="oomph-hero__headline oomph-italic-display"><?php echo esc_html( $hero_headline ); ?></h1>
