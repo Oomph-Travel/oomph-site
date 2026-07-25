@@ -1,0 +1,17 @@
+{
+  "itinerary": [
+    { "day": 1, "port": "Miami, Florida", "activity": "Embarkation; the ship sails at 18:00. Miami is worth a night beforehand — and it means a flight delay does not cost you the cruise." },
+    { "day": 2, "port": "At sea", "activity": "East across the Straits of Florida. The day to learn the ship before the islands start." },
+    { "day": 3, "port": "San Juan, Puerto Rico", "activity": "Old San Juan is the oldest European settlement under the US flag — blue cobbles, painted facades, and El Morro guarding the harbour mouth. Alongside overnight." },
+    { "day": 4, "port": "St. John, U.S. Virgin Islands", "activity": "Two thirds of the island is national park, and Trunk Bay is the reason people photograph it. Quieter than St. Thomas next door, deliberately so. In port 09:00–19:00." },
+    { "day": 5, "port": "Gustavia, St. Barthélemy", "activity": "French in every respect that matters — the harbour, the shops around it, and beaches like Colombier that take a walk to reach. In port 08:00–18:00." },
+    { "day": 6, "port": "Basseterre, St. Kitts and Nevis", "activity": "Green, volcanic and far less trafficked than its neighbours — Brimstone Hill Fortress looks out over the whole channel, and the old sugar railway still runs the coast. This is the day of my Best of St. Kitts shore event for guests on this sailing. In port 08:00–23:00." },
+    { "day": 7, "port": "Little Bay, Montserrat", "activity": "The island half-buried by the 1995 eruption — the abandoned capital at Plymouth is visible from the sea, and the observatory explains what happened. Nowhere else in the Caribbean is like it. In port 08:00–18:00." },
+    { "day": 8, "port": "Jost Van Dyke, British Virgin Islands", "activity": "A few hundred people, White Bay's sandbar, and the beach bars that made the island's name. Anchor call — you tender in. In port 07:00–16:00." },
+    { "day": 9, "port": "At sea", "activity": "Turning west for the run back to Florida." },
+    { "day": 10, "port": "At sea", "activity": "The second of three sea days — this itinerary gives you real time aboard at the end rather than a rushed finish." },
+    { "day": 11, "port": "At sea", "activity": "Last full day. Pack slowly." },
+    { "day": 12, "port": "Miami, Florida", "activity": "Early arrival and disembarkation." }
+  ],
+  "why": "Eleven days that skip the big-ship Caribbean entirely: St. John, St. Barths, St. Kitts, Montserrat and Jost Van Dyke, on a ship carrying under 400 guests. Montserrat is the one that stays with people — you sail past a capital city buried by a volcano. My Best of St. Kitts afternoon is reserved for guests on this departure, and the three sea days at the end mean you finish the trip rested rather than rushed."
+}
