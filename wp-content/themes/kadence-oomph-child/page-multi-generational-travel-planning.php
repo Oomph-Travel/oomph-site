@@ -14,6 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Before get_header() — the renderer runs after wp_head has already fired,
+// so the hero preload has to be registered from out here.
+oomph_preload_service_hero( 'multi-generational-travel-planning' );
+
 get_header();
 oomph_render_service_page( 'multi-generational-travel-planning' );
 get_footer();
