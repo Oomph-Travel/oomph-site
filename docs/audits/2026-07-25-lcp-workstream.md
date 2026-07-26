@@ -120,6 +120,51 @@ Also noted, not acted on: `assets/images/journal/*.jpg` (two files, 564KB) are
 referenced by no template — journal cards use Media Library featured images.
 They look like leftovers from an earlier iteration.
 
+## Post-deploy: a measurement caution (2026-07-26)
+
+Production was measured after the deploy and the first numbers looked alarming
+— four of six pages apparently *worse* than baseline, `/discovery-call/` at
+20.8s against a 10.1s pre-change measurement taken the same day. That was
+wrong, and the way it was wrong is worth recording.
+
+Running the full page set five times each showed **every page is bimodal**,
+with a fast and a slow mode roughly 5s apart regardless of page weight:
+
+| Page | LCP range over repeated runs |
+|---|---|
+| `/luxury-cruise-planning/` | 2.9s – 7.7s |
+| `/cruise-travel-trends/` | 2.3s – 7.3s |
+| `/client-stories/` | 2.7s – 7.4s |
+| `/discovery-call/` | **4.2s** – 22.6s |
+
+A near-constant penalty across pages with wildly different payloads is not a
+property of the code. Ruled out during diagnosis: server (TTFB steady at
+0.23–0.44s, throughput steady ~400KB/s), local CPU (Lighthouse
+`benchmarkIndex` steady at 2000–2400 across all 51 runs), and SG Optimizer
+cache state (warming made no difference). The remaining candidate is the
+network path, which Lighthouse's *simulated* throttling amplifies because it
+derives its model from observed RTT.
+
+So the earlier "regression" was five slow-mode runs in a row. `/discovery-call/`
+reaches 4.2s in its fast mode — better than the 10.1s baseline, not worse.
+
+**What is actually verified**, independent of any timing measurement, is the
+payload: fonts 761KB → 356KB per page and the discovery hero 344KB → 110KB,
+confirmed over the wire on production. Fewer bytes cannot make a real user
+slower. Accessibility also reads 98 across the set, up from 94, and that metric
+was stable across every run.
+
+Two things follow:
+
+1. **`npm run audit:lh` now runs each page 5 times and reports the median plus
+   the spread** (`LH_RUNS` overrides). A single Lighthouse run against a live
+   site is not evidence, and the table now makes that visible rather than
+   leaving it to be rediscovered.
+2. **Lab numbers cannot settle this; field data can.** Check
+   [pagespeed.web.dev](https://pagespeed.web.dev/) or Search Console → Core Web
+   Vitals for CrUX p75 over the trailing 28 days. (The PageSpeed Insights API
+   was tried here and returned a shared-quota error without a key.)
+
 ## Re-running
 
 ```bash
