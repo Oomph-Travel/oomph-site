@@ -131,6 +131,27 @@ function oomph_child_enqueue_quiz(): void {
 add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_quiz', 20 );
 
 /**
+ * Link-in-bio stylesheet — only on the /links/ page.
+ *
+ * @return void
+ */
+function oomph_child_enqueue_links(): void {
+	if ( ! is_page( 'links' ) ) {
+		return;
+	}
+	$path = get_stylesheet_directory() . '/assets/css/links-page.css';
+	if ( file_exists( $path ) ) {
+		wp_enqueue_style(
+			'oomph-links-page',
+			get_stylesheet_directory_uri() . '/assets/css/links-page.css',
+			array( 'oomph-components' ),
+			(string) filemtime( $path )
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_links', 20 );
+
+/**
  * Block editor stylesheets.
  *
  * Mirrors tokens.css into the editor so Gutenberg's preview matches the
