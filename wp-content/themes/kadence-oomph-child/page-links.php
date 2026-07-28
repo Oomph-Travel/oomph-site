@@ -92,56 +92,20 @@ if ( $featured && 'publish' !== $featured->post_status ) {
 }
 
 /* -------------------------------------------------------------------------
- * Live sailing count for the Group Cruises row.
- * ---------------------------------------------------------------------- */
-/*
- * Count through the archive's own helper, not a bare oomph_cruise query. The
- * archive is shaped by oomph_cruise_archive_query(), which only fires on the
- * main query for the post-type archive — a WP_Query here is exempt, so a bare
- * count picks up every sailing ever published, departed ones included, and the
- * row contradicts /group-cruises/.
+ * Group Cruises row copy.
  *
- * no_found_rows is forced back on: the helper disables it (nothing else needs a
- * total), but found_posts is the whole point here.
- */
-$sailing_args = oomph_sailings_query_args(
-	array(
-		'posts_per_page'         => 1,
-		'fields'                 => 'ids',
-		'no_found_rows'          => false,
-		'update_post_meta_cache' => false,
-		'update_post_term_cache' => false,
-	)
-);
-
-/*
- * Hosted sailings only — the same pair the archive's ?type=hosted filter uses.
- * The row's copy is "the sailings I'm hosting", so the amenity departures the
- * archive also carries would make the number say something the sentence does
- * not mean. Appended to the helper's meta_query rather than passed through
- * $extra, because that arg is array_merge'd and would replace the date clause
- * wholesale, silently counting departed sailings again.
- */
-$sailing_args['meta_query']['hosted'] = array(
-	'key'     => 'sailing_type',
-	'value'   => array( 'hosted_group', 'distinctive_voyage' ),
-	'compare' => 'IN',
-);
-
-$sailings      = new WP_Query( $sailing_args );
-$sailing_count = (int) $sailings->found_posts;
-
-$number_words  = array( 1 => 'One', 2 => 'Two', 3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six', 7 => 'Seven', 8 => 'Eight', 9 => 'Nine' );
+ * Deliberately a fixed string, not a live count. The count was live and, after
+ * #45, accurate — but no available filter produced a number worth printing:
+ * every published sailing came to ~900, the archive's bookable window to 731,
+ * and hosted-only to 338 on production and zero on staging. The "three
+ * sailings open right now" this row was written for describes a catalogue that
+ * the Silversea and amenity imports have long since outgrown.
+ *
+ * Restoring the count means deciding what the number should mean first. The
+ * machinery is in git — see #45 — and the archive helper to rebuild it from is
+ * oomph_sailings_query_args().
+ * ---------------------------------------------------------------------- */
 $sailings_meta = 'The sailings I’m hosting';
-if ( $sailing_count > 0 ) {
-	$word          = $number_words[ $sailing_count ] ?? (string) $sailing_count;
-	$sailings_meta = sprintf(
-		/* translators: %1$s: number of sailings as a word, %2$s: "sailing" or "sailings". */
-		'%1$s %2$s open right now',
-		$word,
-		1 === $sailing_count ? 'sailing' : 'sailings'
-	);
-}
 
 /* -------------------------------------------------------------------------
  * The quiet rows. Order is deliberate: lowest commitment first.
