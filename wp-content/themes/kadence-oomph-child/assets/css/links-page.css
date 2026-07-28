@@ -1,0 +1,334 @@
+/* ============================================================================
+ * Oomph Travel — Link-in-bio page (/links/)
+ * ----------------------------------------------------------------------------
+ * Loaded only on the page with slug `links` (see inc/enqueue.php).
+ *
+ * Phone-first by definition: essentially all of this page's traffic arrives
+ * from an Instagram profile tap. Desktop just gets the same column, centred
+ * and slightly roomier — there is no second layout to maintain.
+ *
+ * Ground is Midnight Deep. Rows sit on Marine Navy so they read as raised
+ * without shadow or blur, per the hairlines-over-shadow rule. Brass appears
+ * exactly once, on the single primary CTA.
+ *
+ * Tap targets: every row is at least 64px tall — comfortably past the 44px
+ * floor (R27), because thumbs on a moving bus are the actual use case.
+ * ========================================================================== */
+
+.oomph-links {
+  background: var(--color-midnight-deep);
+  color: var(--text-inverse);
+  padding: var(--space-8) var(--space-4) var(--space-9);
+  /* Clearance for the fixed mobile CTA bar (R2) so the credential line at the
+     foot of the page is never sitting underneath it. */
+  padding-bottom: calc(var(--space-9) + 56px);
+}
+
+.oomph-links__inner {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------------
+ * Intro
+ * --------------------------------------------------------------------------- */
+
+.oomph-links__intro {
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+
+.oomph-links__intro .oomph-eyebrow {
+  color: var(--color-champagne);
+}
+
+.oomph-links__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--text-h1);
+  line-height: var(--line-h1);
+  color: var(--color-paper);
+  margin: 0 0 var(--space-4);
+}
+
+.oomph-links__standfirst {
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+  color: var(--color-mist);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------------------
+ * Featured Journal post
+ *
+ * A card rather than a row: this is the thing the visitor most likely came
+ * for, and it earns the photograph. Whole card is one target via the
+ * stretched-link pattern already used by .oomph-card--clickable.
+ * --------------------------------------------------------------------------- */
+
+.oomph-links__feature {
+  position: relative;
+  background: var(--surface-paper);
+  color: var(--text-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-7);
+  transition:
+    box-shadow var(--duration-base) var(--easing-standard),
+    transform  var(--duration-base) var(--easing-standard);
+}
+
+.oomph-links__feature:hover,
+.oomph-links__feature:focus-within {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.oomph-links__feature-media {
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  background: var(--color-mist);
+}
+
+.oomph-links__feature-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oomph-links__feature-body {
+  padding: var(--space-5) var(--space-5) var(--space-6);
+}
+
+.oomph-links__feature-body .oomph-eyebrow {
+  color: var(--color-bronze);
+  margin-bottom: var(--space-2);
+}
+
+.oomph-links__feature-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-h3);
+  line-height: var(--line-h3);
+  margin: 0 0 var(--space-3);
+  text-wrap: pretty;
+}
+
+.oomph-links__feature-link {
+  color: var(--signal-primary);
+  text-decoration: none;
+}
+
+.oomph-links__feature-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Stretch the title link across the whole card. */
+.oomph-links__feature-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+}
+
+.oomph-links__feature-excerpt {
+  font-size: var(--text-body-sm);
+  line-height: var(--line-body);
+  color: var(--text-soft);
+  margin: 0 0 var(--space-4);
+  text-wrap: pretty;
+}
+
+.oomph-links__feature-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--signal-primary);
+}
+
+/* "Read it →" stays one unit; space-between then pushes only the date away. */
+.oomph-links__feature-cue {
+  white-space: nowrap;
+}
+
+.oomph-links__feature-date {
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Primary CTA — the only brass on the page
+ * --------------------------------------------------------------------------- */
+
+.oomph-links__cta {
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+
+.oomph-links__cta .oomph-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.oomph-links__cta .oomph-btn-microcopy {
+  color: var(--color-stone);
+}
+
+/* ---------------------------------------------------------------------------
+ * Quiet rows
+ * --------------------------------------------------------------------------- */
+
+.oomph-links__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.oomph-links__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 64px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-marine-navy);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-paper);
+  text-decoration: none;
+  transition:
+    background-color var(--duration-quick) var(--easing-standard),
+    border-color     var(--duration-quick) var(--easing-standard);
+}
+
+.oomph-links__row:hover,
+.oomph-links__row:focus-visible {
+  background: var(--color-info);
+  border-color: var(--signal-accent);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
+.oomph-links__row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.oomph-links__row-label {
+  font-family: var(--font-text);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.oomph-links__row-meta {
+  font-size: var(--text-body-sm);
+  line-height: var(--line-body-sm);
+  color: var(--color-champagne);
+}
+
+/*
+ * Brass on Marine Navy is 3.71:1 — under the 4.5:1 body floor but over the
+ * 3:1 large-text floor, so the arrow is set at 24px to clear it. (It is also
+ * aria-hidden and purely decorative; the row label carries the meaning.)
+ */
+.oomph-links__row-arrow {
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--signal-accent);
+  transition: transform var(--duration-quick) var(--easing-standard);
+}
+
+.oomph-links__row:hover .oomph-links__row-arrow {
+  transform: translateX(3px);
+}
+
+/* ---------------------------------------------------------------------------
+ * Secondary text links + credential line
+ * --------------------------------------------------------------------------- */
+
+.oomph-links__more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1) var(--space-5);
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.oomph-links__more a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  color: var(--color-mist);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.oomph-links__more a:hover,
+.oomph-links__more a:focus-visible {
+  color: var(--color-champagne);
+  border-bottom-color: var(--signal-accent);
+}
+
+.oomph-links__foot {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-text);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-stone);
+}
+
+/* ---------------------------------------------------------------------------
+ * Focus — the deep ground needs a brighter ring than the site default
+ * --------------------------------------------------------------------------- */
+
+.oomph-links a:focus-visible,
+.oomph-links .oomph-btn:focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Desktop — same column, more air
+ * --------------------------------------------------------------------------- */
+
+@media (min-width: 782px) {
+  .oomph-links {
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-10);
+  }
+
+  .oomph-links__feature-body {
+    padding: var(--space-6) var(--space-6) var(--space-6);
+  }
+
+  .oomph-links__cta .oomph-btn {
+    width: auto;
+    min-width: 18rem;
+  }
+}
