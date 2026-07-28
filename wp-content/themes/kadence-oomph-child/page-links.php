@@ -94,14 +94,25 @@ if ( $featured && 'publish' !== $featured->post_status ) {
 /* -------------------------------------------------------------------------
  * Live sailing count for the Group Cruises row.
  * ---------------------------------------------------------------------- */
+/*
+ * Count through the archive's own helper, not a bare oomph_cruise query. The
+ * archive is shaped by oomph_cruise_archive_query(), which only fires on the
+ * main query for the post-type archive — a WP_Query here is exempt, so a bare
+ * count picks up every sailing ever published, departed ones included, and the
+ * row contradicts /group-cruises/.
+ *
+ * no_found_rows is forced back on: the helper disables it (nothing else needs a
+ * total), but found_posts is the whole point here.
+ */
 $sailings = new WP_Query(
-	array(
-		'post_type'              => 'oomph_cruise',
-		'post_status'            => 'publish',
-		'posts_per_page'         => 1,
-		'fields'                 => 'ids',
-		'update_post_meta_cache' => false,
-		'update_post_term_cache' => false,
+	oomph_sailings_query_args(
+		array(
+			'posts_per_page'         => 1,
+			'fields'                 => 'ids',
+			'no_found_rows'          => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
 	)
 );
 $sailing_count = (int) $sailings->found_posts;
