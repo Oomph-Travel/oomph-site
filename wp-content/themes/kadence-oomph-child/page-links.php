@@ -104,17 +104,31 @@ if ( $featured && 'publish' !== $featured->post_status ) {
  * no_found_rows is forced back on: the helper disables it (nothing else needs a
  * total), but found_posts is the whole point here.
  */
-$sailings = new WP_Query(
-	oomph_sailings_query_args(
-		array(
-			'posts_per_page'         => 1,
-			'fields'                 => 'ids',
-			'no_found_rows'          => false,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		)
+$sailing_args = oomph_sailings_query_args(
+	array(
+		'posts_per_page'         => 1,
+		'fields'                 => 'ids',
+		'no_found_rows'          => false,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
 	)
 );
+
+/*
+ * Hosted sailings only — the same pair the archive's ?type=hosted filter uses.
+ * The row's copy is "the sailings I'm hosting", so the amenity departures the
+ * archive also carries would make the number say something the sentence does
+ * not mean. Appended to the helper's meta_query rather than passed through
+ * $extra, because that arg is array_merge'd and would replace the date clause
+ * wholesale, silently counting departed sailings again.
+ */
+$sailing_args['meta_query']['hosted'] = array(
+	'key'     => 'sailing_type',
+	'value'   => array( 'hosted_group', 'distinctive_voyage' ),
+	'compare' => 'IN',
+);
+
+$sailings      = new WP_Query( $sailing_args );
 $sailing_count = (int) $sailings->found_posts;
 
 $number_words  = array( 1 => 'One', 2 => 'Two', 3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six', 7 => 'Seven', 8 => 'Eight', 9 => 'Nine' );
