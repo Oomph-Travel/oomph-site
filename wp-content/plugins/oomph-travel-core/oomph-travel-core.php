@@ -46,6 +46,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-enrich-engine.php'; // engine — 
 if ( is_admin() ) {
 	require_once OOMPH_CORE_DIR . 'includes/class-admin-import.php';
 	require_once OOMPH_CORE_DIR . 'includes/class-enrich-sync.php';
+	require_once OOMPH_CORE_DIR . 'includes/class-ship-import.php';
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -70,6 +71,7 @@ add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' 
 if ( is_admin() ) {
 	\OomphTravel\Core\Admin_Import::init();
 	\OomphTravel\Core\Enrich_Sync::init();
+	\OomphTravel\Core\Ship_Import::init();
 }
 
 /**
