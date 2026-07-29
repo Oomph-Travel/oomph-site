@@ -12,9 +12,9 @@
  *     post and this page updates itself — nothing to swap after a post goes
  *     live. Override with the `oomph_links_featured_post_id` filter to pin a
  *     different post (e.g. an evergreen one during a quiet month).
- *   • The Group Cruises row counts live sailings, so the label reads "three
- *     sailings open now" and self-corrects when the monthly import retires a
- *     departed one.
+ *   • The Group Cruises row is the one exception: its meta line is a fixed
+ *     string, not a live count — see the inline comment at $sailings_meta
+ *     and #46 for why.
  *
  * One primary CTA (the discovery call) per CLAUDE.md; everything else is a
  * quiet row. Deep ground because the page is read on a phone in a feed

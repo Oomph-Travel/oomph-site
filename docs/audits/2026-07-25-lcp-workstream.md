@@ -106,6 +106,16 @@ LCP still misses 2.5s everywhere. On `/` the remaining budget is:
   carefully") is still not done. This is a SiteGround dashboard setting, and
   critical-CSS generation can break rendering, so it wants a careful pass on
   staging first — Eric.
+
+  > **Correction (2026-07-28): that setting does not exist.** Speed Optimizer
+  > 7.x offers exactly five CSS controls — Minify, Exclude-from-minify,
+  > Combine, Exclude-from-combine, Preload Combined — and all three toggles
+  > are already on. There is no critical-CSS or async-CSS feature in the
+  > plugin; SiteGround has had it as an open feature request for years.
+  > Finding #9 recommended a control that was never there, and the
+  > recommendation was repeated here without being checked against the
+  > dashboard. See [`2026-07-28-links-lcp.md`](2026-07-28-links-lcp.md) for
+  > what the real options are.
 - **TTFB — ~400ms.** Hosting/caching, not code.
 
 `/discovery-call/` is a separate problem: **~2.9MB of Calendly** on initial

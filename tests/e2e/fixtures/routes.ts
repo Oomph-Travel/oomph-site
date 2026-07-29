@@ -90,4 +90,10 @@ export const ROUTES: RouteFixture[] = [
     h1: /sailings worth booking/i,
     types: [], // CPT archive — no BreadcrumbList
   },
+  {
+    path: '/links/',
+    name: 'Link-in-bio',
+    h1: /everything, in one place/i,
+    types: ['BreadcrumbList'],
+  },
 ];
