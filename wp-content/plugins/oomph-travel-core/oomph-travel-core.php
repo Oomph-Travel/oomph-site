@@ -37,6 +37,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-cpt-ship.php';
 require_once OOMPH_CORE_DIR . 'includes/class-taxonomies.php';
 require_once OOMPH_CORE_DIR . 'includes/class-schema.php';
 require_once OOMPH_CORE_DIR . 'includes/class-clarity-guard.php';
+require_once OOMPH_CORE_DIR . 'includes/class-plainsend.php';
 require_once OOMPH_CORE_DIR . 'includes/class-acf-config.php';
 require_once OOMPH_CORE_DIR . 'includes/class-seo.php';
 require_once OOMPH_CORE_DIR . 'includes/class-xlsx.php';
@@ -65,6 +66,7 @@ add_action( 'init', array( \OomphTravel\Core\Taxonomies::class,      'register' 
 \OomphTravel\Core\CPT_Ship::init();
 \OomphTravel\Core\Schema::init();
 \OomphTravel\Core\Clarity_Guard::init();
+\OomphTravel\Core\Plainsend::init();
 \OomphTravel\Core\ACF_Config::init();
 \OomphTravel\Core\SEO::init();
 

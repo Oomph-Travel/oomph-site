@@ -54,11 +54,11 @@ Last code deploy was **2026-05-27**. Since then the repo has been dormant, but *
 | 9 | Brand system in code | §9 | ✅ Done | `theme.json` + tokens/base/components CSS; "Deep Marine" palette (Marine Navy + Old Brass + Warm Bone). |
 | 10 | Page builds | §10 | ✅ Done | Home, About, all service pages, Discovery Call, Journal, Client Stories, Cabin Quiz, lead-magnet landers. Group-cruise template **not** built (see Phase 16 backlog). |
 | 11 | SEO + schema wiring | §11 | ✅ Done | Plugin owns all JSON-LD (hardened vs. Rank Math); llms.txt, robots.txt, XML sitemap, Bing Webmaster. Deep contextual internal-linking pass deferred until more journal content. |
-| 12 | Forms + Calendly + lead magnets | §12 | ✅ Done | Discovery 3-step form (R38) → Calendly inline + on-page booking confirmation; Cabin Quiz + Cruise Trends + Newsletter, each auto-delivering its PDF. **Flodesk not yet wired** (using Fluent Forms). |
+| 12 | Forms + Calendly + lead magnets | §12 | ✅ Done | Discovery 3-step form (R38) → Calendly inline + on-page booking confirmation; Cabin Quiz + Cruise Trends still on Fluent Forms, each auto-delivering its PDF. Newsletter moved to **Plainsend** 2026-08-12 (double opt-in); Flodesk dropped, never wired. |
 | 13 | Playwright (MCP + e2e) | §13 | ✅ Done | `tests/e2e/` Playwright smoke suite (35 checks) vs staging: page loads + CTA, JSON-LD per page type, Discovery form/Calendly render, Cabin Quiz flow→gate, Group Cruises archive + no-leaked-refs. Non-blocking CI in `.github/workflows/e2e.yml`. Docs: `docs/testing.md`. No form is ever submitted. |
 | 14 | Pre-launch checklist | §14 | ✅ Done | Formal audit run + recorded 2026-07-21: `docs/audits/2026-07-21-site-health-audit.md`. Links/sitemap/schema clean; 312 WCAG contrast nodes + invisible dark-section headlines found and FIXED same day. Open: HTTPS Enforce toggle (Eric), hero-image LCP workstream, meta descriptions. Re-runnable via `npm run audit:{links,a11y,lh}`. |
 | 15 | Launch day | §15 | ✅ Done | Production live since 2026-05-24; DNS/SSL/analytics all confirmed. |
-| 16 | Operating cadence | §16 | 🔄 Ongoing | Content cadence active (journal posts being added). Group cruises, real testimonials + more Review schema, Flodesk, deeper internal linking are the open items. |
+| 16 | Operating cadence | §16 | 🔄 Ongoing | Content cadence active (journal posts being added). Group cruises, real testimonials + more Review schema, moving the two lead magnets to Plainsend, deeper internal linking are the open items. |
 
 ---
 
@@ -109,7 +109,9 @@ The initial build (Phases 0–12) shipped and is live. Remaining work, in priori
 - **Group-cruise template + Event schema.** The one page type from Phase 10 not yet built; `oomph_cruise` CPT + Event schema already scaffolded in the plugin, so this is template + content.
 - **Ship Library + enrichment (2026-07-21, `feat/ship-library`).** `oomph_ship` CPT (enter a ship once — gallery, intro, quick facts — every sailing of it renders the section automatically), ship/gallery band in both `single-oomph_cruise` layouts, DV layout gains the day-by-day accordion, and `wp oomph enrich-sailing` writes prepared itinerary/inclusions/blurb payloads onto imported drafts (never publishes, never overwrites human copy). Content work now: seed ship records for the lines Eric sells; monthly enrichment payloads per new featured sailing. See `docs/updating-sailings.md` § "Deepening a sailing page".
 - **Real testimonials + expanded Review schema.** `/client-stories/` has 4 seeded testimonials; grow toward the Year-1 target (R32) as real ones arrive.
-- **Flodesk** newsletter integration (currently Fluent Forms handles signups).
+- **Lead magnets to Plainsend** — Cabin Quiz and Cruise Trends still email a permanent public
+  PDF URL through Fluent Forms. Plainsend gives expiring per-person links and download counts.
+  (Flodesk was dropped without ever being wired; the newsletter now runs on Plainsend.)
 - **Deeper contextual internal-linking pass** once there's more journal content (R17/R18).
 
 ### Un-adopted / optional

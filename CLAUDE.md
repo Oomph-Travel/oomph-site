@@ -17,7 +17,8 @@ The advisor is Eric Hempel, based in Port Angeles, WA. Read like a trusted conci
 - **Custom plugin:** `oomph-travel-core` — data layer (CPTs, taxonomies, schema injection, env guards)
 - **SEO:** Rank Math (free tier; Pro added at month 6 if needed)
 - **Speed:** SG Optimizer (free, SiteGround-native; outperforms WP Rocket on this stack)
-- **Forms:** Fluent Forms (free) for Discovery Call inquiry; Flodesk embeds for newsletter
+- **Forms:** Fluent Forms **Pro** for Discovery Call inquiry (multi-step is a Pro-only field);
+  newsletter signup posts to **Plainsend**, our own email app — see `docs/plainsend.md`
 - **Booking:** Calendly embedded inline (never modal)
 - **Analytics:** Site Kit by Google (GA4 + GSC) + Microsoft Clarity (free, unlimited)
 - **Deployment:** GitHub Actions → rsync over SSH to SiteGround. See `.github/workflows/deploy.yml`.

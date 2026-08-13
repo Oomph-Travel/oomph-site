@@ -210,4 +210,5 @@ URL `/fees` (or `/how-i-work`). Schema: WebPage. Word count: 600–1,200.
 1. Last-updated date visible
 2. Linked from every footer
 3. No marketing copy, no CTAs
-4. Privacy policy specifies analytics tools (GA4, Microsoft Clarity), email tool (Flodesk), and lead-magnet fulfillment
+4. Privacy policy specifies analytics tools (GA4, Microsoft Clarity), email tool (Plainsend,
+   sending through Amazon SES), and lead-magnet fulfillment
