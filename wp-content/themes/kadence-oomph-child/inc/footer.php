@@ -96,14 +96,18 @@ function oomph_render_footer(): void {
 
 	$socials = oomph_social_links();
 
-	// Newsletter — embed Fluent Forms "Newsletter Signup" if present.
-	$newsletter = '';
-	if ( function_exists( 'wpFluent' ) ) {
-		$nf = wpFluent()->table( 'fluentform_forms' )->where( 'title', 'Newsletter Signup' )->first();
-		if ( $nf ) {
-			$newsletter = do_shortcode( '[fluentform id="' . (int) $nf->id . '"]' );
-		}
-	}
+	// Newsletter — posts to Plainsend, our own email app. The endpoint is
+	// environment-aware and lives in the core plugin; the markup below is
+	// presentation and lives here.
+	//
+	// This replaced a Fluent Forms embed, which brought 43 KB of stylesheet to
+	// every page on the site for one email field (see the 2026-07-28 LCP
+	// audit). Plainsend also gives the thing that embed never had: a
+	// confirmation step before anybody joins the list, a working unsubscribe,
+	// and automatic removal of addresses that bounce.
+	$newsletter_endpoint = class_exists( '\OomphTravel\Core\Plainsend' )
+		? \OomphTravel\Core\Plainsend::endpoint()
+		: '';
 
 	$privacy = get_page_by_path( 'privacy-policy' );
 	$privacy_published = $privacy && 'publish' === get_post_status( $privacy );
@@ -136,13 +140,44 @@ function oomph_render_footer(): void {
 			<div class="oomph-footer__col oomph-footer__newsletter">
 				<h2 class="oomph-footer__heading">Trip notes, now and then</h2>
 				<p class="oomph-footer__blurb">First-hand notes from the road and the occasional cabin tip. No noise.</p>
-				<?php
-				if ( $newsletter ) {
-					echo $newsletter; // phpcs:ignore WordPress.Security.EscapeOutput
-				} else {
-					echo '<p class="oomph-footer__note"><em>Newsletter signup connects once the form is seeded.</em></p>';
-				}
-				?>
+				<?php if ( $newsletter_endpoint ) : ?>
+					<form class="oomph-signup" method="post" action="<?php echo esc_url( $newsletter_endpoint ); ?>" novalidate>
+						<div class="oomph-field">
+							<label class="oomph-field__label oomph-signup__label" for="oomph-signup-email">Email address</label>
+							<input class="oomph-field__input oomph-signup__input"
+							       type="email" id="oomph-signup-email" name="email"
+							       autocomplete="email" inputmode="email"
+							       placeholder="you@example.com" required>
+						</div>
+
+						<?php
+						/*
+						 * Hidden from people, irresistible to bots. Positioned
+						 * off-screen rather than display:none, because some
+						 * bots skip fields they can tell are hidden — and this
+						 * one is meant to be filled in.
+						 */
+						?>
+						<div class="oomph-signup__trap" aria-hidden="true">
+							<label for="oomph-signup-website">Website</label>
+							<input type="text" id="oomph-signup-website" name="website" tabindex="-1" autocomplete="off">
+						</div>
+						<input type="hidden" name="elapsed_ms" value="">
+
+						<button class="oomph-btn oomph-btn--primary oomph-signup__submit" type="submit">Sign me up</button>
+
+						<?php /* Announced to screen readers when it changes, not on load. */ ?>
+						<p class="oomph-signup__message" role="status" aria-live="polite"></p>
+					</form>
+
+					<?php /* R42 — privacy microcopy under every form. */ ?>
+					<p class="oomph-footer__note oomph-signup__privacy">
+						One email to confirm, then trip notes now and then. Unsubscribe in one click,
+						any time.
+					</p>
+				<?php else : ?>
+					<p class="oomph-footer__note"><em>Newsletter signup connects once the core plugin is active.</em></p>
+				<?php endif; ?>
 			</div>
 
 		</div>

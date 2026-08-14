@@ -691,17 +691,51 @@
 .oomph-footer__explore li,
 .oomph-footer__contact li { margin-bottom: var(--space-3); font-size: var(--text-body-sm); }
 
-.oomph-footer__newsletter .ff-default,
-.oomph-footer__newsletter form { margin-top: var(--space-3); }
-.oomph-footer__newsletter input[type="email"] {
+.oomph-footer__note { font-size: var(--text-body-sm); color: var(--color-stone); }
+
+/* ---------------------------------------------------------------------------
+ * Newsletter signup — the footer sits on True Ink, so the field is a light
+ * wash on dark rather than the Paper-on-Bone treatment .oomph-field__input
+ * gives it everywhere else. Everything else is inherited, not restated.
+ * --------------------------------------------------------------------------- */
+
+.oomph-signup { margin-top: var(--space-3); }
+.oomph-signup .oomph-field { margin-bottom: var(--space-3); }
+
+.oomph-signup__label { color: var(--color-stone); }
+
+.oomph-signup__input {
   width: 100%;
   background: rgba(254, 252, 248, 0.06);
-  border: 1px solid var(--color-slate);
-  border-radius: var(--radius-sm);
+  border-color: var(--color-slate);
   color: var(--color-paper);
-  padding: var(--space-2) var(--space-3);
 }
-.oomph-footer__note { font-size: var(--text-body-sm); color: var(--color-stone); }
+/* Placeholder on the dark ground: Stone reads at 4.6:1 where the inherited
+   muted grey would fall under 3:1. */
+.oomph-signup__input::placeholder { color: var(--color-stone); opacity: 1; }
+
+.oomph-signup__submit { width: 100%; }
+
+/* Off-screen rather than hidden — see the note on the markup. */
+.oomph-signup__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Empty until the script has something to say, so it takes no space and
+   announces nothing on load. */
+.oomph-signup__message:empty { display: none; }
+.oomph-signup__message {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-paper);
+}
+.oomph-signup__message.is-error { color: var(--color-champagne); }
+
+.oomph-signup__privacy { margin-top: var(--space-3); }
 
 .oomph-footer__strip {
   display: flex;
