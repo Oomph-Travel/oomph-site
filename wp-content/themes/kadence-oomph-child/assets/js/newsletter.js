@@ -16,106 +16,124 @@
 	'use strict';
 
 	var config = window.oomphNewsletter || {};
-	var form = document.querySelector( '.oomph-signup' );
 
-	if ( ! form || ! config.endpoint ) {
-		return;
-	}
-
-	var input = form.querySelector( '.oomph-signup__input' );
-	var button = form.querySelector( '.oomph-signup__submit' );
-	var message = form.querySelector( '.oomph-signup__message' );
-	var elapsed = form.querySelector( 'input[name="elapsed_ms"]' );
-
-	// How long the form was actually in front of a person. Plainsend treats
-	// anything filled in faster than a human could read it as automated.
-	// Recorded here rather than stamped by the server because these pages are
-	// served from cache, so a server timestamp would be the cached one.
-	var startedAt = null;
-	function begin() {
-		if ( startedAt === null ) {
-			startedAt = Date.now();
-		}
-	}
-	form.addEventListener( 'focusin', begin, { once: true } );
-	form.addEventListener( 'keydown', begin, { once: true } );
-
-	function say( text, isError ) {
-		message.textContent = text;
-		message.classList.toggle( 'is-error', !! isError );
+	// Every signup form on the page, not just the first. The Cruise Travel
+	// Trends page carries its own form as well as the sitewide footer, and the
+	// two post to different Plainsend forms.
+	var forms = document.querySelectorAll( '.oomph-signup' );
+	for ( var i = 0; i < forms.length; i++ ) {
+		wire( forms[ i ] );
 	}
 
 	/**
-	 * R11 — every form reports a lead to GA4 and tags the Clarity session.
-	 * Both are guarded: an ad blocker removing either must not break signup.
+	 * Wires one form: its own endpoint, its own analytics label, its own state.
 	 */
-	function reportLead() {
-		try {
-			if ( typeof window.gtag === 'function' ) {
-				window.gtag( 'event', 'generate_lead', {
-					lead_source: config.source || 'footer',
-				} );
-			}
-			if ( typeof window.clarity === 'function' ) {
-				window.clarity( 'set', 'lead', config.source || 'footer' );
-			}
-		} catch ( e ) {
-			// Analytics is never allowed to interrupt a signup.
-		}
-	}
+	function wire( form ) {
+		// The form's own action rather than one shared endpoint — that is what
+		// lets two forms on a page reach different lists, and it is already
+		// correct for the no-JavaScript path.
+		var endpoint = form.getAttribute( 'action' );
+		var source = form.getAttribute( 'data-source' ) || config.source || 'footer';
 
-	form.addEventListener( 'submit', function ( event ) {
-		// Let the browser do its own required/type=email checking first, and
-		// fall back to a normal navigating post if fetch is unavailable.
-		if ( ! window.fetch || ! input.value ) {
+		if ( ! endpoint ) {
 			return;
 		}
 
-		event.preventDefault();
+		var input = form.querySelector( '.oomph-signup__input' );
+		var button = form.querySelector( '.oomph-signup__submit' );
+		var message = form.querySelector( '.oomph-signup__message' );
+		var elapsed = form.querySelector( 'input[name="elapsed_ms"]' );
 
-		if ( elapsed ) {
-			elapsed.value = startedAt === null ? '' : String( Date.now() - startedAt );
+		// How long the form was actually in front of a person. Plainsend treats
+		// anything filled in faster than a human could read it as automated.
+		// Recorded here rather than stamped by the server because these pages are
+		// served from cache, so a server timestamp would be the cached one.
+		var startedAt = null;
+		function begin() {
+			if ( startedAt === null ) {
+				startedAt = Date.now();
+			}
+		}
+		form.addEventListener( 'focusin', begin, { once: true } );
+		form.addEventListener( 'keydown', begin, { once: true } );
+
+		function say( text, isError ) {
+			message.textContent = text;
+			message.classList.toggle( 'is-error', !! isError );
 		}
 
-		button.disabled = true;
-		say( 'Sending…', false );
-
-		var body = new URLSearchParams( new FormData( form ) ).toString();
-
-		// Sent as form-encoded with an Accept of JSON. Both are on the CORS
-		// "simple request" list, so the browser skips the preflight round trip
-		// entirely — one request instead of two.
-		fetch( config.endpoint, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				Accept: 'application/json',
-			},
-			body: body,
-		} )
-			.then( function ( response ) {
-				return response.json().catch( function () {
-					return { ok: response.ok };
-				} );
-			} )
-			.then( function ( result ) {
-				if ( result && result.ok ) {
-					form.reset();
-					say( 'Check your inbox — there is one email to confirm.', false );
-					reportLead();
-				} else {
-					button.disabled = false;
-					say(
-						( result && result.message ) || 'That did not go through. Please try again.',
-						true
-					);
+		/**
+		 * R11 — every form reports a lead to GA4 and tags the Clarity session.
+		 * Both are guarded: an ad blocker removing either must not break signup.
+		 */
+		function reportLead() {
+			try {
+				if ( typeof window.gtag === 'function' ) {
+					window.gtag( 'event', 'generate_lead', {
+						lead_source: source,
+					} );
 				}
+				if ( typeof window.clarity === 'function' ) {
+					window.clarity( 'set', 'lead', source );
+				}
+			} catch ( e ) {
+				// Analytics is never allowed to interrupt a signup.
+			}
+		}
+
+		form.addEventListener( 'submit', function ( event ) {
+			// Let the browser do its own required/type=email checking first, and
+			// fall back to a normal navigating post if fetch is unavailable.
+			if ( ! window.fetch || ! input.value ) {
+				return;
+			}
+
+			event.preventDefault();
+
+			if ( elapsed ) {
+				elapsed.value = startedAt === null ? '' : String( Date.now() - startedAt );
+			}
+
+			button.disabled = true;
+			say( 'Sending…', false );
+
+			var body = new URLSearchParams( new FormData( form ) ).toString();
+
+			// Sent as form-encoded with an Accept of JSON. Both are on the CORS
+			// "simple request" list, so the browser skips the preflight round trip
+			// entirely — one request instead of two.
+			fetch( endpoint, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Accept: 'application/json',
+				},
+				body: body,
 			} )
-			.catch( function () {
-				// The network failed rather than the form. Sending them to the
-				// hosted page is better than asking them to try again into the
-				// same broken connection.
-				form.submit();
-			} );
-	} );
+				.then( function ( response ) {
+					return response.json().catch( function () {
+						return { ok: response.ok };
+					} );
+				} )
+				.then( function ( result ) {
+					if ( result && result.ok ) {
+						form.reset();
+						say( 'Check your inbox — there is one email to confirm.', false );
+						reportLead();
+					} else {
+						button.disabled = false;
+						say(
+							( result && result.message ) || 'That did not go through. Please try again.',
+							true
+						);
+					}
+				} )
+				.catch( function () {
+					// The network failed rather than the form. Sending them to the
+					// hosted page is better than asking them to try again into the
+					// same broken connection.
+					form.submit();
+				} );
+		} );
+	}
 } )();

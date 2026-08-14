@@ -141,34 +141,7 @@ function oomph_render_footer(): void {
 				<h2 class="oomph-footer__heading">Trip notes, now and then</h2>
 				<p class="oomph-footer__blurb">First-hand notes from the road and the occasional cabin tip. No noise.</p>
 				<?php if ( $newsletter_endpoint ) : ?>
-					<form class="oomph-signup" method="post" action="<?php echo esc_url( $newsletter_endpoint ); ?>" novalidate>
-						<div class="oomph-field">
-							<label class="oomph-field__label oomph-signup__label" for="oomph-signup-email">Email address</label>
-							<input class="oomph-field__input oomph-signup__input"
-							       type="email" id="oomph-signup-email" name="email"
-							       autocomplete="email" inputmode="email"
-							       placeholder="you@example.com" required>
-						</div>
-
-						<?php
-						/*
-						 * Hidden from people, irresistible to bots. Positioned
-						 * off-screen rather than display:none, because some
-						 * bots skip fields they can tell are hidden — and this
-						 * one is meant to be filled in.
-						 */
-						?>
-						<div class="oomph-signup__trap" aria-hidden="true">
-							<label for="oomph-signup-website">Website</label>
-							<input type="text" id="oomph-signup-website" name="website" tabindex="-1" autocomplete="off">
-						</div>
-						<input type="hidden" name="elapsed_ms" value="">
-
-						<button class="oomph-btn oomph-btn--primary oomph-signup__submit" type="submit">Sign me up</button>
-
-						<?php /* Announced to screen readers when it changes, not on load. */ ?>
-						<p class="oomph-signup__message" role="status" aria-live="polite"></p>
-					</form>
+					<?php oomph_signup_form( 'newsletter', array( 'source' => 'footer' ) ); ?>
 
 					<?php /* R42 — privacy microcopy under every form. */ ?>
 					<p class="oomph-footer__note oomph-signup__privacy">

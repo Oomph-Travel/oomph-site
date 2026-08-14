@@ -2,9 +2,14 @@
 /**
  * Cruise Travel Trends — lead-magnet landing page.
  *
- * Bound by slug to /cruise-travel-trends/. Single email field (CRO R43); the
- * Fluent Forms "Cruise Travel Trends" form emails the subscriber the guide
- * download link (see scripts/seed-content.php).
+ * Bound by slug to /cruise-travel-trends/. Single email field (CRO R43),
+ * posting to Plainsend's "trends-guide" form.
+ *
+ * This replaced a Fluent Forms embed that emailed a permanent public link to
+ * the PDF in the media library — forwardable, uncountable, and impossible to
+ * withdraw. Plainsend sends each person their own link that expires, counts
+ * downloads, and confirms the address before anything is sent. The cost is one
+ * extra click: the guide follows the confirmation rather than arriving with it.
  *
  * @package OomphChild
  */
@@ -25,13 +30,6 @@ $inside = array(
 	'A first cruise, done right.',
 );
 
-$form = '';
-if ( function_exists( 'wpFluent' ) ) {
-	$row = wpFluent()->table( 'fluentform_forms' )->where( 'title', 'Cruise Travel Trends' )->first();
-	if ( $row ) {
-		$form = '[fluentform id="' . (int) $row->id . '"]';
-	}
-}
 ?>
 
 <main id="primary" class="oomph-leadpage" role="main">
@@ -49,13 +47,16 @@ if ( function_exists( 'wpFluent' ) ) {
 
 					<div class="oomph-leadpage__form">
 						<?php
-						if ( $form ) {
-							echo do_shortcode( $form ); // phpcs:ignore WordPress.Security.EscapeOutput
-						} else {
-							echo '<p><em>The signup form is being set up.</em></p>';
-						}
+						oomph_signup_form(
+							'trends-guide',
+							array(
+								'label'  => 'Email address',
+								'button' => 'Send me the guide',
+								'source' => 'trends-guide',
+							)
+						);
 						?>
-						<p class="oomph-form__privacy">We respect your inbox. One guide, the occasional field note, and nothing else.</p>
+						<p class="oomph-form__privacy">Confirm with the button in the email and the guide follows straight after. One guide, the occasional field note, and nothing else.</p>
 					</div>
 				</div>
 
