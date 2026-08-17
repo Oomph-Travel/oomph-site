@@ -394,11 +394,15 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<?php
-				$recent_posts = get_posts(
-					array(
-						'numberposts' => 3,
-						'post_status' => 'publish',
-					)
+				/*
+				 * Cluster posts only — a hub page about cruise planning has no
+				 * business surfacing an independent-travel post. Categories are
+				 * resolved per page slug in inc/journal.php, so each service hub
+				 * shows its own cluster and nothing is hardcoded here.
+				 */
+				$recent_posts = oomph_get_journal_posts(
+					oomph_page_journal_category_slugs(),
+					6
 				);
 
 				if ( $recent_posts ) {
