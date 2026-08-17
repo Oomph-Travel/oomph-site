@@ -227,6 +227,36 @@ $faqs = oomph_service_template_faqs();
 			<div class="oomph-section__intro">
 				<p class="oomph-eyebrow">Deliverables</p>
 				<h2 id="what-i-do-title">What I actually do.</h2>
+				<?php
+				/*
+				 * Contextual links into the cluster (R18). Each sentence is
+				 * dropped whole when its post isn't published, so the paragraph
+				 * never promises writing that isn't there and never ships a
+				 * link that 404s.
+				 */
+				$journal_lines = array_filter(
+					array(
+						oomph_journal_sentence(
+							'first-premium-cruise',
+							'planning your first premium cruise',
+							'If this is your first booking at this level, start with what I have written on %s.'
+						),
+						oomph_journal_sentence(
+							'silversea-vs-regent',
+							'how Silversea and Regent compare',
+							'If you are weighing two ultra-luxury lines against each other, I have laid out %s, and where each one earns its fare.'
+						),
+						oomph_journal_sentence(
+							'barcelona-before-your-cruise',
+							'the nights before your cruise',
+							'And because the sailing is the middle of the trip rather than the whole of it, I plan %s with the same care as the cabin.'
+						),
+					)
+				);
+				if ( $journal_lines ) :
+					?>
+					<p><?php echo wp_kses_post( implode( ' ', $journal_lines ) ); ?></p>
+				<?php endif; ?>
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<?php foreach ( $what_you_do as $row ) : ?>
@@ -308,6 +338,17 @@ $faqs = oomph_service_template_faqs();
 					<p>Adult-only (18+) ocean and river cruising. Mid-luxury, all-veranda staterooms, included shore excursions.</p>
 				</article>
 			</div>
+			<?php
+			// Expedition cluster link — dropped entirely if the post isn't live.
+			$drake = oomph_journal_sentence(
+				'fly-the-drake-passage-or-sail',
+				'flying or sailing the Drake Passage',
+				'Several of these lines sail Antarctica, where the first real decision is not the ship at all — it is %s.'
+			);
+			if ( $drake ) :
+				?>
+				<p style="margin-top: var(--space-6);"><?php echo wp_kses_post( $drake ); ?></p>
+			<?php endif; ?>
 			<!-- TODO: Add cruise-line logos when assets are available. Per docx §10.5 the section originally specs a logo grid; we render text-only for v1. -->
 		</div>
 	</section>
