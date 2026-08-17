@@ -74,9 +74,10 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
  * render on a freshly-created page before Eric populates the ACF
  * fields; once populated, ACF values take over.
  *
- * NOTE: schema (FAQPage) only emits when ACF has real values — never
- * uses these template defaults — so the fallback content stays out of
- * the indexable structured data.
+ * NOTE: the FAQ section is the exception — its copy lives in
+ * inc/service-pages.php (oomph_service_template_faqs), not inline here,
+ * because the plugin's FAQPage JSON-LD renders from the same array. That
+ * keeps the structured data and the visible Q&As single-sourced.
  */
 
 // §2 Negative qualifiers — repeater (each row has 'bullet').
@@ -120,36 +121,13 @@ if ( ! is_array( $what_you_do ) || empty( $what_you_do ) ) {
 	);
 }
 
-// §10 FAQs — repeater (each row has 'question' + 'answer').
-$faqs = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
-if ( ! is_array( $faqs ) || empty( $faqs ) ) {
-	$faqs = array(
-		array(
-			'question' => 'Do you charge a planning fee?',
-			'answer'   => 'No — I do not charge a planning fee. Cruise lines pay travel advisors a commission on the booked fare, and that commission does not change your price. You get cabin selection, dining strategy, and pre- and post-cruise extensions handled by a named advisor at no added cost to you.',
-		),
-		array(
-			'question' => 'I already have an account with Royal Caribbean. Can you still help?',
-			'answer'   => 'Sometimes. Cruise lines do not always allow advisor takeovers of existing bookings, and the rules differ by line and booking class. The earlier I can get involved, the more I can do. If you have paid your deposit on Royal Caribbean directly, call before you book the next one — that is where I can add the most value.',
-		),
-		array(
-			'question' => 'How are commissions disclosed?',
-			'answer'   => 'Cruise lines pay travel advisors a commission on the booked fare. It is part of how the industry works and does not affect your price. I will tell you the commission rate on your specific booking if you ask. I do not charge a separate planning fee.',
-		),
-		array(
-			'question' => 'Can you hold cabins before I commit?',
-			'answer'   => 'Most cruise lines allow advisors to hold cabins for 24 to 72 hours without payment. I use this to lock in the right cabin while you check work calendars, talk to your travel companions, or sleep on the decision. Holds are not always available on promotional rates.',
-		),
-		array(
-			'question' => 'What if I want to extend before or after the sailing?',
-			'answer'   => 'The cruise is the middle of the trip, not the whole trip. I handle hotels in the embarkation and disembarkation ports, transfers, day tours, and rail or flight connections. Extensions usually need to be priced separately from the cruise itself — that is where most of my planning time goes.',
-		),
-		array(
-			'question' => 'How do you handle solo supplements?',
-			'answer'   => 'Solo supplements can effectively double the price of a cruise. I know which sailings waive the supplement, which suite categories are friendliest to solo bookings, and which lines run solo-targeted promotions. If you are cruising solo, ask before you book — it is often a question of timing as much as ship.',
-		),
-	);
-}
+/*
+ * §10 FAQs. Both the visible <details> markup below and the FAQPage JSON-LD
+ * emitted by the plugin read from this one array (inc/service-pages.php), so
+ * the schema can't drift from what's on the page. ACF `service_faqs` still
+ * takes precedence inside the helper when populated.
+ */
+$faqs = oomph_service_template_faqs();
 ?>
 
 <main id="primary" class="oomph-service" role="main">
