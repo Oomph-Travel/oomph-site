@@ -74,9 +74,10 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
  * render on a freshly-created page before Eric populates the ACF
  * fields; once populated, ACF values take over.
  *
- * NOTE: schema (FAQPage) only emits when ACF has real values — never
- * uses these template defaults — so the fallback content stays out of
- * the indexable structured data.
+ * NOTE: the FAQ section is the exception — its copy lives in
+ * inc/service-pages.php (oomph_service_template_faqs), not inline here,
+ * because the plugin's FAQPage JSON-LD renders from the same array. That
+ * keeps the structured data and the visible Q&As single-sourced.
  */
 
 // §2 Negative qualifiers — repeater (each row has 'bullet').
@@ -120,36 +121,13 @@ if ( ! is_array( $what_you_do ) || empty( $what_you_do ) ) {
 	);
 }
 
-// §10 FAQs — repeater (each row has 'question' + 'answer').
-$faqs = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
-if ( ! is_array( $faqs ) || empty( $faqs ) ) {
-	$faqs = array(
-		array(
-			'question' => 'Do you charge a planning fee?',
-			'answer'   => 'No — I do not charge a planning fee. Cruise lines pay travel advisors a commission on the booked fare, and that commission does not change your price. You get cabin selection, dining strategy, and pre- and post-cruise extensions handled by a named advisor at no added cost to you.',
-		),
-		array(
-			'question' => 'I already have an account with Royal Caribbean. Can you still help?',
-			'answer'   => 'Sometimes. Cruise lines do not always allow advisor takeovers of existing bookings, and the rules differ by line and booking class. The earlier I can get involved, the more I can do. If you have paid your deposit on Royal Caribbean directly, call before you book the next one — that is where I can add the most value.',
-		),
-		array(
-			'question' => 'How are commissions disclosed?',
-			'answer'   => 'Cruise lines pay travel advisors a commission on the booked fare. It is part of how the industry works and does not affect your price. I will tell you the commission rate on your specific booking if you ask. I do not charge a separate planning fee.',
-		),
-		array(
-			'question' => 'Can you hold cabins before I commit?',
-			'answer'   => 'Most cruise lines allow advisors to hold cabins for 24 to 72 hours without payment. I use this to lock in the right cabin while you check work calendars, talk to your travel companions, or sleep on the decision. Holds are not always available on promotional rates.',
-		),
-		array(
-			'question' => 'What if I want to extend before or after the sailing?',
-			'answer'   => 'The cruise is the middle of the trip, not the whole trip. I handle hotels in the embarkation and disembarkation ports, transfers, day tours, and rail or flight connections. Extensions usually need to be priced separately from the cruise itself — that is where most of my planning time goes.',
-		),
-		array(
-			'question' => 'How do you handle solo supplements?',
-			'answer'   => 'Solo supplements can effectively double the price of a cruise. I know which sailings waive the supplement, which suite categories are friendliest to solo bookings, and which lines run solo-targeted promotions. If you are cruising solo, ask before you book — it is often a question of timing as much as ship.',
-		),
-	);
-}
+/*
+ * §10 FAQs. Both the visible <details> markup below and the FAQPage JSON-LD
+ * emitted by the plugin read from this one array (inc/service-pages.php), so
+ * the schema can't drift from what's on the page. ACF `service_faqs` still
+ * takes precedence inside the helper when populated.
+ */
+$faqs = oomph_service_template_faqs();
 ?>
 
 <main id="primary" class="oomph-service" role="main">
@@ -249,6 +227,36 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			<div class="oomph-section__intro">
 				<p class="oomph-eyebrow">Deliverables</p>
 				<h2 id="what-i-do-title">What I actually do.</h2>
+				<?php
+				/*
+				 * Contextual links into the cluster (R18). Each sentence is
+				 * dropped whole when its post isn't published, so the paragraph
+				 * never promises writing that isn't there and never ships a
+				 * link that 404s.
+				 */
+				$journal_lines = array_filter(
+					array(
+						oomph_journal_sentence(
+							'first-premium-cruise',
+							'planning your first premium cruise',
+							'If this is your first booking at this level, start with what I have written on %s.'
+						),
+						oomph_journal_sentence(
+							'silversea-vs-regent',
+							'how Silversea and Regent compare',
+							'If you are weighing two ultra-luxury lines against each other, I have laid out %s, and where each one earns its fare.'
+						),
+						oomph_journal_sentence(
+							'barcelona-before-your-cruise',
+							'the nights before your cruise',
+							'And because the sailing is the middle of the trip rather than the whole of it, I plan %s with the same care as the cabin.'
+						),
+					)
+				);
+				if ( $journal_lines ) :
+					?>
+					<p><?php echo wp_kses_post( implode( ' ', $journal_lines ) ); ?></p>
+				<?php endif; ?>
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<?php foreach ( $what_you_do as $row ) : ?>
@@ -330,6 +338,17 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 					<p>Adult-only (18+) ocean and river cruising. Mid-luxury, all-veranda staterooms, included shore excursions.</p>
 				</article>
 			</div>
+			<?php
+			// Expedition cluster link — dropped entirely if the post isn't live.
+			$drake = oomph_journal_sentence(
+				'fly-the-drake-passage-or-sail',
+				'flying or sailing the Drake Passage',
+				'Several of these lines sail Antarctica, where the first real decision is not the ship at all — it is %s.'
+			);
+			if ( $drake ) :
+				?>
+				<p style="margin-top: var(--space-6);"><?php echo wp_kses_post( $drake ); ?></p>
+			<?php endif; ?>
 			<!-- TODO: Add cruise-line logos when assets are available. Per docx §10.5 the section originally specs a logo grid; we render text-only for v1. -->
 		</div>
 	</section>
@@ -394,11 +413,15 @@ if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<?php
-				$recent_posts = get_posts(
-					array(
-						'numberposts' => 3,
-						'post_status' => 'publish',
-					)
+				/*
+				 * Cluster posts only — a hub page about cruise planning has no
+				 * business surfacing an independent-travel post. Categories are
+				 * resolved per page slug in inc/journal.php, so each service hub
+				 * shows its own cluster and nothing is hardcoded here.
+				 */
+				$recent_posts = oomph_get_journal_posts(
+					oomph_page_journal_category_slugs(),
+					6
 				);
 
 				if ( $recent_posts ) {

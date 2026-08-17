@@ -136,6 +136,99 @@ function oomph_service_page_data( string $slug ): ?array {
 }
 
 /**
+ * FAQs for pages built on the service-page.php template.
+ *
+ * These Q&As used to live inline in service-page.php as a template fallback,
+ * which meant the plugin's FAQPage schema deliberately refused to claim them
+ * (it only claims ACF values or this filter — never template fallbacks). With
+ * ACF empty on /luxury-cruise-planning/, that left six visible Q&As with no
+ * structured data behind them.
+ *
+ * Holding the copy here makes it the page's content of record rather than a
+ * fallback, so the visible <details> markup and the JSON-LD render from one
+ * array and can't drift. ACF still wins when populated — the plugin reads
+ * `service_faqs` before it reaches this filter, and so does the template.
+ *
+ * Schema safety: this content is what renders on the page, so claiming it
+ * satisfies "never mark up content not visible on the page" (docs/schema.md).
+ *
+ * @param WP_Post|null $page Defaults to the current post.
+ * @return array<int, array{question: string, answer: string}>
+ */
+function oomph_service_template_faqs( ?WP_Post $page = null ): array {
+	$page = $page ?? get_post();
+	$slug = $page ? $page->post_name : '';
+
+	$data = array(
+
+		'luxury-cruise-planning' => array(
+			array(
+				'question' => 'Do you charge a planning fee?',
+				'answer'   => 'No — I do not charge a planning fee. Cruise lines pay travel advisors a commission on the booked fare, and that commission does not change your price. You get cabin selection, dining strategy, and pre- and post-cruise extensions handled by a named advisor at no added cost to you.',
+			),
+			array(
+				'question' => 'I already have an account with Royal Caribbean. Can you still help?',
+				'answer'   => 'Sometimes. Cruise lines do not always allow advisor takeovers of existing bookings, and the rules differ by line and booking class. The earlier I can get involved, the more I can do. If you have paid your deposit on Royal Caribbean directly, call before you book the next one — that is where I can add the most value.',
+			),
+			array(
+				'question' => 'How are commissions disclosed?',
+				'answer'   => 'Cruise lines pay travel advisors a commission on the booked fare. It is part of how the industry works and does not affect your price. I will tell you the commission rate on your specific booking if you ask. I do not charge a separate planning fee.',
+			),
+			array(
+				'question' => 'Can you hold cabins before I commit?',
+				'answer'   => 'Most cruise lines allow advisors to hold cabins for 24 to 72 hours without payment. I use this to lock in the right cabin while you check work calendars, talk to your travel companions, or sleep on the decision. Holds are not always available on promotional rates.',
+			),
+			array(
+				'question' => 'What if I want to extend before or after the sailing?',
+				'answer'   => 'The cruise is the middle of the trip, not the whole trip. I handle hotels in the embarkation and disembarkation ports, transfers, day tours, and rail or flight connections. Extensions usually need to be priced separately from the cruise itself — that is where most of my planning time goes.',
+			),
+			array(
+				'question' => 'How do you handle solo supplements?',
+				'answer'   => 'Solo supplements can effectively double the price of a cruise. I know which sailings waive the supplement, which suite categories are friendliest to solo bookings, and which lines run solo-targeted promotions. If you are cruising solo, ask before you book — it is often a question of timing as much as ship.',
+			),
+		),
+
+	);
+
+	// ACF wins when Eric has populated it; these are the code-managed defaults.
+	$acf = function_exists( 'get_field' ) ? get_field( 'service_faqs' ) : null;
+	if ( is_array( $acf ) && ! empty( $acf ) ) {
+		$out = array();
+		foreach ( $acf as $row ) {
+			$q = is_array( $row ) ? (string) ( $row['question'] ?? '' ) : '';
+			$a = is_array( $row ) ? (string) ( $row['answer'] ?? '' ) : '';
+			if ( '' !== $q && '' !== $a ) {
+				$out[] = array( 'question' => $q, 'answer' => $a );
+			}
+		}
+		if ( $out ) {
+			return $out;
+		}
+	}
+
+	return $data[ $slug ] ?? array();
+}
+
+/**
+ * Feed the plugin's FAQPage schema for pages on the service-page.php template.
+ *
+ * Runs only for that template, so it can't collide with the code-managed
+ * branch below or with a page that has no FAQ section at all.
+ */
+add_filter(
+	'oomph_page_faqs',
+	static function ( $faqs, $post ) {
+		if ( ! $post || 'service-page.php' !== get_page_template_slug( $post ) ) {
+			return $faqs;
+		}
+		$rows = oomph_service_template_faqs( $post );
+		return $rows ? $rows : $faqs;
+	},
+	10,
+	2
+);
+
+/**
  * Feed the plugin's FAQPage schema for these code-managed pages.
  */
 add_filter(
