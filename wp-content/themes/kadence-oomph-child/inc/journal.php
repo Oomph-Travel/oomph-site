@@ -84,3 +84,64 @@ function oomph_get_journal_posts( array $category_slugs, int $limit = 6 ): array
 
 	return get_posts( $args );
 }
+
+/**
+ * A contextual in-body link to a Journal post, resolved by slug.
+ *
+ * Returns '' when the post doesn't exist or isn't published yet, so a hub page
+ * can reference posts that are still drafts without ever shipping a link that
+ * 404s. Callers treat '' as "leave this out" rather than rendering bare text —
+ * see oomph_journal_sentence().
+ *
+ * Resolved by slug rather than ID because these are editorial references
+ * written alongside the copy, and slugs survive a re-import; the lookup is
+ * memoised per request so repeating a slug costs one query, not several.
+ *
+ * @param string $slug   Post slug, e.g. 'first-premium-cruise'.
+ * @param string $anchor Descriptive anchor text — never "click here" (R18).
+ * @return string Anchor HTML, or '' when the post isn't live.
+ */
+function oomph_journal_link( string $slug, string $anchor ): string {
+	static $cache = array();
+
+	if ( ! array_key_exists( $slug, $cache ) ) {
+		$found = get_posts(
+			array(
+				'name'        => $slug,
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'numberposts' => 1,
+				'fields'      => 'ids',
+			)
+		);
+		$cache[ $slug ] = $found ? (int) $found[0] : 0;
+	}
+
+	if ( ! $cache[ $slug ] ) {
+		return '';
+	}
+
+	return sprintf(
+		'<a href="%s">%s</a>',
+		esc_url( (string) get_permalink( $cache[ $slug ] ) ),
+		esc_html( $anchor )
+	);
+}
+
+/**
+ * A whole sentence built around a Journal link, or '' if the post isn't live.
+ *
+ * Gating the sentence rather than just the link matters: copy like "I've
+ * written about X" reads as a broken promise when X isn't published. Dropping
+ * the sentence entirely keeps the paragraph honest either way.
+ *
+ * @param string $slug     Post slug.
+ * @param string $anchor   Anchor text.
+ * @param string $sentence Sentence template with a single %s for the link.
+ * @return string
+ */
+function oomph_journal_sentence( string $slug, string $anchor, string $sentence ): string {
+	$link = oomph_journal_link( $slug, $anchor );
+
+	return $link ? sprintf( $sentence, $link ) : '';
+}
