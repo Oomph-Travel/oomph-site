@@ -29,20 +29,75 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Schema {
 
 	/**
-	 * Wire schema output and defend the plugin's role as the single source of
+	 * Schema types Rank Math is allowed to keep emitting.
+	 *
+	 * Deliberately narrow: these are the types Rank Math derives from *blocks in
+	 * the post content*, which this plugin has no way to see. Everything else in
+	 * its graph duplicates something built here and gets stripped.
+	 */
+	private const RANK_MATH_ALLOWED_TYPES = array( 'FAQPage', 'HowTo' );
+
+	/**
+	 * Wire schema output and defend the plugin's role as the primary source of
 	 * structured data.
 	 *
-	 * See docs/schema-audit-2026-05-26.md: Rank Math's Schema module is disabled
-	 * today, but its settings are pre-configured to emit a duplicate
-	 * Person / Organization / Article graph the moment that module is toggled on
-	 * (dashboard or setup wizard). Emptying the rank_math/json_ld graph
-	 * unconditionally keeps oomph-travel-core the sole source of JSON-LD
-	 * regardless of that UI toggle. Registered at plugin load, so it is in place
-	 * before wp_head fires whether or not the module is active.
+	 * See docs/schema-audit-2026-05-26.md: Rank Math's settings are
+	 * pre-configured to emit a duplicate Person / Organization / Article graph
+	 * whenever its Schema module is on (and it now is). Filtering
+	 * rank_math/json_ld keeps that duplication out regardless of the UI toggle.
+	 *
+	 * The filter used to be `__return_empty_array`, which also discarded the
+	 * FAQPage schema Rank Math builds from the rank-math/faq-block in post
+	 * content — the block rendered on the page but never made it into the
+	 * JSON-LD. It is now selective per the plan in docs/schema-division.md:
+	 * strip the plugin-owned types, let block-driven types through.
+	 *
+	 * Registered at plugin load, so it is in place before wp_head fires whether
+	 * or not the module is active.
 	 */
 	public static function init(): void {
 		add_action( 'wp_head', array( __CLASS__, 'output' ), 5 );
-		add_filter( 'rank_math/json_ld', '__return_empty_array', 99 );
+		add_filter( 'rank_math/json_ld', array( __CLASS__, 'filter_rank_math_graph' ), 99 );
+	}
+
+	/**
+	 * Strip plugin-owned types from Rank Math's graph, keeping block-driven ones.
+	 *
+	 * Runs late (99) so it sees the final graph after Rank Math's own block
+	 * collectors have populated it.
+	 *
+	 * @param mixed $data Rank Math's JSON-LD graph, keyed by entity name.
+	 * @return array
+	 */
+	public static function filter_rank_math_graph( $data ): array {
+		if ( ! is_array( $data ) ) {
+			return array();
+		}
+
+		$allowed = (array) apply_filters(
+			'oomph_rank_math_allowed_schema',
+			self::RANK_MATH_ALLOWED_TYPES
+		);
+
+		// A page where this plugin already emits FAQPage must not get a second
+		// one from Rank Math — two FAQPage nodes is a validation error. Service
+		// hubs are hardcoded templates with no blocks today, so this is a guard
+		// against a future FAQ block being added to one, not a live collision.
+		if ( self::is_service_page() && self::faqpage_for_current_page() ) {
+			$allowed = array_diff( $allowed, array( 'FAQPage' ) );
+		}
+
+		foreach ( $data as $key => $node ) {
+			// @type may be a string or a list, e.g. ["Article","BlogPosting"].
+			$types = is_array( $node ) ? (array) ( $node['@type'] ?? '' ) : array();
+			$types = array_map( 'strval', $types );
+
+			if ( ! array_intersect( $types, $allowed ) ) {
+				unset( $data[ $key ] );
+			}
+		}
+
+		return $data;
 	}
 
 	public static function output(): void {
