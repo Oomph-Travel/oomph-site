@@ -32,6 +32,50 @@ function oomph_acf_field( $name, $fallback = '' ) {
 }
 
 /**
+ * The advisor's display name, from the WordPress user record.
+ *
+ * Delegates to the oomph-travel-core plugin so the byline, the Person node in
+ * the JSON-LD @graph, and the /about copy can never drift apart. The fallback
+ * below only runs if the plugin is deactivated, and still reads the user
+ * record rather than reintroducing a hardcoded name.
+ *
+ * @return string
+ */
+function oomph_advisor_name(): string {
+    if ( class_exists( '\\OomphTravel\\Core\\Advisor' ) ) {
+        return \OomphTravel\Core\Advisor::name();
+    }
+
+    $admins = get_users(
+        array(
+            'role'    => 'administrator',
+            'orderby' => 'ID',
+            'order'   => 'ASC',
+            'number'  => 1,
+        )
+    );
+    $name = $admins ? trim( (string) $admins[0]->display_name ) : '';
+
+    return $name !== '' ? $name : 'Eric Hempel';
+}
+
+/**
+ * The advisor's Biographical Info, from the WordPress user record.
+ *
+ * Returns '' when the plugin is inactive or the profile field is empty —
+ * callers must treat '' as "render nothing", never as "render an empty block".
+ *
+ * @return string
+ */
+function oomph_advisor_bio(): string {
+    if ( class_exists( '\\OomphTravel\\Core\\Advisor' ) ) {
+        return \OomphTravel\Core\Advisor::bio();
+    }
+
+    return '';
+}
+
+/**
  * Responsive-variant widths per image folder.
  *
  * MUST stay in step with WIDTHS in scripts/images/optimize.mjs — that script

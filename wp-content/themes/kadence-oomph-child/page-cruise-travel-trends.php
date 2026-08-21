@@ -67,7 +67,7 @@ if ( function_exists( 'wpFluent' ) ) {
 							<li><?php echo esc_html( $item ); ?></li>
 						<?php endforeach; ?>
 					</ul>
-					<p class="oomph-leadpage__meta">— Eric Hempel · Port Angeles, Washington</p>
+					<p class="oomph-leadpage__meta">— <?php echo esc_html( oomph_advisor_name() ); ?> · Port Angeles, Washington</p>
 				</aside>
 
 			</div>

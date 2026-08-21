@@ -124,7 +124,8 @@ final class SEO {
 
 		$out[] = '# Oomph Travel';
 		$out[] = '';
-		$out[] = '> Premium and luxury cruise planning and custom European journeys, planned by one named advisor — Eric Hempel, a CLIA member and Silversea Ultra-Luxury Specialist based in Port Angeles, Washington. No planning fee; suppliers pay a commission that does not change your price.';
+		$advisor = Advisor::name();
+		$out[] = '> Premium and luxury cruise planning and custom European journeys, planned by one named advisor — ' . $advisor . ', a CLIA member and Silversea Ultra-Luxury Specialist based in Port Angeles, Washington. No planning fee; suppliers pay a commission that does not change your price.';
 		$out[] = '';
 
 		$out[] = '## Services';
@@ -165,7 +166,7 @@ final class SEO {
 		$about = get_page_by_path( 'about' );
 		if ( $about ) {
 			$out[] = '## About';
-			$out[] = '- [About Eric Hempel](' . get_permalink( $about ) . ')';
+			$out[] = '- [About ' . $advisor . '](' . get_permalink( $about ) . ')';
 			$out[] = '';
 		}
 

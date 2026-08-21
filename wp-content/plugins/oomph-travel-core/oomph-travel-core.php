@@ -35,6 +35,7 @@ require_once OOMPH_CORE_DIR . 'includes/class-cpt-itinerary.php';
 require_once OOMPH_CORE_DIR . 'includes/class-cpt-cruise.php';
 require_once OOMPH_CORE_DIR . 'includes/class-cpt-ship.php';
 require_once OOMPH_CORE_DIR . 'includes/class-taxonomies.php';
+require_once OOMPH_CORE_DIR . 'includes/class-advisor.php'; // Advisor identity — read by class-schema.php and the child theme.
 require_once OOMPH_CORE_DIR . 'includes/class-schema.php';
 require_once OOMPH_CORE_DIR . 'includes/class-clarity-guard.php';
 require_once OOMPH_CORE_DIR . 'includes/class-plainsend.php';
