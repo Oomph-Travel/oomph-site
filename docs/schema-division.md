@@ -13,7 +13,7 @@ Emitted as one combined `@graph` from `includes/class-schema.php` (`Schema::outp
 | `@type` | Where |
 |---|---|
 | `Organization` / `TravelAgency` | Every page (`#organization`) |
-| `Person` | Every page (`/about/#advisor`) |
+| `Person` | Every page (`/about/#advisor`) — name + description read from the WP user record via `includes/class-advisor.php` |
 | `Service` | Service hub pages |
 | `Event` | Cruise CPT (`oomph_cruise`) |
 | `BreadcrumbList` | Singular pages + front page |

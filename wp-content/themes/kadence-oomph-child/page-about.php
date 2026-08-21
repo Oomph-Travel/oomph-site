@@ -40,6 +40,14 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 
 // Portrait is hardcoded — same headshot as the home page's founder bio.
 $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-portrait.webp';
+
+/*
+ * Advisor identity comes from the WordPress user record (Users → Profile), the
+ * same source as the Person node in the JSON-LD @graph. Editing the profile
+ * updates the name here and the biography block below without a deploy.
+ */
+$advisor_name = oomph_advisor_name();
+$advisor_bio  = oomph_advisor_bio();
 ?>
 
 <main id="primary" class="oomph-about" role="main">
@@ -48,13 +56,13 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 	<div id="oomph-content"></div>
 
 	<?php /* 1. HERO — split portrait + copy ---------------------------- */ ?>
-	<section class="oomph-section oomph-hero oomph-hero--split" aria-label="About Eric Hempel">
+	<section class="oomph-section oomph-hero oomph-hero--split" aria-label="About <?php echo esc_attr( $advisor_name ); ?>">
 		<div class="oomph-container">
 			<div class="oomph-grid oomph-grid--2 oomph-hero-split">
 				<figure class="oomph-portrait oomph-hero-split__portrait">
 					<img
 						src="<?php echo esc_url( $portrait_url ); ?>"
-						alt="Eric Hempel, travel advisor at Oomph Travel"
+						alt="<?php echo esc_attr( $advisor_name ); ?>, travel advisor at Oomph Travel"
 						width="480"
 						height="480"
 						fetchpriority="high"
@@ -83,6 +91,7 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 		<span class="oomph-trust-strip__item">Silversea Ultra-Luxury Specialist</span>
 		<span class="oomph-trust-strip__item">Nexion Affiliated</span>
 		<span class="oomph-trust-strip__item">BritAgent Pro</span>
+		<span class="oomph-trust-strip__item">Doctor of Osteopathic Medicine</span>
 		<span class="oomph-trust-strip__item">Port Angeles · WA</span>
 	</aside>
 	<?php endif; ?>
@@ -145,10 +154,29 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/images/eric-hempel-por
 					<h3 class="oomph-card__headline">BritAgent Pro</h3>
 					<p>VisitBritain's specialist certification for advisors planning trips to England, Scotland, Wales, and Northern Ireland.</p>
 				</article>
+				<article class="oomph-card oomph-card--bordered">
+					<h3 class="oomph-card__headline">Doctor of Osteopathic Medicine (DO)</h3>
+					<p>I practice internal medicine part time, alongside the travel advisory. It's why I ask about mobility, medication schedules, and how far the tender ride is before I ask about cabin category — and why a trip planned across three generations gets planned around the people on it.</p>
+				</article>
 			</div>
 			<p class="oomph-credentials__inprogress"><em>Currently completing: Italy Destination Specialist (DS-Italy) certification.</em></p>
 		</div>
 	</section>
+
+	<?php /* 5b. BIOGRAPHY — rendered from the WordPress user profile's
+	         Biographical Info field, which is also what the Person node's
+	         `description` carries. Editing the profile edits both; if the
+	         field is empty the section doesn't render, so the schema never
+	         claims copy that isn't on the page. */ ?>
+	<?php if ( $advisor_bio !== '' ) : ?>
+	<section class="oomph-section" aria-labelledby="biography-title">
+		<div class="oomph-container oomph-container--prose">
+			<p class="oomph-eyebrow">In my own words</p>
+			<h2 id="biography-title">Advisor, and physician.</h2>
+			<?php echo wp_kses_post( wpautop( $advisor_bio ) ); ?>
+		</div>
+	</section>
+	<?php endif; ?>
 
 	<?php /* 6. FIRST-HAND EXPERIENCE ---------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="experience-title">

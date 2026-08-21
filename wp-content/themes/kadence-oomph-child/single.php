@@ -7,6 +7,10 @@
  * and three related posts. BlogPosting schema is emitted by the
  * oomph-travel-core plugin.
  *
+ * The byline name comes from the WordPress user record via
+ * oomph_advisor_name() — the same source as the Person node the BlogPosting's
+ * `author` points at, so the visible name and the structured one cannot drift.
+ *
  * @package OomphChild
  */
 
@@ -36,7 +40,7 @@ while ( have_posts() ) :
 					<p class="oomph-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 					<h1 class="oomph-post__title oomph-italic-display"><?php the_title(); ?></h1>
 					<p class="oomph-post__byline">
-						By <a href="/about/" rel="author">Eric Hempel</a>
+						By <a href="/about/" rel="author"><?php echo esc_html( oomph_advisor_name() ); ?></a>
 						<span aria-hidden="true">·</span>
 						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( $published ); ?></time>
 						<?php if ( $modified !== $published ) : ?>
