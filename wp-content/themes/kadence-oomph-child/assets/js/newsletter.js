@@ -39,7 +39,10 @@
 			return;
 		}
 
-		var input = form.querySelector( '.oomph-signup__input' );
+		// The email field specifically, by name — the form now carries four
+		// inputs sharing .oomph-signup__input, and this guards the fetch fallback
+		// on the address being present.
+		var input = form.querySelector( 'input[name="email"]' );
 		var button = form.querySelector( '.oomph-signup__submit' );
 		var message = form.querySelector( '.oomph-signup__message' );
 		var elapsed = form.querySelector( 'input[name="elapsed_ms"]' );
