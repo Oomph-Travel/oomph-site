@@ -198,13 +198,26 @@ final class Schema {
 		);
 	}
 
+	/**
+	 * The advisor entity.
+	 *
+	 * name / description come from the WordPress user record via Advisor, so
+	 * editing the profile screen updates the schema — they used to be literals
+	 * here, which is why profile edits changed nothing on the front end.
+	 *
+	 * The @id stays home_url() . 'about/#advisor' whatever the name becomes:
+	 * every BlogPosting author reference points at it, and changing it would
+	 * orphan the entity Google has already associated with the site.
+	 */
 	private static function person(): array {
 		$site = home_url( '/' );
-		return array(
+
+		$person = array(
 			'@type'         => 'Person',
 			'@id'           => $site . 'about/#advisor',
-			'name'          => 'Eric Hempel',
-			'jobTitle'      => 'Travel Advisor',
+			'name'          => Advisor::name(),
+			'jobTitle'      => Advisor::job_title(),
+			'description'   => wp_strip_all_tags( Advisor::bio() ),
 			'url'           => $site . 'about/',
 			'worksFor'      => array( '@id' => $site . '#organization' ),
 			'memberOf'      => array(
@@ -224,10 +237,26 @@ final class Schema {
 					'name'               => 'BritAgent Pro',
 					'recognizedBy'       => array( '@type' => 'Organization', 'name' => 'VisitBritain' ),
 				),
+				// Medical degree — visible on /about in the credentials grid,
+				// which is what earns it a place here (docs/schema.md: never
+				// mark up content that isn't on the page).
+				array(
+					'@type'              => 'EducationalOccupationalCredential',
+					'credentialCategory' => 'degree',
+					'name'               => 'Doctor of Osteopathic Medicine (DO)',
+				),
 			),
 			'knowsLanguage' => 'en',
-			'knowsAbout'    => array( 'Silversea Cruises', 'Italy travel', 'United Kingdom travel', 'Multi-generational travel' ),
+			'knowsAbout'    => Advisor::knows_about(),
 		);
+
+		// Never emit an empty description — an empty Biographical Info field
+		// should drop the property, not publish a blank one.
+		if ( '' === trim( (string) $person['description'] ) ) {
+			unset( $person['description'] );
+		}
+
+		return $person;
 	}
 
 	private static function breadcrumb(): array {

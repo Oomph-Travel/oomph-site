@@ -26,14 +26,29 @@ Plainsend. It adds no stylesheet and no plugin.
 | Piece | Where | Why there |
 | --- | --- | --- |
 | Endpoint and form slug | `oomph-travel-core/includes/class-plainsend.php` | Environment-aware, so it belongs in the plugin and survives a theme switch |
-| Markup | `kadence-oomph-child/inc/footer.php` | Presentation |
+| Markup | `kadence-oomph-child/inc/signup-form.php` (`oomph_signup_form()`) | One helper for every surface — footer, Trends, and the coming cabin quiz — so the honeypot and timing field cannot go missing from a copy |
+| Call sites | `inc/footer.php`, `page-cruise-travel-trends.php` | Presentation |
 | Styles | `kadence-oomph-child/assets/css/components.css` (`.oomph-signup`) | Presentation |
 | Submit script | `kadence-oomph-child/assets/js/newsletter.js` | ~1 KB, deferred, no dependencies |
 
+**What each form asks for.** First name and email address, both required, then
+last name and phone number, both optional and marked so in the label (R39).
+Plainsend stores whatever arrives and enforces only the address. A phone number
+is kept exactly as typed and never texted — it is there for Eric to reach a
+lead by hand.
+
+> This is a deliberate exception to **R43** ("lead-magnet landing pages: single
+> email field only"). The decision, 2026-08-24, was that a first name is worth
+> the friction everywhere because it makes every later email personal, and that
+> the optional last name and phone cost nothing to offer. If a future lead-magnet
+> page needs to be lean again, `oomph_signup_form()` is the one place to add a
+> field-set argument.
+
 **It works with JavaScript switched off.** The markup is a real `<form>` with a
 real `action`, so without the script it posts and the visitor lands on a
-thank-you page at Plainsend. The script is the enhancement that keeps them here
-instead.
+thank-you page at Plainsend. The form carries no `novalidate`, so the browser
+enforces the two required fields and the email format before it posts, with or
+without the script. The script is the enhancement that keeps them here instead.
 
 **Nothing per-request is in the markup.** SG Optimizer serves cached pages, so a
 PHP nonce or server timestamp would be the cached one. Everything the anti-spam

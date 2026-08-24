@@ -71,6 +71,21 @@ JSON-LD blocks, one per page type. Drop into the page `<head>` via Rank Math's "
 
 ## Person — advisor bio (on `/about` and referenced sitewide)
 
+> **Driven by the WordPress user record (2026-08).** `name`, `jobTitle`,
+> `description`, and `knowsAbout` are no longer literals in
+> `class-schema.php` — they come from `OomphTravel\Core\Advisor`, which reads
+> the advisor's user profile (Users → Profile): **Display name** → `name`,
+> **Biographical Info** → `description`. Editing the profile screen updates the
+> byline on journal posts, the biography block on `/about`, and this node
+> together. `description` is omitted entirely when Biographical Info is empty,
+> so the node never claims copy that isn't on the page.
+>
+> `jobTitle` (`["Luxury Travel Advisor","Physician"]`) and `knowsAbout` have no
+> profile field behind them; change them via the `oomph_advisor_job_title` /
+> `oomph_advisor_knows_about` filters. The `@id` stays
+> `https://oomphtravel.com/about/#advisor` whatever the display name becomes —
+> every `BlogPosting.author` points at it.
+
 ```json
 {
   "@context": "https://schema.org",

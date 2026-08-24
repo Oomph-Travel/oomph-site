@@ -52,15 +52,22 @@ final class Plainsend {
 	 * the real app — that is the point of testing — but they arrive somewhere
 	 * that can be emptied without touching a subscriber.
 	 */
-	public static function form_slug(): string {
-		$slug = Environment::is_production() ? 'newsletter' : 'newsletter-staging';
+	public static function form_slug( string $key = 'newsletter' ): string {
+		// Staging posts to "<key>-staging", which is a real form in Plainsend
+		// rather than a convention it infers. Adding a key here means creating
+		// that pair in Plainsend too — see its scripts/create-*.js.
+		$slug = Environment::is_production() ? $key : $key . '-staging';
 
-		return (string) apply_filters( 'oomph_plainsend_form_slug', $slug );
+		return (string) apply_filters( 'oomph_plainsend_form_slug', $slug, $key );
 	}
 
-	/** The address the signup form posts to. */
-	public static function endpoint(): string {
-		return self::app_url() . '/f/' . self::form_slug();
+	/**
+	 * The address a signup form posts to.
+	 *
+	 * @param string $key Which form — 'newsletter' or 'trends-guide'.
+	 */
+	public static function endpoint( string $key = 'newsletter' ): string {
+		return self::app_url() . '/f/' . self::form_slug( $key );
 	}
 
 	/**
