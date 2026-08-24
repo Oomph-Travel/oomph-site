@@ -702,7 +702,13 @@
 .oomph-signup { margin-top: var(--space-3); }
 .oomph-signup .oomph-field { margin-bottom: var(--space-3); }
 
-.oomph-signup__label { color: var(--color-stone); }
+/*
+ * On a light ground the label keeps the base .oomph-field__label ink, which
+ * reads at 17:1 on cream. Stone is a dark-footer colour — 1.8:1 on the Cruise
+ * Travel Trends page, below AA — so it is scoped to the footer rather than
+ * applied everywhere the form now appears.
+ */
+.oomph-footer .oomph-signup__label { color: var(--color-stone); }
 
 .oomph-signup__input {
   width: 100%;
@@ -728,12 +734,22 @@
 /* Empty until the script has something to say, so it takes no space and
    announces nothing on load. */
 .oomph-signup__message:empty { display: none; }
+/*
+ * Coloured for a light ground by default. The form now also appears on the
+ * Cruise Travel Trends page, where a paper-coloured message was invisible on
+ * near-paper cream — the "check your inbox" line was being set and never seen.
+ * The dark footer inverts it below.
+ */
 .oomph-signup__message {
   margin: var(--space-3) 0 0;
   font-size: var(--text-body-sm);
-  color: var(--color-paper);
+  color: var(--text-default);
 }
-.oomph-signup__message.is-error { color: var(--color-champagne); }
+.oomph-signup__message.is-error { color: var(--color-error); }
+
+/* The sitewide footer is dark navy, so the message inverts back to paper. */
+.oomph-footer .oomph-signup__message { color: var(--color-paper); }
+.oomph-footer .oomph-signup__message.is-error { color: var(--color-champagne); }
 
 .oomph-signup__privacy { margin-top: var(--space-3); }
 
