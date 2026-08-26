@@ -109,11 +109,11 @@ $advisor_bio  = oomph_advisor_bio();
 	<?php /* 4. WHO I SERVE, AND WHY ----------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-european-itinerary" aria-labelledby="serve-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Who I serve</p>
 				<h2 id="serve-title">Three kinds of trip, three reasons I'm the right advisor.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<article>
 					<h3 class="oomph-card__headline">Couples planning a milestone.</h3>
 					<p>Anniversaries, retirements, the trip you've talked about for ten years. The kind that has to land — choose the right cabin, get the dinner reservations, pace the days so neither of you comes home tired. I plan milestone trips because I've planned my own; the ones you only get a couple of in a lifetime deserve someone who has been there.</p>
@@ -133,7 +133,7 @@ $advisor_bio  = oomph_advisor_bio();
 	<?php /* 5. CREDENTIALS -------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="credentials-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Credentials</p>
 				<h2 id="credentials-title">The training behind the planning.</h2>
 			</div>
@@ -181,7 +181,7 @@ $advisor_bio  = oomph_advisor_bio();
 	<?php /* 6. FIRST-HAND EXPERIENCE ---------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="experience-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow oomph-eyebrow--inverse">Field notes</p>
 				<h2 id="experience-title" class="oomph-text-paper">First-hand experience.</h2>
 			</div>
@@ -202,11 +202,11 @@ $advisor_bio  = oomph_advisor_bio();
 	<?php /* 7. HOW I WORK --------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="how-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">How I work</p>
 				<h2 id="how-title">Three steps. One conversation to start.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
 					<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
@@ -241,23 +241,35 @@ $advisor_bio  = oomph_advisor_bio();
 		</div>
 	</section>
 
-	<?php /* 9. PULL-QUOTE TESTIMONIAL — hidden until real attribution is available.
-	         Per cro-rules R31: first name + last initial, trip type, destination, date.
-	         Per docx §10.4 example: "He kept the trip moving when my mother's knee
-	         gave out in Florence. That's the part the website doesn't show you."
-	         To re-enable, uncomment the section below and replace the placeholders.
+	<?php
+	/* 9. PULL-QUOTE TESTIMONIAL — a real review, attribution single-sourced
+	     from inc/client-stories.php (R31). The quoted sentence is verbatim
+	     from that review's body. Renders nothing if the source row goes away.
+	     Review schema stays on /client-stories/ only (R12). */
+	$about_quote = null;
+	if ( function_exists( 'oomph_client_testimonials' ) ) {
+		foreach ( oomph_client_testimonials() as $t ) {
+			if ( 'travellover52' === $t['author'] ) {
+				$about_quote = $t;
+				break;
+			}
+		}
+	}
 	?>
+	<?php if ( $about_quote ) : ?>
 	<section class="oomph-section" aria-labelledby="testimonial-title">
 		<div class="oomph-container oomph-container--prose">
 			<p class="oomph-eyebrow">In their words</p>
 			<h2 id="testimonial-title" class="sr-only">Testimonial.</h2>
 			<blockquote class="oomph-pullquote oomph-pullquote--display">
-				<p>[ PLACEHOLDER — character-focused testimonial. Replace before launch. ]</p>
-				<footer class="oomph-pullquote__cite oomph-pullquote__cite--plain">[ Name · Trip type · Destination · Date ]</footer>
+				<p>&ldquo;What truly sets Eric apart is his eye for detail and his ability to tailor experiences that reflect who we are.&rdquo;</p>
+				<footer class="oomph-pullquote__cite oomph-pullquote__cite--plain">
+					<?php echo esc_html( $about_quote['author'] . ' · ' . $about_quote['trip'] . ' · ' . date_i18n( 'F Y', strtotime( $about_quote['date_pub'] ) ) ); ?>
+				</footer>
 			</blockquote>
 		</div>
 	</section>
-	<?php */ ?>
+	<?php endif; ?>
 
 	<?php /* 10. FINAL CTA --------------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">

@@ -26,16 +26,12 @@
 }
 
 .oomph-section {
-  padding-block: var(--space-10);
-}
-
-@media (max-width: 767px) {
-  .oomph-section { padding-block: var(--space-9); }
+  padding-block: var(--space-band); /* fluid 72 → 96px; replaces the old breakpoint step */
 }
 
 .oomph-section__intro {
   max-width: 56ch;
-  margin: 0 auto var(--space-8);
+  margin: 0 auto var(--space-stack);
   text-align: center;
 }
 
@@ -380,6 +376,7 @@
   font-style: italic;
   font-size: var(--text-display);
   line-height: var(--line-display);
+  letter-spacing: var(--tracking-display);
   text-wrap: balance;
   margin: var(--space-4) 0 var(--space-5);
 }
@@ -1182,3 +1179,62 @@
 }
 .oomph-fallback-box p { margin: 0 0 var(--space-3); }
 .oomph-fallback-box p:last-child { margin-bottom: 0; }
+
+/* ===========================================================================
+ * Image treatment — frame, caption, credit (elevation WS1 PR-3)
+ *
+ * Photography is never manipulated (no filters, no duotone — licensed media
+ * must appear unaltered). Consistency comes from the hairline frame, the
+ * caption discipline, and whitespace.
+ * ========================================================================== */
+
+.oomph-frame {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.oomph-figure { margin: 0; }
+
+/* Caption voice per voice-guide.md: place, season, what's happening —
+ * never a literal description. */
+.oomph-figure__caption {
+  font-family: var(--font-text);
+  font-style: normal;
+  font-size: var(--text-body-sm);
+  line-height: var(--line-body-sm);
+  color: var(--text-muted);
+  border-top: 1px solid var(--hairline);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.oomph-figure__credit {
+  display: block;
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ===========================================================================
+ * Reveal — sparse scroll-in motion (elevation WS1 PR-3)
+ *
+ * assets/js/reveal.js adds .oomph-reveal-ready to <html> only when JS runs,
+ * IntersectionObserver exists, AND the visitor allows motion — so content
+ * is never hidden without a way to reveal it, and reduced-motion visitors
+ * get a completely static page.
+ * ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .oomph-reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 500ms ease-out, transform 500ms ease-out;
+  }
+  .oomph-reveal-ready [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}

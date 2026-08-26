@@ -319,7 +319,7 @@ function oomph_render_service_page( string $slug ): void {
 		<?php /* 3. WHO FOR / NOT FOR */ ?>
 		<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="who-for-title">
 			<div class="oomph-container">
-				<div class="oomph-section__intro">
+				<div class="oomph-section__intro" data-reveal>
 					<p class="oomph-eyebrow">Pre-qualifying</p>
 					<h2 id="who-for-title">Who this is for, and who it isn't.</h2>
 				</div>
@@ -343,11 +343,11 @@ function oomph_render_service_page( string $slug ): void {
 		<?php /* 4. WHAT I DO */ ?>
 		<section class="oomph-section" aria-labelledby="do-title">
 			<div class="oomph-container">
-				<div class="oomph-section__intro">
+				<div class="oomph-section__intro" data-reveal>
 					<p class="oomph-eyebrow">Deliverables</p>
 					<h2 id="do-title"><?php echo esc_html( $d['do_title'] ); ?></h2>
 				</div>
-				<div class="oomph-grid oomph-grid--3">
+				<div class="oomph-grid oomph-grid--3" data-reveal>
 					<?php foreach ( $d['do'] as $row ) : ?>
 						<article class="oomph-card">
 							<h3 class="oomph-card__headline"><?php echo esc_html( $row[0] ); ?></h3>
@@ -380,7 +380,7 @@ function oomph_render_service_page( string $slug ): void {
 		<?php /* 6. COVERAGE */ ?>
 		<section class="oomph-section" aria-labelledby="coverage-title">
 			<div class="oomph-container">
-				<div class="oomph-section__intro">
+				<div class="oomph-section__intro" data-reveal>
 					<p class="oomph-eyebrow"><?php echo esc_html( $d['coverage_eyebrow'] ); ?></p>
 					<h2 id="coverage-title"><?php echo esc_html( $d['coverage_title'] ); ?></h2>
 				</div>
@@ -405,11 +405,11 @@ function oomph_render_service_page( string $slug ): void {
 		<?php /* 7. HOW I WORK */ ?>
 		<section class="oomph-section" aria-labelledby="how-title">
 			<div class="oomph-container">
-				<div class="oomph-section__intro">
+				<div class="oomph-section__intro" data-reveal>
 					<p class="oomph-eyebrow">How I work</p>
 					<h2 id="how-title">Three steps. One conversation to start.</h2>
 				</div>
-				<div class="oomph-grid oomph-grid--3">
+				<div class="oomph-grid oomph-grid--3" data-reveal>
 					<div>
 						<p class="oomph-eyebrow">Step One &middot; Discover</p>
 						<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>

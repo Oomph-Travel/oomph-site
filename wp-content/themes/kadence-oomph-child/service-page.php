@@ -193,7 +193,7 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 3. WHO THIS IS FOR / NOT FOR ------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="who-for-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Pre-qualifying</p>
 				<h2 id="who-for-title">Who this is for, and who it isn't.</h2>
 			</div>
@@ -224,7 +224,7 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 4. WHAT I ACTUALLY DO -------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="what-i-do-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Deliverables</p>
 				<h2 id="what-i-do-title">What I actually do.</h2>
 				<?php
@@ -258,7 +258,7 @@ $faqs = oomph_service_template_faqs();
 					<p><?php echo wp_kses_post( implode( ' ', $journal_lines ) ); ?></p>
 				<?php endif; ?>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<?php foreach ( $what_you_do as $row ) : ?>
 					<?php
 					$h = is_array( $row ) ? ( $row['headline'] ?? '' ) : '';
@@ -308,7 +308,7 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 6. CRUISE LINES I PLAN ------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="cruise-lines-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Coverage</p>
 				<h2 id="cruise-lines-title">Cruise lines I plan.</h2>
 			</div>
@@ -357,11 +357,11 @@ $faqs = oomph_service_template_faqs();
 	<?php if ( is_page( 'luxury-cruise-planning' ) && function_exists( 'oomph_has_published_sailings' ) && oomph_has_published_sailings() ) : ?>
 	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="cruise-sailings-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Open departures</p>
 				<h2 id="cruise-sailings-title">Sailings I'm hosting right now.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
 			</div>
 			<p class="oomph-section__cta oomph-section__cta--center">
@@ -376,11 +376,11 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 7. HOW I WORK ---------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="how-i-work-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">How I work</p>
 				<h2 id="how-i-work-title">Three steps. One conversation to start.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
 					<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
@@ -407,11 +407,11 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 9. FEATURED JOURNAL ---------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-quiet-premium" aria-labelledby="cruise-journal-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Field notes</p>
 				<h2 id="cruise-journal-title">Recent writing on cruise planning.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<?php
 				/*
 				 * Cluster posts only — a hub page about cruise planning has no
@@ -458,11 +458,11 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 10. TESTIMONIALS ------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="testimonials-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">In their words</p>
 				<h2 id="testimonials-title">From recent cruise clients.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--2">
+			<div class="oomph-grid oomph-grid--2" data-reveal>
 				<blockquote class="oomph-card oomph-card--champagne">
 					<p>"From start to finish, Eric's planning was spot-on — every detail handled with care, and his knowledge of cruise travel really showed. What stood out most was his communication: he was always available, kept us informed every step of the way, and made the whole process easy and stress-free. We'll be working with Eric again."</p>
 					<footer class="oomph-card__meta">Gary T. · Oceania Cruises · Poulsbo, WA<!-- TODO: Eric — add sailing year if available. --></footer>

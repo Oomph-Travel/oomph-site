@@ -70,9 +70,18 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-4);
 }
 
-h1 { line-height: var(--line-h1); }
+h1 { line-height: var(--line-h1); letter-spacing: var(--tracking-h1); }
 h2 { line-height: var(--line-h2); }
 h3 { line-height: var(--line-h3); }
+
+/* Fraunces is a variable font with an opsz 9–144 axis — explicit
+ * optical sizing keeps the high-contrast display cut at display sizes
+ * and the sturdier text cut at small sizes. (auto is the default, but
+ * stating it guards against resets and documents the dependency.) */
+h1, h2, h3,
+.oomph-italic-display {
+  font-optical-sizing: auto;
+}
 
 /* ---------------------------------------------------------------------------
  * Links — focus + transitions
