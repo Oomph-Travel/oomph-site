@@ -51,10 +51,41 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ steps.target.outputs.port }} -H ${{ steps.target.outputs.host }} >> ~/.ssh/known_hosts
+          # SiteGround's SSH endpoint intermittently drops keyscan connections,
+          # which used to fail the whole deploy. Retry with backoff, and treat
+          # an empty result as a failure too (keyscan can exit 0 with no keys).
+          for attempt in 1 2 3 4 5; do
+            ssh-keyscan -T 10 -p ${{ steps.target.outputs.port }} -H ${{ steps.target.outputs.host }} > ~/.ssh/keyscan_out || true
+            if [ -s ~/.ssh/keyscan_out ]; then
+              cat ~/.ssh/keyscan_out >> ~/.ssh/known_hosts
+              exit 0
+            fi
+            echo "ssh-keyscan attempt ${attempt}/5 returned no keys; retrying in $((attempt * 5))s…"
+            sleep $((attempt * 5))
+          done
+          echo "::error::ssh-keyscan failed after 5 attempts — SiteGround SSH endpoint unreachable" >&2
+          exit 1
 
-      - name: Deploy child theme via rsync
+      - name: Deploy theme + plugin via rsync (single SSH connection)
         run: |
+          # SiteGround's dynamic firewall rate-limits repeated short SSH
+          # sessions from shared GitHub-runner IPs — the old 4-connection
+          # deploy (keyscan, theme rsync, plugin rsync, purge) tripped it.
+          # ControlMaster multiplexes every step over ONE TCP connection,
+          # and --relative pushes both directories in a single rsync.
+          mkdir -p ~/.ssh/cm
+          # Base path = wp-content (theme path minus /themes/kadence-oomph-child).
+          # The plugin destination derives from the same layout as before.
+          BASE_PATH="${{ steps.target.outputs.path }}"
+          BASE_PATH="${BASE_PATH%/}"
+          BASE_PATH="${BASE_PATH%/themes/kadence-oomph-child}"
+          case "$BASE_PATH" in
+            ''|*kadence-oomph-child)
+              echo "::error::Could not derive wp-content base from theme path secret" >&2
+              exit 1
+              ;;
+          esac
+          echo "Deploying theme + plugin under: $BASE_PATH"
           rsync -avz --delete \
             --exclude='.git' \
             --exclude='.github' \
@@ -63,40 +94,29 @@ jobs:
             --exclude='*.md' \
             --exclude='docs' \
             --exclude='.DS_Store' \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }}" \
-            wp-content/themes/kadence-oomph-child/ \
-            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:${{ steps.target.outputs.path }}/
-
-      - name: Deploy oomph-travel-core plugin via rsync
-        run: |
-          # Derive plugin path from theme path — same hosting layout, swap
-          # /themes/kadence-oomph-child → /plugins/oomph-travel-core.
-          # Avoids needing a separate secret for the plugin destination.
-          PLUGIN_PATH="${{ steps.target.outputs.path }}"
-          PLUGIN_PATH="${PLUGIN_PATH/themes\/kadence-oomph-child/plugins\/oomph-travel-core}"
-          echo "Deploying plugin to: $PLUGIN_PATH"
-          rsync -avz --delete \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='.gitignore' \
-            --exclude='node_modules' \
-            --exclude='*.md' \
-            --exclude='docs' \
-            --exclude='.DS_Store' \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }}" \
-            wp-content/plugins/oomph-travel-core/ \
-            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:$PLUGIN_PATH/
+            --relative \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }} -o ControlMaster=auto -o ControlPath=~/.ssh/cm/%r@%h-%p -o ControlPersist=180" \
+            wp-content/./themes/kadence-oomph-child/ \
+            wp-content/./plugins/oomph-travel-core/ \
+            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }}:$BASE_PATH/
 
       - name: Purge SiteGround cache (WP-CLI via SSH)
         continue-on-error: true
         run: |
+          # Reuses the multiplexed master connection from the rsync step.
           ssh -i ~/.ssh/deploy_key -p ${{ steps.target.outputs.port }} \
+            -o ControlMaster=auto -o ControlPath=~/.ssh/cm/%r@%h-%p \
             ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }} \
             "cd ${{ steps.target.outputs.path }}/../../.. && ( wp sg purge || echo 'SG Optimizer not active — skipping wp sg purge' ) && ( wp cache flush || echo 'wp cache flush failed — skipping' )"
 
       - name: Clean up SSH key
         if: always()
-        run: rm -f ~/.ssh/deploy_key
+        run: |
+          # Close the multiplexed master connection, then remove the key.
+          ssh -o ControlPath=~/.ssh/cm/%r@%h-%p -O exit \
+            -p ${{ steps.target.outputs.port }} \
+            ${{ steps.target.outputs.user }}@${{ steps.target.outputs.host }} 2>/dev/null || true
+          rm -f ~/.ssh/deploy_key
 
       - name: Summary
         run: |
