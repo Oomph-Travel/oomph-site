@@ -355,7 +355,7 @@ function oomph_render_service_page( string $slug ): void {
 						</article>
 					<?php endforeach; ?>
 				</div>
-				<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+				<p class="oomph-section__cta oomph-section__cta--center">
 					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 				</p>
 			</div>
@@ -364,14 +364,14 @@ function oomph_render_service_page( string $slug ): void {
 		<?php /* 5. WHY AN ADVISOR */ ?>
 		<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="why-title">
 			<div class="oomph-container oomph-container--prose">
-				<p class="oomph-eyebrow" style="color: var(--color-champagne);">Why an advisor</p>
-				<h2 id="why-title" class="oomph-italic-display" style="color: var(--color-paper); font-size: var(--text-h1);"><?php echo esc_html( $d['why_title'] ); ?></h2>
-				<div style="color: var(--color-paper);">
+				<p class="oomph-eyebrow oomph-eyebrow--inverse">Why an advisor</p>
+				<h2 id="why-title" class="oomph-italic-display oomph-italic-display--h1 oomph-text-paper"><?php echo esc_html( $d['why_title'] ); ?></h2>
+				<div class="oomph-text-paper">
 					<?php foreach ( $d['why'] as $row ) : ?>
 						<p><strong><?php echo esc_html( $row[0] ); ?></strong> <?php echo esc_html( $row[1] ); ?></p>
 					<?php endforeach; ?>
 				</div>
-				<p style="margin-top: var(--space-7);">
+				<p class="oomph-u-mt-7">
 					<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 				</p>
 			</div>
@@ -397,7 +397,7 @@ function oomph_render_service_page( string $slug ): void {
 					<?php endforeach; ?>
 				</div>
 				<?php if ( ! empty( $d['coverage_note'] ) ) : ?>
-					<p class="oomph-coverage__note" style="margin-top: var(--space-5); color: var(--text-muted);"><em><?php echo esc_html( $d['coverage_note'] ); ?></em></p>
+					<p class="oomph-coverage__note oomph-u-mt-5 oomph-text-muted"><em><?php echo esc_html( $d['coverage_note'] ); ?></em></p>
 				<?php endif; ?>
 			</div>
 		</section>
@@ -412,17 +412,17 @@ function oomph_render_service_page( string $slug ): void {
 				<div class="oomph-grid oomph-grid--3">
 					<div>
 						<p class="oomph-eyebrow">Step One &middot; Discover</p>
-						<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 30-minute call.</h3>
+						<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
 						<p>We talk about the trip you're imagining — who's going, when, where you've already been, what you'd never do again. By the end I know whether I'm the right advisor for you, and you know what comes next.</p>
 					</div>
 					<div>
 						<p class="oomph-eyebrow">Step Two &middot; Design</p>
-						<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">One proposal, not five.</h3>
+						<h3 class="oomph-italic-display oomph-italic-display--h3">One proposal, not five.</h3>
 						<p>I do the narrowing for you and bring back one plan we refine together — not a stack of options to sort through yourself.</p>
 					</div>
 					<div>
 						<p class="oomph-eyebrow">Step Three &middot; Depart</p>
-						<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Eyes on it the whole time.</h3>
+						<h3 class="oomph-italic-display oomph-italic-display--h3">Eyes on it the whole time.</h3>
 						<p>If something changes while you're traveling, I'm reachable. The point of an advisor isn't the planning; it's the person on call when the day shifts.</p>
 					</div>
 				</div>
@@ -447,19 +447,17 @@ function oomph_render_service_page( string $slug ): void {
 
 		<?php /* 9. FINAL CTA */ ?>
 		<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">
-			<div class="oomph-container" style="text-align: center;">
-				<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
-				<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">Worth a thirty-minute call?</h2>
-				<p style="margin-top: var(--space-6);">
+			<div class="oomph-container oomph-cta-band">
+				<p class="oomph-eyebrow oomph-eyebrow--inverse">First call</p>
+				<h2 id="final-cta-title" class="oomph-italic-display oomph-cta-band__heading">Worth a thirty-minute call?</h2>
+				<p class="oomph-cta-band__action">
 					<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
-					<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
+					<span class="oomph-btn-microcopy oomph-microcopy--inverse">Email, text, or a quick call — whatever's easiest for you.</span>
 				</p>
 			</div>
 		</section>
 	</main>
 
-	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
-	</aside>
+	<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 	<?php
 }

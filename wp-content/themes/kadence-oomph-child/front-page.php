@@ -209,7 +209,7 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			<div class="oomph-grid oomph-grid--3">
 				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
 			</div>
-			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+			<p class="oomph-section__cta oomph-section__cta--center">
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'oomph_cruise' ) ); ?>">
 					See all sailings <span aria-hidden="true">→</span>
 				</a>
@@ -236,8 +236,8 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 					?>
 				</figure>
 				<div class="oomph-founder__copy">
-					<p class="oomph-eyebrow" style="color: var(--color-champagne);">One Advisor</p>
-					<h2 id="founder-title" class="oomph-italic-display" style="font-size: var(--text-h1);">Hi, I'm Eric.</h2>
+					<p class="oomph-eyebrow oomph-eyebrow--inverse">One Advisor</p>
+					<h2 id="founder-title" class="oomph-italic-display oomph-italic-display--h1">Hi, I'm Eric.</h2>
 					<p>I plan premium and luxury cruises and custom European journeys for clients who want one named advisor across the whole trip — from the first call to the last flight home. Based in Port Angeles, Washington.</p>
 					<p>
 						<a class="oomph-btn oomph-btn--inverse" href="/about/">
@@ -259,17 +259,17 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			<div class="oomph-grid oomph-grid--3">
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 30-minute call.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
 					<p>We talk about the trip you're imagining — who's going, when, where you've already been, what you'd never do again. By the end I know whether I'm the right advisor for you, and you know what comes next.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Two · Design</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">One proposal, not five.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">One proposal, not five.</h3>
 					<p>Cabin selection, itinerary, transfers, dinner reservations, the small details that make a trip feel choreographed. You see one proposal, not five — because I do the narrowing for you.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Three · Depart</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Eyes on it the whole time.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">Eyes on it the whole time.</h3>
 					<p>If something changes — a delayed flight, a closed restaurant, a sudden chance to do something better — I'm reachable. The point of an advisor isn't the planning; it's the person on call when the day shifts.</p>
 				</div>
 			</div>
@@ -387,28 +387,23 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 
 	<?php /* 11. FINAL CTA --------------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">
-		<div class="oomph-container" style="text-align: center;">
-			<p class="oomph-eyebrow" style="color: var(--color-champagne);">One trip</p>
-			<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">
+		<div class="oomph-container oomph-cta-band">
+			<p class="oomph-eyebrow oomph-eyebrow--inverse">One trip</p>
+			<h2 id="final-cta-title" class="oomph-italic-display oomph-cta-band__heading">
 				Plan the trip you'll talk about for thirty years.
 			</h2>
-			<p style="margin-top: var(--space-6);">
+			<p class="oomph-cta-band__action">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
 					Start a conversation <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
+				<span class="oomph-btn-microcopy oomph-microcopy--inverse">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 		</div>
 	</section>
 
 </main>
 
-<?php /* Sticky mobile CTA — R2. Visible at every scroll depth, mobile only. */ ?>
-<aside class="oomph-sticky-cta" aria-label="Quick contact">
-	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-		Start a conversation <span aria-hidden="true">→</span>
-	</a>
-</aside>
+<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 
 <?php
 get_footer();

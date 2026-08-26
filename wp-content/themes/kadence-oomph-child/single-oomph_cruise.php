@@ -130,7 +130,26 @@ while ( have_posts() ) :
 			<div id="oomph-content"></div>
 
 			<?php /* HERO — event-led when there's a shore event, itinerary-led otherwise. */ ?>
-			<section class="oomph-dv-hero<?php echo has_post_thumbnail() ? ' oomph-dv-hero--imaged' : ''; ?>"<?php echo has_post_thumbnail() ? ' style="background-image: linear-gradient(160deg, rgba(8,41,57,0.86), rgba(14,59,94,0.62)), url(' . esc_url( (string) get_the_post_thumbnail_url( null, 'full' ) ) . ');"' : ''; ?>>
+			<section class="oomph-dv-hero<?php echo has_post_thumbnail() ? ' oomph-dv-hero--imaged' : ''; ?>">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<?php /* R3: the LCP image is a real <img> — fetchpriority=high, never
+					         lazy-loaded, explicit dimensions from WP. Scrim is the
+					         .oomph-dv-hero--imaged::before overlay. */ ?>
+					<figure class="oomph-dv-hero__media" aria-hidden="true">
+						<?php
+						the_post_thumbnail(
+							'full',
+							array(
+								'fetchpriority' => 'high',
+								'loading'       => 'eager',
+								'decoding'      => 'async',
+								'sizes'         => '100vw',
+								'alt'           => '',
+							)
+						);
+						?>
+					</figure>
+				<?php endif; ?>
 				<div class="oomph-dv-hero__inner">
 					<?php if ( $lead_event ) : ?>
 						<p class="oomph-eyebrow oomph-dv-hero__eyebrow">
@@ -223,7 +242,7 @@ while ( have_posts() ) :
 								<h2><?php echo count( $events ) > 1 ? 'What I’ve arranged ashore' : 'One morning ' . esc_html( $lead_event['location'] ? 'in ' . $lead_event['location'] : 'ashore' ); ?></h2>
 								<?php foreach ( $events as $ev ) : ?>
 									<div class="oomph-dv-ticket">
-										<div class="oomph-dv-ticket__visual"<?php echo $ev['image'] ? ' style="background-image: linear-gradient(180deg, rgba(20,44,54,0.15), rgba(14,59,94,0.45)), url(' . esc_url( $ev['image'] ) . ');"' : ''; ?> aria-hidden="true"></div>
+										<div class="oomph-dv-ticket__visual<?php echo $ev['image'] ? ' has-image' : ''; ?>"<?php echo $ev['image'] ? ' style="--dv-ticket-image: url(' . esc_url( $ev['image'] ) . ');"' : ''; ?> aria-hidden="true"></div>
 										<div class="oomph-dv-ticket__body">
 											<p class="oomph-dv-label">Included with this sailing</p>
 											<h3 class="oomph-italic-display"><?php echo esc_html( $ev['name'] ); ?></h3>
@@ -506,13 +525,13 @@ while ( have_posts() ) :
 			</section>
 
 			<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="cruise-final-cta">
-				<div class="oomph-container" style="text-align:center;">
-					<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
-					<h2 id="cruise-final-cta" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 24ch; margin-inline:auto;">Interested in this sailing?</h2>
+				<div class="oomph-container oomph-cta-band">
+					<p class="oomph-eyebrow oomph-eyebrow--inverse">First call</p>
+					<h2 id="cruise-final-cta" class="oomph-italic-display oomph-cta-band__heading">Interested in this sailing?</h2>
 					<p class="oomph-cruise-cta__prefill">“<?php echo esc_html( $prefill ); ?>”</p>
-					<p style="margin-top: var(--space-6);">
+					<p class="oomph-cta-band__action">
 						<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Start a conversation</a>
-						<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
+						<span class="oomph-btn-microcopy oomph-microcopy--inverse">Email, text, or a quick call — whatever's easiest for you.</span>
 					</p>
 				</div>
 			</section>
@@ -521,10 +540,7 @@ while ( have_posts() ) :
 
 	<?php endif; ?>
 
-	<?php /* Sticky mobile CTA — R2. */ ?>
-	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation</a>
-	</aside>
+	<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 
 	<?php
 endwhile;

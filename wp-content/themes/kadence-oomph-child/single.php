@@ -106,9 +106,7 @@ while ( have_posts() ) :
 		</article>
 	</main>
 
-	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
-	</aside>
+	<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 
 	<?php
 endwhile;

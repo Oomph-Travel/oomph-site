@@ -17,6 +17,7 @@
 
 /* ---------- DV hero (event-led) ------------------------------------------- */
 .oomph-dv-hero {
+  position: relative;
   background:
     linear-gradient(160deg, var(--color-midnight-deep) 0%, var(--color-marine-navy) 60%, var(--color-marine-navy) 100%);
   background-size: cover;
@@ -24,7 +25,31 @@
   color: var(--text-inverse);
   padding: clamp(var(--space-9), 11vw, var(--space-11)) var(--container-gutter) clamp(var(--space-8), 9vw, var(--space-10));
 }
+
+/* Imaged hero — featured image as a real <img> (R3: LCP element in markup,
+ * fetchpriority=high, never a CSS background), scrim as an overlay. */
+.oomph-dv-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+.oomph-dv-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.oomph-dv-hero--imaged::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: linear-gradient(160deg, rgba(8, 41, 57, 0.86), rgba(14, 59, 94, 0.62));
+  pointer-events: none;
+}
 .oomph-dv-hero__inner {
+  position: relative;
+  z-index: 2;
   max-width: var(--container-max);
   margin-inline: auto;
 }
@@ -194,6 +219,13 @@
     linear-gradient(160deg, var(--color-marine-navy) 0%, var(--color-midnight-deep) 100%);
   background-size: cover;
   background-position: center;
+}
+/* Event photo arrives as a custom property (--dv-ticket-image) set inline —
+ * the URL is per-post data; the gradient recipe stays in the stylesheet. */
+.oomph-dv-ticket__visual.has-image {
+  background-image:
+    linear-gradient(180deg, rgba(20, 44, 54, 0.15), rgba(14, 59, 94, 0.45)),
+    var(--dv-ticket-image);
 }
 .oomph-dv-ticket__body {
   background: var(--color-bone);
