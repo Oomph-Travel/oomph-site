@@ -671,7 +671,7 @@
   font-family: var(--font-text);
   font-size: var(--text-eyebrow);
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--color-champagne);
   margin: 0 0 var(--space-4);
@@ -829,7 +829,7 @@
 
 .oomph-quiz__progress {
   font-size: var(--text-eyebrow);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--color-slate);
   margin: 0 0 var(--space-5);

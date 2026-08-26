@@ -19,7 +19,7 @@
         { "slug": "bone",            "name": "Bone",            "color": "#FDFAF2" },
         { "slug": "mist",            "name": "Mist",            "color": "#F1EADC" },
         { "slug": "stone",           "name": "Stone",           "color": "#C5BBA8" },
-        { "slug": "slate",           "name": "Slate",           "color": "#7C786C" },
+        { "slug": "slate",           "name": "Slate",           "color": "#6B675B" },
         { "slug": "charcoal",        "name": "Charcoal",        "color": "#2C2A26" },
         { "slug": "deep-peacock",    "name": "Midnight Deep",   "color": "#082939" },
         { "slug": "muted-brick",     "name": "Bronze",          "color": "#8C6A36" },
@@ -140,7 +140,7 @@
           "fontFamily": "var(--wp--preset--font-family--inter)",
           "fontWeight": "500",
           "textTransform": "uppercase",
-          "letterSpacing": "0.08em",
+          "letterSpacing": "0.14em",
           "fontSize": "var(--wp--preset--font-size--eyebrow)"
         }
       },
@@ -152,7 +152,7 @@
       "button": {
         "color": {
           "background": "var(--wp--preset--color--terracotta-warm)",
-          "text": "var(--wp--preset--color--paper)"
+          "text": "var(--wp--preset--color--true-ink)"
         },
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--inter)",
@@ -172,8 +172,8 @@
         },
         ":hover": {
           "color": {
-            "background": "var(--wp--preset--color--muted-brick)",
-            "text": "var(--wp--preset--color--paper)"
+            "background": "var(--wp--preset--color--champagne)",
+            "text": "var(--wp--preset--color--true-ink)"
           }
         }
       },
