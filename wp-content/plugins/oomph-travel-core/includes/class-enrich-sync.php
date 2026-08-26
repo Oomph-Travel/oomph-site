@@ -27,7 +27,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Enrich_Sync {
 
-	private const REPO       = 'Oomph-Travel/oomph-site';
+	private const REPO       = 'sonicgoo-Dev/oomph-site';
+
+	/**
+	 * Repos whose raw.githubusercontent.com URLs we will download from.
+	 *
+	 * The API follows a transfer/rename redirect for REPO but returns
+	 * download_url under the repo's *canonical* owner, so both the current
+	 * name and the pre-transfer alias have to be accepted here — otherwise
+	 * every payload is refused as an unexpected host.
+	 */
+	private const REPO_ALIASES = array( 'sonicgoo-Dev/oomph-site', 'Oomph-Travel/oomph-site' );
+
 	private const BRANCH     = 'main';
 	private const DIR        = 'enrichment';
 	private const OPTION     = 'oomph_enrich_applied';   // filename => [sha, time, post_id]
@@ -110,7 +121,14 @@ final class Enrich_Sync {
 
 	/** Download and decode one payload file. Returns array payload or ['error' => …]. */
 	private static function fetch_payload( string $download_url ): array {
-		if ( 0 !== strpos( $download_url, 'https://raw.githubusercontent.com/' . self::REPO . '/' ) ) {
+		$allowed = false;
+		foreach ( self::REPO_ALIASES as $repo ) {
+			if ( 0 === strpos( $download_url, 'https://raw.githubusercontent.com/' . $repo . '/' ) ) {
+				$allowed = true;
+				break;
+			}
+		}
+		if ( ! $allowed ) {
 			return array( 'error' => 'Refused: unexpected download host.' );
 		}
 		$response = wp_remote_get( $download_url, array( 'timeout' => 15, 'headers' => array( 'User-Agent' => 'oomph-travel-core' ) ) );
