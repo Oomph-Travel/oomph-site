@@ -16,16 +16,9 @@
 /* ---------------------------------------------------------------------------
  * Self-hosted fonts (variable)
  *
- * Drop these .woff2 files in assets/fonts/. Get them from
- * https://gwfh.mranftl.com/fonts or fontsource.org. Until they're present,
- * the @font-face rules are inert and the browser falls back to the family
- * stack on font-family declarations elsewhere.
- *
- * TODO files needed:
- *   inter-variable-latin.woff2          (wght 100-900)
- *   inter-variable-latin-italic.woff2   (wght 100-900, italic)
- *   fraunces-variable-latin.woff2       (opsz 9-144, wght 100-900)
- *   fraunces-variable-latin-italic.woff2 (opsz 9-144, wght 100-900, italic)
+ * All four .woff2 files ship in assets/fonts/. Only Inter regular is
+ * preloaded (inc/enqueue.php) — Fraunces arrives with swap; see the
+ * 2026-07 LCP audit for the rationale.
  * --------------------------------------------------------------------------- */
 
 @font-face {
