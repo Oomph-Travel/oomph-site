@@ -148,6 +148,11 @@
 
   --tracking-eyebrow: 0.14em;  /* all-caps Inter eyebrows — wide editorial tracking (design system: 0.14–0.18em) */
 
+  /* Display tracking — Fraunces tightens slightly at display sizes.
+   * Body and small sizes never track negative. */
+  --tracking-h1:      -0.01em;
+  --tracking-display: -0.015em;
+
   /* =========================================================================
    * Spacing — 8-point baseline (4px starting unit)
    * ========================================================================= */
@@ -163,6 +168,11 @@
   --space-9:  72px;
   --space-10: 96px;
   --space-11: 128px;
+
+  /* Section rhythm — fluid, so band spacing breathes with the viewport
+   * instead of stepping at one breakpoint. */
+  --space-band:  clamp(var(--space-9), 8vw, var(--space-10));  /* between major sections: 72 → 96px */
+  --space-stack: clamp(var(--space-7), 5vw, var(--space-8));   /* intro → content inside a section: 40 → 56px */
 
   /* =========================================================================
    * Layout

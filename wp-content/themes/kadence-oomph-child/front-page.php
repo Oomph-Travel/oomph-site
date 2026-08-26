@@ -144,11 +144,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php /* 3. WHO I HELP --------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="who-i-help-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Who I help</p>
 				<h2 id="who-i-help-title">Three kinds of trip, three kinds of traveler.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<article class="oomph-card">
 					<h3 class="oomph-card__headline">Couples planning a milestone.</h3>
 					<p>Anniversaries, retirements, the trip you've talked about for ten years. The kind that has to land — choose the cabin, get the dinner reservations right, pace the days so neither of you comes home tired.</p>
@@ -168,11 +168,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php /* 4. WHAT I PLAN ------------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-european-itinerary" aria-labelledby="what-i-plan-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">What I plan</p>
 				<h2 id="what-i-plan-title">Three services. One named advisor.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/luxury-cruise-planning/">
 					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-cruise.jpg', array( 'alt' => 'Gentoo penguin on Antarctic snow with a luxury expedition cruise ship anchored behind', 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Luxury cruise planning.</h3>
@@ -202,11 +202,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php if ( function_exists( 'oomph_has_published_sailings' ) && oomph_has_published_sailings() ) : ?>
 	<section class="oomph-section" aria-labelledby="home-sailings-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Group Cruises · Distinctive Voyages</p>
 				<h2 id="home-sailings-title">Sailings I'm hosting.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
 			</div>
 			<p class="oomph-section__cta oomph-section__cta--center">
@@ -252,11 +252,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php /* 6. HOW IT WORKS ------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="how-it-works-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">How it works</p>
 				<h2 id="how-it-works-title">Three steps. One conversation to start.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
 					<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
@@ -311,11 +311,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php /* 8. TESTIMONIALS ------------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="testimonials-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">Client Stories</p>
 				<h2 id="testimonials-title">In their words.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<blockquote class="oomph-card oomph-card--champagne">
 					<p>"Thirtieth anniversary, Silver Nova, March 2025. Eric had the cabin, the dinner reservations, and the shore time mapped before we even knew what to ask for."</p>
 					<footer class="oomph-card__meta">The Hendersons · 30th anniversary · Silver Nova · March 2025</footer>
@@ -340,11 +340,11 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 	<?php /* 10. FEATURED JOURNAL --------------------------------------- */ ?>
 	<section class="oomph-section" aria-labelledby="journal-title">
 		<div class="oomph-container">
-			<div class="oomph-section__intro">
+			<div class="oomph-section__intro" data-reveal>
 				<p class="oomph-eyebrow">From the Journal</p>
 				<h2 id="journal-title">Recent field notes.</h2>
 			</div>
-			<div class="oomph-grid oomph-grid--3">
+			<div class="oomph-grid oomph-grid--3" data-reveal>
 				<?php
 				$recent_posts = get_posts(
 					array(

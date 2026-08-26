@@ -179,6 +179,30 @@ function oomph_child_enqueue_quiz(): void {
 add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_quiz', 20 );
 
 /**
+ * Reveal motion — one IntersectionObserver for [data-reveal] elements.
+ * Site-wide, tiny, deferred; inert for reduced-motion visitors and when
+ * a page carries no [data-reveal] markup.
+ *
+ * @return void
+ */
+function oomph_child_enqueue_reveal(): void {
+	$path = get_stylesheet_directory() . '/assets/js/reveal.js';
+	if ( file_exists( $path ) ) {
+		wp_enqueue_script(
+			'oomph-reveal',
+			get_stylesheet_directory_uri() . '/assets/js/reveal.js',
+			array(),
+			(string) filemtime( $path ),
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'oomph_child_enqueue_reveal', 20 );
+
+/**
  * Link-in-bio stylesheet — only on the /links/ page.
  *
  * @return void
