@@ -51,7 +51,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ steps.target.outputs.port }} -H ${{ steps.target.outputs.host }} >> ~/.ssh/known_hosts
+          # SiteGround's SSH endpoint intermittently drops keyscan connections,
+          # which used to fail the whole deploy. Retry with backoff, and treat
+          # an empty result as a failure too (keyscan can exit 0 with no keys).
+          for attempt in 1 2 3 4 5; do
+            ssh-keyscan -T 10 -p ${{ steps.target.outputs.port }} -H ${{ steps.target.outputs.host }} > ~/.ssh/keyscan_out || true
+            if [ -s ~/.ssh/keyscan_out ]; then
+              cat ~/.ssh/keyscan_out >> ~/.ssh/known_hosts
+              exit 0
+            fi
+            echo "ssh-keyscan attempt ${attempt}/5 returned no keys; retrying in $((attempt * 5))s…"
+            sleep $((attempt * 5))
+          done
+          echo "::error::ssh-keyscan failed after 5 attempts — SiteGround SSH endpoint unreachable" >&2
+          exit 1
 
       - name: Deploy child theme via rsync
         run: |
