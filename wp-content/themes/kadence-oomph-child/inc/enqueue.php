@@ -232,3 +232,37 @@ function oomph_child_disable_emojis(): void {
 	remove_filter( 'wp_mail',             'wp_staticize_emoji_for_email' );
 }
 add_action( 'init', 'oomph_child_disable_emojis' );
+
+/**
+ * Dequeue Fluent Forms assets on pages that render no Fluent form.
+ *
+ * Fluent Forms contributes ~43KB of the combined CSS on every page while
+ * its forms only appear on Discovery Call and Trip Quiz. Dropping the
+ * assets elsewhere fixes the /links/ LCP regression traced to the
+ * combined stylesheet.
+ *
+ * Runs at priority 100 so it fires after Fluent Forms' own enqueues.
+ *
+ * @return void
+ */
+function oomph_child_dequeue_fluentform_assets(): void {
+	// The only pages that render a Fluent form.
+	if ( is_page( array( 'discovery-call', 'trip-quiz' ) ) ) {
+		return;
+	}
+
+	$styles = wp_styles();
+	foreach ( $styles->queue as $handle ) {
+		if ( 0 === strpos( $handle, 'fluent' ) ) {
+			wp_dequeue_style( $handle );
+		}
+	}
+
+	$scripts = wp_scripts();
+	foreach ( $scripts->queue as $handle ) {
+		if ( 0 === strpos( $handle, 'fluent' ) ) {
+			wp_dequeue_script( $handle );
+		}
+	}
+}
+add_action( 'wp_enqueue_scripts', 'oomph_child_dequeue_fluentform_assets', 100 );

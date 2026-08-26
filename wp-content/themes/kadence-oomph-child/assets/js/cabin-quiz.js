@@ -85,6 +85,9 @@
 		if ( typeof window.gtag === 'function' ) {
 			window.gtag( 'event', 'generate_lead', { lead_source: 'cabin_quiz', cabin_profile: profile } );
 		}
+		if ( typeof window.clarity === 'function' ) {
+			window.clarity( 'set', 'lead', 'cabin_quiz' );
+		}
 	}
 
 	// Start.

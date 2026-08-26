@@ -1,6 +1,6 @@
 <?php
 /**
- * Technical SEO: robots.txt + llms.txt.
+ * Technical SEO: llms.txt, sailing meta, and Rank Math guards.
  *
  * - robots.txt: allow crawling on the public (production) site, point to the
  *   Rank Math sitemap. Non-public environments (staging) keep WordPress's
@@ -32,6 +32,90 @@ final class SEO {
 		// description for each; generate one from the sailing's own fields.
 		// A description typed in the editor always wins.
 		add_filter( 'rank_math/frontend/description', array( __CLASS__, 'sailing_description' ), 10, 1 );
+
+		// Rank Math's Titles & Meta settings can noindex the whole Group
+		// Cruise post type and drop it from the XML sitemap — settings drift,
+		// the same failure mode class-schema.php guards against on the JSON-LD
+		// side. Published sailings and their archive are this site's organic
+		// growth engine; pin them indexable and sitemapped in code so a UI
+		// toggle can never silently unlist 300+ pages again.
+		add_filter( 'rank_math/frontend/robots', array( __CLASS__, 'sailing_robots' ) );
+		add_filter( 'option_rank-math-options-titles', array( __CLASS__, 'pin_sailing_titles_options' ) );
+		add_filter( 'option_rank-math-options-sitemap', array( __CLASS__, 'pin_sailing_sitemap_option' ) );
+
+		// The archive ships with Rank Math's bare defaults ("Group Cruises" /
+		// "Group Cruises Archive - Oomph Travel"); its title and description
+		// are code-owned here — edit this class, not the Rank Math UI.
+		add_filter( 'rank_math/frontend/title', array( __CLASS__, 'archive_title' ) );
+	}
+
+	/**
+	 * Force index,follow on published sailings and the Group Cruises archive.
+	 *
+	 * Runs last on Rank Math's resolved robots array, so it wins over both the
+	 * post-type default and any stale per-post value left by an import.
+	 *
+	 * @param array $robots Rank Math's resolved robots directives.
+	 * @return array
+	 */
+	public static function sailing_robots( $robots ) {
+		$is_sailing = ( is_singular( CPT_Cruise::POST_TYPE ) && 'publish' === get_post_status() )
+			|| is_post_type_archive( CPT_Cruise::POST_TYPE );
+
+		if ( ! $is_sailing ) {
+			return $robots;
+		}
+
+		$robots = is_array( $robots ) ? $robots : array();
+		unset( $robots['noindex'] );
+		$robots['index']  = 'index';
+		$robots['follow'] = 'follow';
+
+		return $robots;
+	}
+
+	/**
+	 * Pin the Group Cruise post-type robots setting to index.
+	 *
+	 * The sitemap module skips posts whose post-type default resolves to
+	 * noindex, so the frontend robots filter alone is not enough — the stored
+	 * option has to read as indexable too. Only this one key is overridden;
+	 * everything else in the option passes through untouched.
+	 *
+	 * @param mixed $options The rank-math-options-titles option value.
+	 * @return mixed
+	 */
+	public static function pin_sailing_titles_options( $options ) {
+		if ( is_array( $options ) ) {
+			$options[ 'pt_' . CPT_Cruise::POST_TYPE . '_robots' ] = array( 'index' );
+		}
+		return $options;
+	}
+
+	/**
+	 * Keep the Group Cruise post type included in the XML sitemap.
+	 *
+	 * @param mixed $options The rank-math-options-sitemap option value.
+	 * @return mixed
+	 */
+	public static function pin_sailing_sitemap_option( $options ) {
+		if ( is_array( $options ) ) {
+			$options[ 'pt_' . CPT_Cruise::POST_TYPE . '_sitemap' ] = 'on';
+		}
+		return $options;
+	}
+
+	/**
+	 * Title for the Group Cruises archive (R5: keyword first, ~50 chars).
+	 *
+	 * @param string $title Rank Math's value.
+	 * @return string
+	 */
+	public static function archive_title( $title ) {
+		if ( is_post_type_archive( CPT_Cruise::POST_TYPE ) ) {
+			return 'Group Cruises with Extra Amenities | Oomph Travel';
+		}
+		return $title;
 	}
 
 	/**
@@ -45,6 +129,12 @@ final class SEO {
 	 * @return string
 	 */
 	public static function sailing_description( $description ) {
+		// The archive's title and description are code-owned (Rank Math's
+		// default is "Group Cruises Archive - Oomph Travel").
+		if ( is_post_type_archive( CPT_Cruise::POST_TYPE ) ) {
+			return 'Group cruise departures with a private shore event or shipboard credit included at the same fare. Compare 2026–2027 sailings, planned with Eric Hempel.';
+		}
+
 		if ( ! is_singular( CPT_Cruise::POST_TYPE ) || ! function_exists( 'get_field' ) ) {
 			return $description;
 		}

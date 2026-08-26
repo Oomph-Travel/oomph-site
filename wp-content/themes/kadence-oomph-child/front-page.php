@@ -50,7 +50,7 @@ if ( is_array( $hero_image_acf ) && ! empty( $hero_image_acf['url'] ) ) {
 } else {
 	$hero_image_bundled = 'hero-background.webp';
 	$hero_image_url     = get_stylesheet_directory_uri() . '/assets/images/' . $hero_image_bundled;
-	$hero_image_alt     = '';
+	$hero_image_alt     = 'Sunset over the old town of Rovinj, Croatia, glowing above a calm Adriatic sea.';
 	$hero_image_width   = 1000;
 	$hero_image_height  = 667;
 	oomph_preload_hero( $hero_image_bundled );
@@ -174,21 +174,21 @@ $show_trust_strip = (bool) oomph_acf_field( 'hero_trust_strip', true );
 			</div>
 			<div class="oomph-grid oomph-grid--3">
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/luxury-cruise-planning/">
-					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-cruise.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-cruise.jpg', array( 'alt' => 'Gentoo penguin on Antarctic snow with a luxury expedition cruise ship anchored behind', 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Luxury cruise planning.</h3>
 					<p>Silversea, Regent, Seabourn, Crystal, Cunard Grills, Viking Ocean. Cabin selection by deck and wave-zone, onboard credit, pre- and post-cruise extensions.</p>
 					<p class="oomph-card__meta">See cruise planning →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/custom-italy-travel/">
-					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-italy.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-italy.jpg', array( 'alt' => 'St. Peter\'s Basilica and the Ponte Sant\'Angelo in Rome lit at dusk', 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Custom Italy travel.</h3>
 					<p>Hand-built itineraries by region — Puglia, Sicily, the Lakes, the Dolomites. Private drivers, vetted guides, the villa rentals that actually deliver.</p>
 					<p class="oomph-card__meta">See custom Italy →</p>
 					<span class="oomph-card__link" aria-hidden="true"></span>
 				</a>
 				<a class="oomph-card oomph-card--clickable oomph-card--media" href="/multi-generational-travel-planning/">
-					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-multigen.jpg', array( 'width' => 900, 'height' => 600 ) ); ?></figure>
+					<figure class="oomph-card__media"><?php echo oomph_picture( 'cards/card-multigen.jpg', array( 'alt' => 'River cruise ship passing the village of Dürnstein on the Danube', 'width' => 900, 'height' => 600 ) ); ?></figure>
 					<h3 class="oomph-card__headline">Multi-generational travel.</h3>
 					<p>The trip that works for grandparents, parents, teens, and the toddler. Pace, mobility, dietary, special-occasion choreography — planned around the slowest walker.</p>
 					<p class="oomph-card__meta">See multi-gen planning →</p>

@@ -193,6 +193,9 @@ if ( function_exists( 'wpFluent' ) ) {
 		if ( typeof window.gtag === 'function' ) {
 			window.gtag( 'event', 'generate_lead', { lead_source: 'discovery_call_form' } );
 		}
+		if ( typeof window.clarity === 'function' ) {
+			window.clarity( 'set', 'lead', 'discovery_call_form' );
+		}
 	} );
 }() );
 </script>
@@ -214,6 +217,9 @@ if ( function_exists( 'wpFluent' ) ) {
 		window.dataLayer.push( { event: 'generate_lead', lead_source: 'calendly_booking' } );
 		if ( typeof window.gtag === 'function' ) {
 			window.gtag( 'event', 'generate_lead', { lead_source: 'calendly_booking' } );
+		}
+		if ( typeof window.clarity === 'function' ) {
+			window.clarity( 'set', 'lead', 'calendly_booking' );
 		}
 	} );
 }() );
