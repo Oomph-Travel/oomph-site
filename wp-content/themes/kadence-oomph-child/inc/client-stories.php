@@ -149,7 +149,7 @@ function oomph_render_client_stories(): void {
 						</article>
 					<?php endforeach; ?>
 				</div>
-				<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+				<p class="oomph-section__cta oomph-section__cta--center">
 					<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
 				</p>
 			</div>
@@ -165,19 +165,17 @@ function oomph_render_client_stories(): void {
 
 		<?php /* 5. FINAL CTA — Editorial Inversion */ ?>
 		<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">
-			<div class="oomph-container" style="text-align: center;">
-				<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
-				<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">Want a trip you can review like that?</h2>
-				<p style="margin-top: var(--space-6);">
+			<div class="oomph-container oomph-cta-band">
+				<p class="oomph-eyebrow oomph-eyebrow--inverse">First call</p>
+				<h2 id="final-cta-title" class="oomph-italic-display oomph-cta-band__heading">Want a trip you can review like that?</h2>
+				<p class="oomph-cta-band__action">
 					<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
-					<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
+					<span class="oomph-btn-microcopy oomph-microcopy--inverse">Email, text, or a quick call — whatever's easiest for you.</span>
 				</p>
 			</div>
 		</section>
 	</main>
 
-	<aside class="oomph-sticky-cta" aria-label="Quick contact">
-		<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation <span aria-hidden="true">&rarr;</span></a>
-	</aside>
+	<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 	<?php
 }

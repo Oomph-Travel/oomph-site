@@ -128,9 +128,7 @@ $archive_url = get_post_type_archive_link( 'oomph_cruise' );
 
 </main>
 
-<aside class="oomph-sticky-cta" aria-label="Quick contact">
-	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">Start a conversation</a>
-</aside>
+<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 
 <?php
 get_footer();

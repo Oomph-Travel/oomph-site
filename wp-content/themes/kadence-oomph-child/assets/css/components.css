@@ -502,6 +502,9 @@
 
 /* ---------------------------------------------------------------------------
  * Placeholder boxes — clearly mark where Eric's photography goes
+ *
+ * @deprecated (elevation WS2) — retire this whole block once the licensed-
+ * media pipeline replaces the last placeholder slot. Do not add new uses.
  * --------------------------------------------------------------------------- */
 
 .oomph-placeholder-square {
@@ -1110,3 +1113,72 @@
   color: var(--text-muted);
   font-size: var(--text-body-sm);
 }
+
+/* ===========================================================================
+ * Utilities & band components — inline-style elimination (elevation WS1 PR-2)
+ * Templates carry zero style="" attributes; every one-off below is a named,
+ * token-backed class. Keep this section last so utilities win ties.
+ * ========================================================================== */
+
+/* Accents on inverse (Cabin Notes / dark) grounds */
+.oomph-eyebrow--inverse   { color: var(--color-champagne); }
+.oomph-microcopy--inverse { color: var(--color-champagne); }
+.oomph-text-paper         { color: var(--color-paper); }
+.oomph-text-muted         { color: var(--text-muted); }
+
+/* Italic display heads pinned to an explicit scale step */
+.oomph-italic-display--h1 { font-size: var(--text-h1); }
+.oomph-italic-display--h2 { font-size: var(--text-h2); }
+.oomph-italic-display--h3 { font-size: var(--text-h3); }
+
+/* Spacing utilities — 8-pt scale only */
+.oomph-u-mt-5 { margin-top: var(--space-5); }
+.oomph-u-mt-6 { margin-top: var(--space-6); }
+.oomph-u-mt-7 { margin-top: var(--space-7); }
+.oomph-u-mb-4 { margin-bottom: var(--space-4); }
+.oomph-u-center { text-align: center; }
+
+/* Centered CTA row that closes a card grid */
+.oomph-section__cta--center {
+  text-align: center;
+  margin-top: var(--space-7);
+}
+
+/* Final CTA band — the dark closing section every page ends on */
+.oomph-cta-band { text-align: center; }
+.oomph-cta-band__heading {
+  font-size: var(--text-h1);
+  max-width: 22ch;
+  margin-inline: auto;
+}
+.oomph-cta-band__action { margin-top: var(--space-6); }
+
+/* Display pull-quote + plain citation (testimonials) */
+.oomph-pullquote--display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-h2);
+  line-height: 1.3;
+}
+.oomph-pullquote__cite--plain {
+  font-family: var(--font-text);
+  font-style: normal;
+  font-size: var(--text-body-sm);
+  color: var(--color-slate);
+}
+
+/* Calendly embed, booked confirmation, and no-config fallback */
+.oomph-calendly--frame { min-width: 320px; height: 680px; }
+.oomph-calendly__confirm {
+  text-align: center;
+  padding: var(--space-8) 0;
+}
+.oomph-quiz__cta--center { justify-content: center; }
+.oomph-fallback-box {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-7);
+  text-align: center;
+}
+.oomph-fallback-box p { margin: 0 0 var(--space-3); }
+.oomph-fallback-box p:last-child { margin-bottom: 0; }

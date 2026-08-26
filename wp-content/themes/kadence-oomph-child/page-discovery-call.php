@@ -106,17 +106,17 @@ if ( function_exists( 'wpFluent' ) ) {
 			<div class="oomph-grid oomph-grid--3">
 				<div>
 					<p class="oomph-eyebrow">One &middot; Talk</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Tell me about the trip.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">Tell me about the trip.</h3>
 					<p>Who is going, when, where you have already been, what you would never repeat. The more specific, the better the plan that follows.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Two &middot; Fit</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">We see if I am the right advisor.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">We see if I am the right advisor.</h3>
 					<p>I plan premium cruises and custom European journeys. If your trip is in my lane, I will tell you. If it is not, I will say so and point you somewhere better.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Three &middot; Next</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">You leave with a next step.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">You leave with a next step.</h3>
 					<p>Either we start planning, or you walk away with a clearer idea of what your trip takes. No pressure, no obligation, no hard sell.</p>
 				</div>
 			</div>
@@ -130,10 +130,9 @@ if ( function_exists( 'wpFluent' ) ) {
 			<h2 id="book-title">Book your 30-minute call.</h2>
 			<?php if ( $has_calendly ) : ?>
 				<div
-					class="calendly-inline-widget oomph-calendly"
+					class="calendly-inline-widget oomph-calendly oomph-calendly--frame"
 					data-url="<?php echo esc_url( $calendly_url ); ?>"
-					style="min-width:320px;height:680px;"
-				></div>
+					></div>
 				<?php
 				// Third-party Calendly embed script (approved as part of this build).
 				wp_enqueue_script(
@@ -144,19 +143,19 @@ if ( function_exists( 'wpFluent' ) ) {
 					true
 				);
 				?>
-				<div class="oomph-calendly__confirm" data-calendly-confirm hidden role="status" aria-live="polite" style="text-align:center;padding:var(--space-8) 0;">
+				<div class="oomph-calendly__confirm" data-calendly-confirm hidden role="status" aria-live="polite">
 					<p class="oomph-eyebrow">You're booked</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Your call is on the calendar.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h2 oomph-u-mb-4">Your call is on the calendar.</h3>
 					<p>Check your inbox for the confirmation and the calendar invite — I'll come prepared. See you then.</p>
-					<p class="oomph-quiz__cta" style="justify-content:center;">
+					<p class="oomph-quiz__cta oomph-quiz__cta--center">
 						<a class="oomph-btn oomph-btn--primary" href="/">Back to home <span aria-hidden="true">&rarr;</span></a>
 						<a class="oomph-btn oomph-btn--ghost" href="/journal/">Read the journal</a>
 					</p>
 				</div>
 			<?php else : ?>
-				<div class="oomph-calendly oomph-calendly--placeholder" role="note" style="border:1px solid var(--hairline);border-radius:var(--radius-md);padding:var(--space-7);text-align:center;">
-					<p style="margin:0 0 var(--space-3);"><strong>Calendly booking loads here.</strong></p>
-					<p style="margin:0;color:var(--text-muted);">Set the booking link with <code>add_filter('oomph_calendly_url', fn() =&gt; 'https://calendly.com/&hellip;')</code> or define <code>OOMPH_CALENDLY_URL</code>.</p>
+				<div class="oomph-calendly oomph-calendly--placeholder oomph-fallback-box" role="note">
+					<p><strong>Calendly booking loads here.</strong></p>
+					<p class="oomph-text-muted">Set the booking link with <code>add_filter('oomph_calendly_url', fn() =&gt; 'https://calendly.com/&hellip;')</code> or define <code>OOMPH_CALENDLY_URL</code>.</p>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -219,12 +218,7 @@ if ( function_exists( 'wpFluent' ) ) {
 }() );
 </script>
 
-<?php /* Sticky mobile CTA — R2. Scrolls to the booking section. */ ?>
-<aside class="oomph-sticky-cta" aria-label="Quick contact">
-	<a class="oomph-btn oomph-btn--primary" href="#book">
-		Start a conversation <span aria-hidden="true">&rarr;</span>
-	</a>
-</aside>
+<?php get_template_part( 'parts/sticky-cta', null, array( 'href' => '#book' ) ); /* Sticky mobile CTA — R2 */ ?>
 
 <?php
 get_footer();

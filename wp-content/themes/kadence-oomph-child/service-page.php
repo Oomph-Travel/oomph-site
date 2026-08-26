@@ -276,7 +276,7 @@ $faqs = oomph_service_template_faqs();
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>
-			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+			<p class="oomph-section__cta oomph-section__cta--center">
 				<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
 					Start a conversation <span aria-hidden="true">→</span>
 				</a>
@@ -287,17 +287,17 @@ $faqs = oomph_service_template_faqs();
 	<?php /* 5. WHY AN ADVISOR MATTERS ---------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="why-advisor-title">
 		<div class="oomph-container oomph-container--prose">
-			<p class="oomph-eyebrow" style="color: var(--color-champagne);">Why an advisor</p>
-			<h2 id="why-advisor-title" class="oomph-italic-display" style="color: var(--color-paper); font-size: var(--text-h1);">
+			<p class="oomph-eyebrow oomph-eyebrow--inverse">Why an advisor</p>
+			<h2 id="why-advisor-title" class="oomph-italic-display oomph-italic-display--h1 oomph-text-paper">
 				Cruise lines publish thousands of cabins; only a handful are right for you.
 			</h2>
-			<div style="color: var(--color-paper);">
+			<div class="oomph-text-paper">
 				<p><strong>Price parity.</strong> Cruise line pricing is the same whether you book direct, through a marketplace, or through me. The fare is set by the line, not the channel. What changes is whether anyone is looking at your booking after you press confirm.</p>
 				<p><strong>Hidden cabin pitfalls.</strong> Decks above the theater, cabins below the pool grill, mid-ship suites under the gym, balconies that face the wind on a one-way itinerary — these aren't on the deck plan. I know the deck plans because I've sailed them.</p>
 				<p><strong>Supplier escalation.</strong> When something goes wrong — and at least once, something goes wrong — having a real advisor escalates faster than a 1-800 number. I have the supplier contacts. I make the call while you keep enjoying your trip.</p>
 				<p><strong>One person across the booking.</strong> You don't get passed between three departments when you have a question about pre-cruise transfers, then again for dining reservations, then again at the port. One advisor, one inbox, one phone number.</p>
 			</div>
-			<p style="margin-top: var(--space-7);">
+			<p class="oomph-u-mt-7">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
 					Start a conversation <span aria-hidden="true">→</span>
 				</a>
@@ -347,7 +347,7 @@ $faqs = oomph_service_template_faqs();
 			);
 			if ( $drake ) :
 				?>
-				<p style="margin-top: var(--space-6);"><?php echo wp_kses_post( $drake ); ?></p>
+				<p class="oomph-u-mt-6"><?php echo wp_kses_post( $drake ); ?></p>
 			<?php endif; ?>
 			<!-- TODO: Add cruise-line logos when assets are available. Per docx §10.5 the section originally specs a logo grid; we render text-only for v1. -->
 		</div>
@@ -364,7 +364,7 @@ $faqs = oomph_service_template_faqs();
 			<div class="oomph-grid oomph-grid--3">
 				<?php foreach ( oomph_get_upcoming_sailings( 3 ) as $sailing_id ) { oomph_render_sailing_card( $sailing_id ); } ?>
 			</div>
-			<p class="oomph-section__cta" style="text-align: center; margin-top: var(--space-7);">
+			<p class="oomph-section__cta oomph-section__cta--center">
 				<a class="oomph-btn oomph-btn--primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'oomph_cruise' ) ); ?>">
 					See all sailings <span aria-hidden="true">→</span>
 				</a>
@@ -383,17 +383,17 @@ $faqs = oomph_service_template_faqs();
 			<div class="oomph-grid oomph-grid--3">
 				<div>
 					<p class="oomph-eyebrow">Step One · Discover</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">A free 30-minute call.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">A free 30-minute call.</h3>
 					<p>We talk about the cruise you're imagining — which itineraries you've sailed, what you'd repeat, what you'd never do again. By the end I know which lines fit and which don't, and you know what comes next.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Two · Design</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">One proposal, not five.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">One proposal, not five.</h3>
 					<p>Cabin selection, onboard credit and amenities, pre- and post-cruise hotels, transfers, dinner reservations, the small details. You see one proposal, not five — because I do the narrowing for you.</p>
 				</div>
 				<div>
 					<p class="oomph-eyebrow">Step Three · Depart</p>
-					<h3 class="oomph-italic-display" style="font-size: var(--text-h3);">Eyes on it the whole time.</h3>
+					<h3 class="oomph-italic-display oomph-italic-display--h3">Eyes on it the whole time.</h3>
 					<p>From confirmation to your post-cruise hotel, I'm reachable. Flight delays, port changes, a sudden chance to upgrade an excursion — I'm the one you call when the day shifts.</p>
 				</div>
 			</div>
@@ -499,16 +499,16 @@ $faqs = oomph_service_template_faqs();
 
 	<?php /* 12. FINAL CTA ---------------------------------------------- */ ?>
 	<section class="oomph-section is-style-oomph-cabin-notes" aria-labelledby="final-cta-title">
-		<div class="oomph-container" style="text-align: center;">
-			<p class="oomph-eyebrow" style="color: var(--color-champagne);">First call</p>
-			<h2 id="final-cta-title" class="oomph-italic-display" style="font-size: var(--text-h1); max-width: 22ch; margin-inline: auto;">
+		<div class="oomph-container oomph-cta-band">
+			<p class="oomph-eyebrow oomph-eyebrow--inverse">First call</p>
+			<h2 id="final-cta-title" class="oomph-italic-display oomph-cta-band__heading">
 				Worth a thirty-minute call?
 			</h2>
-			<p style="margin-top: var(--space-6);">
+			<p class="oomph-cta-band__action">
 				<a class="oomph-btn oomph-btn--inverse" href="/discovery-call/">
 					Start a conversation <span aria-hidden="true">→</span>
 				</a>
-				<span class="oomph-btn-microcopy" style="color: var(--color-champagne);">Email, text, or a quick call — whatever's easiest for you.</span>
+				<span class="oomph-btn-microcopy oomph-microcopy--inverse">Email, text, or a quick call — whatever's easiest for you.</span>
 			</p>
 			<?php /* TODO: Final dual CTA — secondary ghost "Send me the cabin guide"
 			        deferred pending lead-magnet system. Re-enable beside the primary
@@ -518,12 +518,7 @@ $faqs = oomph_service_template_faqs();
 
 </main>
 
-<?php /* Sticky mobile CTA — R2. Visible at every scroll depth, mobile only. */ ?>
-<aside class="oomph-sticky-cta" aria-label="Quick contact">
-	<a class="oomph-btn oomph-btn--primary" href="/discovery-call/">
-		Start a conversation <span aria-hidden="true">→</span>
-	</a>
-</aside>
+<?php get_template_part( 'parts/sticky-cta' ); /* Sticky mobile CTA — R2 */ ?>
 
 <?php
 get_footer();
